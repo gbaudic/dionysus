@@ -95,6 +95,8 @@ public class PasswordDialog extends JDialog {
 						if(checkPassword(passwordField.getPassword())){
 							result = true;
 							setVisible(false);
+							MainGUI2 frame = new MainGUI2();
+							frame.setVisible(true);
 						} else {
 							JOptionPane.showMessageDialog(null, "Wrong password.\nPlease retry.", "Error", JOptionPane.ERROR_MESSAGE);
 						}					
@@ -110,6 +112,7 @@ public class PasswordDialog extends JDialog {
 				cancelButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
 						setVisible(false);
+						System.exit(0);
 					}			
 				});
 				buttonPane.add(cancelButton);
@@ -133,6 +136,7 @@ public class PasswordDialog extends JDialog {
 			while((i = fr.read()) != -1)
 				str += (char)i;
 			correctPassword = str.toCharArray();
+			fr.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
