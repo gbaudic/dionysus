@@ -50,6 +50,13 @@ import javax.swing.SwingConstants;
 import fr.dionysus.*;
 import fr.dionysus.database.*;
 import javax.swing.JScrollPane;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
+import javax.swing.JSeparator;
 
 public class MainGUI2 extends JFrame {
 
@@ -97,8 +104,8 @@ public class MainGUI2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainGUI2 frame = new MainGUI2();
-					frame.setVisible(true);
+//					MainGUI2 frame = new MainGUI2();
+//					frame.setVisible(true);
 					
 					PasswordDialog pdiag = new PasswordDialog();
 					pdiag.setVisible(true);
@@ -122,6 +129,28 @@ public class MainGUI2 extends JFrame {
 		//setBounds(100, 100, 1024, 768);
 		setSize(1024,740);
 		setLocationRelativeTo(null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		JMenuItem mntmSettings = new JMenuItem("Settings");
+		mnFile.add(mntmSettings);
+		
+		JSeparator separator = new JSeparator();
+		mnFile.add(separator);
+		
+		JMenuItem mntmQuit = new JMenuItem("Quit");
+		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
+		mnFile.add(mntmQuit);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JMenuItem mntmAbout = new JMenuItem("About");
+		mnHelp.add(mntmAbout);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -405,6 +434,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.setLayout(new GridLayout(4, 3, 0, 0));
 		
 		JButton btn1 = new JButton("1");
+		btn1.setMnemonic('1');
 		btn1.addActionListener(new ActionListener() {
 			
 			@Override
@@ -415,6 +445,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn1);
 		
 		JButton btn2 = new JButton("2");
+		btn2.setMnemonic('2');
 		btn2.addActionListener(new ActionListener() {
 			
 			@Override
@@ -425,6 +456,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn2);
 		
 		JButton btn3 = new JButton("3");
+		btn3.setMnemonic('3');
 		btn3.addActionListener(new ActionListener() {
 			
 			@Override
@@ -435,6 +467,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn3);
 		
 		JButton btn4 = new JButton("4");
+		btn4.setMnemonic('4');
 		btn4.addActionListener(new ActionListener() {
 			
 			@Override
@@ -445,6 +478,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn4);
 		
 		JButton btn5 = new JButton("5");
+		btn5.setMnemonic('5');
 		btn5.addActionListener(new ActionListener() {
 			
 			@Override
@@ -455,6 +489,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn5);
 		
 		JButton btn6 = new JButton("6");
+		btn6.setMnemonic('6');
 		btn6.addActionListener(new ActionListener() {
 			
 			@Override
@@ -465,6 +500,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn6);
 		
 		JButton btn7 = new JButton("7");
+		btn7.setMnemonic('7');
 		btn7.addActionListener(new ActionListener() {
 			
 			@Override
@@ -475,6 +511,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn7);
 		
 		JButton btn8 = new JButton("8");
+		btn8.setMnemonic('8');
 		btn8.addActionListener(new ActionListener() {
 			
 			@Override
@@ -485,6 +522,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn8);
 		
 		JButton btn9 = new JButton("9");
+		btn9.setMnemonic('9');
 		btn9.addActionListener(new ActionListener() {
 			
 			@Override
@@ -495,6 +533,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn9);
 		
 		JButton btn0 = new JButton("0");
+		btn0.setMnemonic('0');
 		btn0.addActionListener(new ActionListener() {
 			
 			@Override
