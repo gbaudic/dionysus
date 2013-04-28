@@ -132,25 +132,8 @@ public class UserChoiceDialog2 extends JDialog {
 			}
 			
 			table = new JTable();
-			DefaultTableModel tModel = new DefaultTableModel(
-					foodForTable,
-					new String[] {
-						"Last name", "First name", "Year", "Balance", "Caution"
-					}
-				) {
-					Class[] columnTypes = new Class[] {
-						String.class, String.class, Integer.class, Double.class, Boolean.class
-					};
-					public Class getColumnClass(int columnIndex) {
-						return columnTypes[columnIndex];
-					}
-					boolean[] columnEditables = new boolean[] {
-						false, false, false, false, false
-					};
-					public boolean isCellEditable(int row, int column) {
-						return columnEditables[column];
-					}
-				};
+				
+			UserTableModel tModel = new UserTableModel(foodForTable);
 			
 			table.setModel(tModel);
 			sorter = new TableRowSorter<DefaultTableModel>(tModel);

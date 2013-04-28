@@ -92,7 +92,6 @@ public class MainGUI2 extends JFrame {
 	private ArticleDB catalogue;
 	private TransactionDB journal;
 	
-	private boolean isUnlocked; /*Indicates if password has been entered or not*/
 	private JLabel lblTotalTicket;
 	private JLabel lblSoldeApres;
 
@@ -151,6 +150,8 @@ public class MainGUI2 extends JFrame {
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
+		
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -724,25 +725,7 @@ public class MainGUI2 extends JFrame {
 		comptesP.add(btnDeleteUser, gbc_btnDeleteUser);
 		
 		userTable = new JTable();
-		userTable.setModel(new DefaultTableModel(
-			users.getArrayForTables(),
-			new String[] {
-				"Last name", "First name", "Year", "Balance", "Caution"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, Integer.class, Double.class, Boolean.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		userTable.setModel(new UserTableModel(users.getArrayForTables()));
 		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userTable.setFillsViewportHeight(true);
 		userTable.setAutoCreateRowSorter(true);
