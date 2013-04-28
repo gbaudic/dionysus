@@ -24,6 +24,9 @@ import javax.swing.JPanel;
 import java.awt.Insets;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.SwingConstants;
 
 /**
@@ -100,6 +103,13 @@ public class AboutDialog extends JDialog {
 		gbc_btnOK.anchor = GridBagConstraints.NORTH;
 		gbc_btnOK.gridx = 0;
 		gbc_btnOK.gridy = 1;
+		btnOK.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		});
 		getContentPane().add(btnOK, gbc_btnOK);
 	}
 
