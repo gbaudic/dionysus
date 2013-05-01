@@ -149,6 +149,15 @@ public class MainGUI2 extends JFrame {
 		menuBar.add(mnHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AboutDialog dlg = new AboutDialog();
+				dlg.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+				dlg.setVisible(true);
+			}
+		});
 		mnHelp.add(mntmAbout);
 		
 		
@@ -188,9 +197,9 @@ public class MainGUI2 extends JFrame {
 		gbc_panel.gridy = 0;
 		vueP.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
@@ -228,16 +237,34 @@ public class MainGUI2 extends JFrame {
 				if(currentUserAtDesk != null){
 					nomLabel.setText(currentUserAtDesk.getFullName());
 					soldeLabel.setText(String.valueOf(currentUserAtDesk.getBalance()));
-				} else {
-					nomLabel.setText("default (00)"); 
-					soldeLabel.setText(String.valueOf(0.00));
-				}
-				
+					
+					currentTicket = new Ticket(currentUserAtDesk);
+					taskToDoLabel.setText("Choose article");
+				}	
+			}
+		});
+		panel.add(chooser, gbc_chooser);
+		
+		JButton btnX = new JButton("Default");
+		btnX.setToolTipText("Accountless users");
+		GridBagConstraints gbc_btnX = new GridBagConstraints();
+		gbc_btnX.insets = new Insets(0, 0, 5, 0);
+		gbc_btnX.gridx = 3;
+		gbc_btnX.gridy = 1;
+		btnX.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				currentUserAtDesk = null;
+
+				nomLabel.setText("default (00)"); 
+				soldeLabel.setText(String.valueOf(0.00));
+
 				currentTicket = new Ticket(currentUserAtDesk);
 				taskToDoLabel.setText("Choose article");
 			}
 		});
-		panel.add(chooser, gbc_chooser);
+		panel.add(btnX, gbc_btnX);
 		
 		JLabel lblSolde = new JLabel("Balance:");
 		GridBagConstraints gbc_lblSolde = new GridBagConstraints();
@@ -851,25 +878,7 @@ public class MainGUI2 extends JFrame {
 		articlesP.add(btnDeleteArticle, gbc_btnDeleteArticle);
 		
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
-			catalogue.getArrayForTables(),
-			new String[] {
-				"Name", "Code", "Active", "Price 0", "Price 1", "Price 2", "Current stock", "Alert from"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				String.class, Integer.class, Boolean.class, Double.class, Double.class, Double.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		table_1.setModel(new ArticleTableModel(catalogue.getArrayForTables()));
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.setFillsViewportHeight(true);
 		table_1.setAutoCreateRowSorter(true);

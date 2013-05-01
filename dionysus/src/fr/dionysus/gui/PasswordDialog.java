@@ -64,6 +64,7 @@ public class PasswordDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public PasswordDialog() {
+		setResizable(false);
 		setTitle("Password required");
 		setModal(true);
 		setSize(450,123);
