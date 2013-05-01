@@ -34,9 +34,13 @@ import javax.swing.SwingConstants;
  *
  */
 public class AboutDialog extends JDialog {
+	
 	public AboutDialog() {
 		setTitle("About");
 		setResizable(false);
+		setModal(true);
+		setSize(350,400);
+		setLocationRelativeTo(null);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{444, 0};
 		gridBagLayout.rowHeights = new int[]{249, 23, 0};
