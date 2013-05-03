@@ -648,11 +648,11 @@ public class MainGUI2 extends JFrame {
 		GridBagLayout gbl_comptesP = new GridBagLayout();
 		gbl_comptesP.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_comptesP.rowHeights = new int[]{0, 0, 0};
-		gbl_comptesP.columnWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0, 1.0};
+		gbl_comptesP.columnWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_comptesP.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		comptesP.setLayout(gbl_comptesP);
 		
-		JLabel lblNewLabel = new JLabel("Search: ");
+		JLabel lblNewLabel = new JLabel("Search:");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
@@ -697,24 +697,24 @@ public class MainGUI2 extends JFrame {
 		gbc_btnEditUser.gridx = 3;
 		gbc_btnEditUser.gridy = 0;
 		btnEditUser.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int row = userTable.getSelectedRow();
 				int realRow = -1;
-				
+
 				if(row >= 0){
 					realRow = userTable.convertRowIndexToModel(userTable.getSelectedRow());
 					currentUser = (User)users.getArray()[realRow];
-					
+
 					if(currentUser != null){
 						NewUserDialog2 mud = new NewUserDialog2(currentUser);
 						mud.setVisible(true);
 						currentUser = mud.getUser();
 						users.modifyUser(currentUser, realRow);
-					} else {
-						JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -722,17 +722,17 @@ public class MainGUI2 extends JFrame {
 		
 		JButton btnDeleteUser = new JButton("Delete", minus);
 		GridBagConstraints gbc_btnDeleteUser = new GridBagConstraints();
-		gbc_btnDeleteUser.anchor = GridBagConstraints.EAST;
-		gbc_btnDeleteUser.insets = new Insets(0, 0, 5, 5);
+//		gbc_btnDeleteUser.anchor = GridBagConstraints.EAST;
+		gbc_btnDeleteUser.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteUser.gridx = 4;
 		gbc_btnDeleteUser.gridy = 0;
 		btnDeleteUser.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int row = userTable.getSelectedRow();
 				int realRow = -1;
-				
+
 				if(row >= 0){
 					realRow = userTable.convertRowIndexToModel(userTable.getSelectedRow());
 					currentUser = (User)users.getArray()[realRow];
@@ -741,11 +741,10 @@ public class MainGUI2 extends JFrame {
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this account?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
 							users.removeUser(currentUser);
-							//Keep original index to modify without adding
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -834,12 +833,12 @@ public class MainGUI2 extends JFrame {
 					currentArticle = (Article)catalogue.getArray()[realRow];
 					
 					if(currentArticle != null){
-					NewArticleDialog nad = new NewArticleDialog();
-					nad.setArticle(currentArticle);
-					nad.setVisible(true);
-					currentArticle = nad.getArticle();
-					//Keep original index to modify without adding
-					catalogue.modifyArticle(currentArticle, realRow);
+						NewArticleDialog nad = new NewArticleDialog();
+						nad.setArticle(currentArticle);
+						nad.setVisible(true);
+						currentArticle = nad.getArticle();
+						//Keep original index to modify without adding
+						catalogue.modifyArticle(currentArticle, realRow);
 					} 
 				} else {
 					JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
@@ -855,7 +854,7 @@ public class MainGUI2 extends JFrame {
 		gbc_btnDeleteArticle.gridx = 4;
 		gbc_btnDeleteArticle.gridy = 0;
 		btnDeleteArticle.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int row = table_1.getSelectedRow();
@@ -869,9 +868,9 @@ public class MainGUI2 extends JFrame {
 						if(choice == JOptionPane.YES_OPTION){
 							catalogue.removeArticle(currentArticle);
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
