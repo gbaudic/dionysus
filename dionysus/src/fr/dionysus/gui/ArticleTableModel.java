@@ -31,7 +31,7 @@ public class ArticleTableModel extends DefaultTableModel {
 	}
 	
 	Class[] columnTypes = new Class[] {
-			String.class, Integer.class, Boolean.class, Double.class, Double.class, Double.class, String.class, String.class
+			String.class, Long.class, Boolean.class, Double.class, Double.class, Double.class, String.class, String.class
 	};
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];

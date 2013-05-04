@@ -23,7 +23,7 @@ public class Article implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
-	private int code; //integer code (is 'int' be enough for barcodes?)
+	private long code; //long code
 	private Price prices []; //articles can have different prices (max 3): members of student union, non-members, visitors (for example)
 	private int stock; //current quantity
 	private int limitStock; //lower bound for alerts
@@ -32,14 +32,14 @@ public class Article implements Serializable {
 	private boolean isActive; //Is currently being used (ie., is available in the pub at this very moment)
 	private boolean hasBeenUsed; //Has already been used at least once and cannot be deleted permanently (otherwise corrsponding transactions cannot be reverted without errors)
 	
-	public Article(String name, Price[] prices, int code) {
+	public Article(String name, Price[] prices, long code) {
 		super();
 		this.name = name;
 		this.code = code;
 		this.prices = prices;
 	}
 	
-	public Article(String name, Price[] prices, int stock, int code) {
+	public Article(String name, Price[] prices, int stock, long code) {
 		super();
 		this.name = name;
 		this.code = code;
@@ -56,7 +56,7 @@ public class Article implements Serializable {
 		return name;
 	}
 
-	public int getCode() {
+	public long getCode() {
 		return code;
 	}
 	

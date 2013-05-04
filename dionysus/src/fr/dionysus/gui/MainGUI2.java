@@ -311,7 +311,8 @@ public class MainGUI2 extends JFrame {
 
 					if(saisieField.getText().length() > 0){
 						//Validate the content in the TextField
-						int saisie = Integer.parseInt(saisieField.getText());
+						//TODO: change this so we can accommodate non-integer numbers in a locale-independent way
+						long saisie = Long.parseLong(saisieField.getText());
 						saisieField.setText(null);
 
 						if(currentItemAtDesk == null){
@@ -340,7 +341,7 @@ public class MainGUI2 extends JFrame {
 									JOptionPane.showMessageDialog(null,"Invalid fee for this article!", "Error", JOptionPane.WARNING_MESSAGE);
 									return;
 								} else {
-									currentItemAtDesk.setFee(saisie);
+									currentItemAtDesk.setFee((int) saisie);
 									taskToDoLabel.setText("Select quantity");
 									return;
 								}
@@ -350,7 +351,7 @@ public class MainGUI2 extends JFrame {
 									JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
 									return;
 								} else {
-									currentItemAtDesk.setQuantity(saisie);
+									currentItemAtDesk.setQuantity((int) saisie);
 									currentItemAtDesk.computeAmount();
 									currentTicket.addArticle(currentItemAtDesk);
 									enCours.setText(String.valueOf(saisie)+" x "+currentArticleAtDesk.getName());
@@ -625,7 +626,7 @@ public class MainGUI2 extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if(currentTicket != null){
-						if(currentTicket.getPaymentMethod() == null){
+						if(currentTicket.getPaymentMethod() != null){
 							currentTicket.pay(p);
 							
 							if(currentTicket.getPaymentMethod() == PaymentMethod.CASH){
@@ -931,20 +932,20 @@ public class MainGUI2 extends JFrame {
 				if(row >= 0){
 					realRow = table_2.convertRowIndexToModel(table_2.getSelectedRow());
 					currentTransaction = (Transaction)journal.getArray()[realRow];
-					
+
 					if(currentTransaction != null){
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure to delete this transaction?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
 							journal.addTransaction(new Transaction(currentTransaction));
 							//TODO : complete cancellation of effects (restore balances, stocks...) if asked
-							
+
 							choice = JOptionPane.showConfirmDialog(null,"Do you also want to revert its consequences?","",JOptionPane.YES_NO_OPTION);
 							if(choice == JOptionPane.YES_OPTION)
 								currentTransaction.revert();
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, "No transaction selected!", "Error", JOptionPane.WARNING_MESSAGE);
 					}
+				} else {
+					JOptionPane.showMessageDialog(null, "No transaction selected!", "Error", JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -1006,9 +1007,9 @@ public class MainGUI2 extends JFrame {
 		journal = new TransactionDB();
 		
 		//Fill
-		users.createFromTextFile("comptes.dat");
+		users.createFromTextFile("accounts.dat");
 		catalogue.createFromTextFile("articles.dat");
-		journal.createFromTextFile("journal.dat");
+		journal.createFromTextFile("log.dat");
 	}
 
 	/**

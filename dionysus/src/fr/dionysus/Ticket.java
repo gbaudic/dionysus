@@ -240,11 +240,11 @@ public class Ticket {
 		}
 		
 		//Debit customer account (sourceUser) and
-		if(customer != null){
+		if(customer != null && pMethod == null){
 			customer.debite(amount);
 		}
 		//Credit customer account (destUser) ??
-		if(destUser != null){
+		if(destUser != null && pMethod == null){
 			destUser.credite(amount);
 		}
 	}

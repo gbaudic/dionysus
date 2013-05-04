@@ -140,7 +140,7 @@ public class ArticleDB implements Database {
 			if(a.hasBeenUsed()){
 				JOptionPane.showMessageDialog(null, "Article already used! \nDeleting it will prevent cancellation of all transactions involving this article.", "Info", JOptionPane.INFORMATION_MESSAGE);
 			}
-			//Merge this two dialogs in one?
+			//Merge these two dialogs in one?
 			int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this article?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 			if(choice != JOptionPane.YES_OPTION)
@@ -182,7 +182,7 @@ public class ArticleDB implements Database {
 	 * @param code the code to find
 	 * @return first article found with this code, null if no article matches
 	 */
-	public Article getArticleByCode(int code){
+	public Article getArticleByCode(long code){
 		for(int i = 0 ; i < numberOfArticles ; i++){
 			if(data[i] != null && data[i].getCode() == code){
 				return data[i];
@@ -201,7 +201,7 @@ public class ArticleDB implements Database {
 		foodForTable = new Object[numberOfArticles][8];
 		for(int i = 0 ; i < numberOfArticles ; i++){
 			foodForTable[i][0] = data[i].getName();
-			foodForTable[i][1] = new Integer(data[i].getCode());
+			foodForTable[i][1] = new Long(data[i].getCode());
 			foodForTable[i][2] = new Boolean(data[i].isActive());
 			foodForTable[i][3] = new Double(data[i].getArticlePrice());
 			
