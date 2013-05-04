@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-*/
+ */
 
 package fr.dionysus.gui;
 
@@ -50,7 +50,7 @@ public class NewArticleDialog extends JDialog {
 	private JCheckBox chckbxActive;
 	private JCheckBox chckbxStockEnabled;
 	private JCheckBox chckbxAlertEnabled;
-	
+
 	private Article article;
 
 	/**
@@ -257,58 +257,58 @@ public class NewArticleDialog extends JDialog {
 				ImageIcon okIcon = new ImageIcon("images/gtk-apply.png");
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
-				
+
 				okButton.addActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-						Price p0 = new Price(Double.parseDouble(tarif0Field.getText()));
-						Price p1 = null;
-						if(tarif1Field.getText().length() != 0){
-							p1 = new Price(Double.parseDouble(tarif1Field.getText()));
-						}
-						Price p2 = null;
-						if(tarif2Field.getText().length() != 0){
-							p2 = new Price(Double.parseDouble(tarif2Field.getText()));
-						}
-						Price[] prices;
-						if(p2 == null){
-							if(p1 == null){
-								prices = new Price[1];
-								prices[0] = p0;
-							} else {
-								prices = new Price[2];
-								prices[0] = p0; prices[1] = p1;
+							Price p0 = new Price(Double.parseDouble(tarif0Field.getText()));
+							Price p1 = null;
+							if(tarif1Field.getText().length() != 0){
+								p1 = new Price(Double.parseDouble(tarif1Field.getText()));
 							}
-						} else {
-							prices = new Price[3];
-							prices[0] = p0; prices[1] = p1; prices[2] = p2;
+							Price p2 = null;
+							if(tarif2Field.getText().length() != 0){
+								p2 = new Price(Double.parseDouble(tarif2Field.getText()));
+							}
+							Price[] prices;
+							if(p2 == null){
+								if(p1 == null){
+									prices = new Price[1];
+									prices[0] = p0;
+								} else {
+									prices = new Price[2];
+									prices[0] = p0; prices[1] = p1;
+								}
+							} else {
+								prices = new Price[3];
+								prices[0] = p0; prices[1] = p1; prices[2] = p2;
+							}
+
+							article = new Article(nomField.getText(), prices, Long.parseLong(codeField.getText()));
+
+							article.setActive(chckbxActive.isSelected());
+							if(chckbxAlertEnabled.isSelected()){
+								article.setStockAlertEnabled(true);
+								article.setLimitStock(Integer.parseInt(alertField.getText()));
+							} else {
+								article.setStockAlertEnabled(false);
+							}
+
+							if(chckbxStockEnabled.isSelected()){
+								article.setStockMgmt(true);
+								article.setStock(Integer.parseInt(stockField.getText()));
+							} else {
+								article.setStockMgmt(false);
+							}
+							setVisible(false);
+						} catch (NumberFormatException e){
+							e.printStackTrace();
 						}
-						
-						article = new Article(nomField.getText(), prices, Integer.parseInt(codeField.getText()));
-						
-						article.setActive(chckbxActive.isSelected());
-						if(chckbxAlertEnabled.isSelected()){
-							article.setStockAlertEnabled(true);
-							article.setLimitStock(Integer.parseInt(alertField.getText()));
-						} else {
-							article.setStockAlertEnabled(false);
-						}
-						
-						if(chckbxStockEnabled.isSelected()){
-							article.setStockMgmt(true);
-							article.setStock(Integer.parseInt(stockField.getText()));
-						} else {
-							article.setStockMgmt(false);
-						}
-						setVisible(false);
-					} catch (NumberFormatException e){
-						e.printStackTrace();
-					}
 					}
 				});
-				
+
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
@@ -316,19 +316,19 @@ public class NewArticleDialog extends JDialog {
 				ImageIcon cancelIcon = new ImageIcon("images/gtk-cancel.png");
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
-				
+
 				cancelButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
 						article = null;
 						setVisible(false);
 					}			
 				});
-				
+
 				buttonPane.add(cancelButton);
 			}
 		}
 	}
-	
+
 	/**
 	 * Constructor with argument for further editing
 	 * @param a
@@ -337,40 +337,40 @@ public class NewArticleDialog extends JDialog {
 		this();
 		setArticle(a);
 	}
-	
+
 	/**
 	 * Fills in UI components with data from the DB record
 	 */
 	public void setArticle(Article a)
 	{
 		article = a;
-		
+
 		if(a != null){
 			nomField.setText(a.getName());
 			codeField.setText(String.valueOf(a.getCode()));
 			stockField.setText(String.valueOf(a.getStock()));
 			alertField.setText(String.valueOf(a.getLimitStock()));
-			
+
 			if(a.isActive())
 				chckbxActive.setSelected(true);
-			
+
 			if(a.hasStockMgmtEnabled())
 				chckbxStockEnabled.setSelected(true);
-			
+
 			if(a.hasStockAlertEnabled())
 				chckbxAlertEnabled.setSelected(true);
-			
+
 			tarif0Field.setText(String.valueOf(a.getArticlePrice()));
 			int n = a.getNumberOfPrices();
 			if(n > 0){
 				if(n > 1)
 					tarif2Field.setText(String.valueOf(a.getArticlePrice(2)));
-				
+
 				tarif1Field.setText(String.valueOf(a.getArticlePrice(1)));
 			}	
 		}
 	}
-	
+
 	public Article getArticle(){
 		return this.article;
 	}
