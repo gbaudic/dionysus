@@ -265,11 +265,11 @@ public class NewArticleDialog extends JDialog {
 						try {
 							Price p0 = new Price(Double.parseDouble(tarif0Field.getText()));
 							Price p1 = null;
-							if(tarif1Field.getText().length() != 0){
+							if( !tarif1Field.getText().isEmpty() ){
 								p1 = new Price(Double.parseDouble(tarif1Field.getText()));
 							}
 							Price p2 = null;
-							if(tarif2Field.getText().length() != 0){
+							if( !tarif2Field.getText().isEmpty() ){
 								p2 = new Price(Double.parseDouble(tarif2Field.getText()));
 							}
 							Price[] prices;
@@ -362,8 +362,8 @@ public class NewArticleDialog extends JDialog {
 
 			tarif0Field.setText(String.valueOf(a.getArticlePrice()));
 			int n = a.getNumberOfPrices();
-			if(n > 0){
-				if(n > 1)
+			if(n > 1){
+				if(n > 2)
 					tarif2Field.setText(String.valueOf(a.getArticlePrice(2)));
 
 				tarif1Field.setText(String.valueOf(a.getArticlePrice(1)));
