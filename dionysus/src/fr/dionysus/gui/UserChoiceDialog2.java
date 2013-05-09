@@ -39,9 +39,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.event.*;
+
+import java.util.regex.*;
 
 import fr.dionysus.*;
 import fr.dionysus.database.UserDB;
@@ -53,7 +54,7 @@ public class UserChoiceDialog2 extends JDialog {
 	private JTextField textField;
 	private JTable table;
 	private JLabel lblNewLabel;
-	private TableRowSorter<DefaultTableModel> sorter;
+	private TableRowSorter<UserTableModel> sorter;
 	
 	private User chosenUser;
 	private UserDB theDB;
@@ -136,11 +137,11 @@ public class UserChoiceDialog2 extends JDialog {
 			UserTableModel tModel = new UserTableModel(foodForTable);
 			
 			table.setModel(tModel);
-			sorter = new TableRowSorter<DefaultTableModel>(tModel);
+			sorter = new TableRowSorter<UserTableModel>(tModel);
 			table.setRowSorter(sorter);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setFillsViewportHeight(true);
-			table.setAutoCreateRowSorter(true);
+			//table.setAutoCreateRowSorter(true);
 			
 			JScrollPane tableSP = new JScrollPane(table);
 			
@@ -196,12 +197,14 @@ public class UserChoiceDialog2 extends JDialog {
 	}
 	
 	private void newFilter() {
-        RowFilter<DefaultTableModel, Object> rf = null;
+        RowFilter<UserTableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.
         try {
-            rf = RowFilter.regexFilter(textField.getText());
-        } catch (java.util.regex.PatternSyntaxException e) {
-            return;
+        	rf = RowFilter.regexFilter("(?i)(?u)" + textField.getText());         
+        } catch (PatternSyntaxException e) {
+        	return;
+        } catch (NullPointerException e) {
+        	return;
         }
         sorter.setRowFilter(rf);
     }

@@ -35,8 +35,12 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -44,6 +48,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.SwingConstants;
 
@@ -75,6 +80,10 @@ public class MainGUI2 extends JFrame {
 	private JLabel taskToDoLabel;
 	private JLabel enCours;
 	private JTextArea alertTextArea;
+	
+	private TableRowSorter<UserTableModel> userSorter;
+	private TableRowSorter<ArticleTableModel> articleSorter;
+	private TableRowSorter<TransactionTableModel> transactionSorter;
 	
 	public static String SOFTWARE_NAME = "Dionysus";
 	public static String SOFTWARE_VERSION = "0.1 \"Clairette\"";
@@ -644,6 +653,9 @@ public class MainGUI2 extends JFrame {
 			panel_PaymentMethods.add(btn);
 		}
 		
+		//********************************************************************************************
+		//********************************************************************************************
+		//********************************************************************************************
 		JPanel comptesP = new JPanel();
 		tabbedPane.addTab("Accounts", null, comptesP, null);
 		GridBagLayout gbl_comptesP = new GridBagLayout();
@@ -667,6 +679,19 @@ public class MainGUI2 extends JFrame {
 		gbc_userRechercheField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_userRechercheField.gridx = 1;
 		gbc_userRechercheField.gridy = 0;
+		lblNewLabel.setLabelFor(userRechercheField);
+		userRechercheField.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        newUserFilter();
+                    }
+                    public void insertUpdate(DocumentEvent e) {
+                        newUserFilter();
+                    }
+                    public void removeUpdate(DocumentEvent e) {
+                        newUserFilter();
+                    }
+                });
 		comptesP.add(userRechercheField, gbc_userRechercheField);
 		userRechercheField.setColumns(10);
 		
@@ -752,10 +777,13 @@ public class MainGUI2 extends JFrame {
 		comptesP.add(btnDeleteUser, gbc_btnDeleteUser);
 		
 		userTable = new JTable();
-		userTable.setModel(new UserTableModel(users.getArrayForTables()));
+		UserTableModel utModel = new UserTableModel(users.getArrayForTables());
+		userTable.setModel(utModel);
+		userSorter = new TableRowSorter<UserTableModel>(utModel);
+		userTable.setRowSorter(userSorter);
 		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		userTable.setFillsViewportHeight(true);
-		userTable.setAutoCreateRowSorter(true);
+		//userTable.setAutoCreateRowSorter(true);
 		
 		JScrollPane scrollPane = new JScrollPane(userTable);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -796,6 +824,18 @@ public class MainGUI2 extends JFrame {
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 0;
+		textField.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        newArticleFilter();
+                    }
+                    public void insertUpdate(DocumentEvent e) {
+                        newArticleFilter();
+                    }
+                    public void removeUpdate(DocumentEvent e) {
+                        newArticleFilter();
+                    }
+                });
 		articlesP.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
@@ -878,10 +918,13 @@ public class MainGUI2 extends JFrame {
 		articlesP.add(btnDeleteArticle, gbc_btnDeleteArticle);
 		
 		table_1 = new JTable();
-		table_1.setModel(new ArticleTableModel(catalogue.getArrayForTables()));
+		ArticleTableModel atModel = new ArticleTableModel(catalogue.getArrayForTables());
+		table_1.setModel(atModel);
+		articleSorter = new TableRowSorter<ArticleTableModel>(atModel);
+		table_1.setRowSorter(articleSorter);
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.setFillsViewportHeight(true);
-		table_1.setAutoCreateRowSorter(true);
+		//table_1.setAutoCreateRowSorter(true);
 		
 		JScrollPane t1SP = new JScrollPane(table_1);
 		
@@ -915,6 +958,18 @@ public class MainGUI2 extends JFrame {
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_1.gridx = 1;
 		gbc_textField_1.gridy = 0;
+		textField_1.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        newTransactionFilter();
+                    }
+                    public void insertUpdate(DocumentEvent e) {
+                        newTransactionFilter();
+                    }
+                    public void removeUpdate(DocumentEvent e) {
+                        newTransactionFilter();
+                    }
+                });
 		transactionsP.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 		
@@ -952,28 +1007,13 @@ public class MainGUI2 extends JFrame {
 		transactionsP.add(btnNewButton_6, gbc_btnNewButton_6);
 		
 		table_2 = new JTable();
-		table_2.setModel(new DefaultTableModel(
-			journal.getArrayForTables(),
-			new String[] {
-				"Date", "Article", "Quantity", "Amount", "Source account", "Dest. account", "Paid by"
-			}
-		) {
-			Class[] columnTypes = new Class[] {
-				Date.class, String.class, Integer.class, Double.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
-			}
-		});
+		TransactionTableModel ttModel = new TransactionTableModel(journal.getArrayForTables());
+		table_2.setModel(ttModel);
+		transactionSorter = new TableRowSorter<TransactionTableModel>(ttModel);
+		table_2.setRowSorter(transactionSorter);
 		table_2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_2.setFillsViewportHeight(true);
-		table_2.setAutoCreateRowSorter(true);
+		//table_2.setAutoCreateRowSorter(true);
 		
 		JScrollPane t2SP = new JScrollPane(table_2);
 		
@@ -1046,5 +1086,44 @@ public class MainGUI2 extends JFrame {
 		catalogue.saveToTextFile();
 		updateStockAlerts();
 	}
+	
+	private void newUserFilter() {
+        RowFilter<UserTableModel, Object> rf = null;
+        //If current expression doesn't parse, don't update.
+        try {
+        	rf = RowFilter.regexFilter("(?i)(?u)" + userRechercheField.getText());         
+        } catch (PatternSyntaxException e) {
+        	return;
+        } catch (NullPointerException e) {
+        	return;
+        }
+        userSorter.setRowFilter(rf);
+    }
+	
+	private void newTransactionFilter() {
+        RowFilter<TransactionTableModel, Object> rf = null;
+        //If current expression doesn't parse, don't update.
+        try {
+        	rf = RowFilter.regexFilter("(?i)(?u)" + textField_1.getText());         
+        } catch (PatternSyntaxException e) {
+        	return;
+        } catch (NullPointerException e) {
+        	return;
+        }
+        transactionSorter.setRowFilter(rf);
+    }
+	
+	private void newArticleFilter() {
+        RowFilter<ArticleTableModel, Object> rf = null;
+        //If current expression doesn't parse, don't update.
+        try {
+        	rf = RowFilter.regexFilter("(?i)(?u)" + textField.getText());         
+        } catch (PatternSyntaxException e) {
+        	return;
+        } catch (NullPointerException e) {
+        	return;
+        }
+        articleSorter.setRowFilter(rf);
+    }
 	
 }
