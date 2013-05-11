@@ -137,13 +137,13 @@ public class TransactionDB implements Database {
 			if(data[i].getSourceUser() != null){
 				foodForTable[i][4] = data[i].getSourceUser().getFullName();
 			} else {
-				foodForTable[i][4] = "null";
+				foodForTable[i][4] = "none";
 			}
 			
 			if(data[i].getDestUser() != null){
 				foodForTable[i][5] = data[i].getDestUser().getFullName();
 			} else {
-				foodForTable[i][5] = "null";
+				foodForTable[i][5] = "none";
 			}
 			
 			if(data[i].getPaymentMethod() != null){

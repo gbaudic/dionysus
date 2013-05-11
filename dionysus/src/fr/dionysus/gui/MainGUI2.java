@@ -36,18 +36,15 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.SwingConstants;
@@ -635,17 +632,17 @@ public class MainGUI2 extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if(currentTicket != null){
-						if(currentTicket.getPaymentMethod() != null){
-							currentTicket.pay(p);
-							
-							if(currentTicket.getPaymentMethod() == PaymentMethod.CASH){
-								double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-								JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+"€.","", JOptionPane.INFORMATION_MESSAGE);
-							}
-							//Save the finished ticket
-							finalizeTicket();
-							return;
+						currentTicket.pay(p);
+
+						if(p == PaymentMethod.CASH){
+							double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
+							JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+"€.","", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, String.valueOf(currentTicket.getAmount())+"€ to be paid using "+ p.getName() +".\nClick OK when done.", "Payment", JOptionPane.PLAIN_MESSAGE);
 						}
+						//Save the finished ticket
+						finalizeTicket();
+						return;
 					}
 				}
 			});
@@ -1075,18 +1072,34 @@ public class MainGUI2 extends JFrame {
 		}
 	}
 	
+	
+	/**
+	 * Called when a ticket is finished to trigger saving in databases and refresh of the labels and objects
+	 */
 	public void finalizeTicket(){
 		currentTicket.submit(null, journal);
 		currentTicket.saveTicketToText();
+		
 		currentTicket = null;
 		taskToDoLabel.setText("Choose user");
 		enCours.setText(null);
 		ticketTextArea.setText(null);
+		lblTotalTicket.setText("Ticket total: ");
+		lblSoldeApres.setText("Balance after ticket:");
+		currentUserAtDesk = null;
+		currentItemAtDesk = null;
+		nomLabel.setText("no user selected");
+		soldeLabel.setText("-.--");
+		
 		users.saveToTextFile();
 		catalogue.saveToTextFile();
 		updateStockAlerts();
 	}
 	
+	/**
+	 * Filter for the search box in the User panel
+	 * The two other methods below serve the same purpose for Transaction and Articles panels
+	 */
 	private void newUserFilter() {
         RowFilter<UserTableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.
