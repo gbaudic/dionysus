@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -764,6 +765,8 @@ public class MainGUI2 extends JFrame {
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this account?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
 							users.removeUser(currentUser);
+							AbstractTableModel atm = (AbstractTableModel) userTable.getModel();
+							atm.fireTableRowsDeleted(realRow, realRow);
 						}
 					}
 				} else {
