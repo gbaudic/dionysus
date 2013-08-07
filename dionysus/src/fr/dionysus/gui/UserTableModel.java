@@ -33,14 +33,23 @@ public class UserTableModel extends DefaultTableModel {
 	Class[] columnTypes = new Class[] {
 			String.class, String.class, Integer.class, Double.class, Boolean.class
 	};
+	
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
+	
 	boolean[] columnEditables = new boolean[] {
 			false, false, false, false, false
 	};
+	
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
 	}
+	
+	public void setValueAt(Object value, int row, int col) {
+        //data[row][col] = value;
+        fireTableCellUpdated(row, col);
+
+    }
 	
 }
