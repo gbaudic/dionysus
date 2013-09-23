@@ -65,11 +65,35 @@ public class Vendor implements Serializable {
 		
 		//Check that the login exists
 		
-		//If it does, verify the corresponding password
+		//If it does, create a user with the user file and verify the corresponding password
 		return false;
 	}
 	
 	private boolean checkPassword(String password) {
 		return false;
+	}
+	
+	/**
+	 * TODO: use java's capacities to perform encryption, this method is a POS
+	 * @param clearPass
+	 * @return
+	 */
+	public static String encrypt(String clearPass) {
+		String alphabeat = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		
+		if(clearPass != null){
+			int pLength = clearPass.length();
+			String buffer = new String();
+			
+			for(int i = 0 ; i < pLength ; i++){
+				int j = alphabeat.indexOf(clearPass.codePointAt(i));
+				
+				buffer += alphabeat.charAt((j+1+i) % alphabeat.length());
+			}
+			
+			return buffer;
+		}
+		
+		return null;
 	}
 }
