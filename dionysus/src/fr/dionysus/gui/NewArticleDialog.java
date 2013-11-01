@@ -54,19 +54,6 @@ public class NewArticleDialog extends JDialog {
 	private Article article;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			NewArticleDialog dialog = new NewArticleDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 * Default constructor without argument for new articles
 	 */
