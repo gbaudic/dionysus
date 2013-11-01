@@ -53,19 +53,6 @@ public class NewUserDialog2 extends JDialog {
 	private JCheckBox chckbxCaution;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			NewUserDialog2 dialog = new NewUserDialog2();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public NewUserDialog2() {
@@ -185,7 +172,7 @@ public class NewUserDialog2 extends JDialog {
 					
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						if(nomField.getText() != "" && prenomField.getText() != ""){
+						if(!nomField.getText().isEmpty() && !prenomField.getText().isEmpty()){
 							//TODO : Check
 							Integer i = new Integer((Integer) promoChooser.getValue());
 							double menton = 0; //the variable name is here a pun (in French)

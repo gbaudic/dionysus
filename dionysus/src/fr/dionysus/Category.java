@@ -25,7 +25,7 @@ public class Category implements Serializable {
 	private static final long serialVersionUID = -4335349707097715750L;
 	/**
 	 * A category to sort articles
-	 * An article can be long to several categories at the same time (useful for discounts)
+	 * An article can belong to several categories at the same time (useful for discounts)
 	 */
 	private String name; //Name of the category
 	private String imagePath; //Absolute path to an image

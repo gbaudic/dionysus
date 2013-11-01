@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.*;
@@ -37,7 +38,6 @@ public class Ticket {
 	private User customer;
 	private double amount;
 	private PaymentMethod pMethod; //Only one payment method per ticket
-	//private static String PATH = "tickets.txt";
 	
 	public Ticket(User u)
 	{
@@ -163,42 +163,49 @@ public class Ticket {
 	
 	/**
 	 * Exports the ticket to a string
+	 * TODO: this may need to be rewritten.
 	 */
-	public String printTicketToText(){
-		String accu = DateFormat.getInstance().format(new Date()) + "\r\n";
-		if(customer != null){
-			accu += ("From "+customer.getFullName()+"\r\n");
+	public StringBuilder printTicketToText(String date){
+		
+		StringBuilder accu = new StringBuilder();
+		
+		if(date != null){
+			accu.append( date + "\r\n");
 		} else {
-			accu += "From null\r\n";
+			accu.append(DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date()) + "\r\n");
 		}
+		
+		accu.append("From "+customer.getFullName()+"\r\n");
 		
 		for(int i=0 ; i < items.length ; i++)
 		{
 			if(items[i] != null){
-				accu += ("\t" + items[i].toString() + "\r\n");
+				accu.append("\t" + items[i].toString() + "\r\n");
 			}
 		}
 		
-		accu += ("Total: "+String.valueOf(amount)+" €\r\nPaid by ");
+		accu.append("Total: "+String.valueOf(amount)+" €\r\nPaid by ");
 		
 		if(pMethod != null){
-			accu += pMethod.getName();
+			accu.append(pMethod.getName());
 		} else {
-			accu += "user account";
+			accu.append("user account");
 		}
 		
-		return (accu + "\r\n\r\n");
+		return accu.append("\r\n\r\n");
 	}
 	
 	public void saveTicketToText(){
-		Date now = new Date();
-		File f = new File("tickets/"+String.valueOf(now.getTime())+".txt");
+		//Output the date and time of the ticket in a human readable localized form
+		String date = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date());
+		
+		File f = new File("tickets/"+date+".txt");
 		FileWriter fw;
 		
 		try {
 			fw = new FileWriter(f);
 			
-			fw.append(printTicketToText());
+			fw.append(printTicketToText(date));
 			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
