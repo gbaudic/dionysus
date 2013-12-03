@@ -32,7 +32,7 @@ public class User implements Serializable{
 	private int promo;
 	private int balance; //Balance in cents
 	private boolean paidCaution; 
-	/* To prevent students for staying for too long with a negative balance (and eventually leaving university without paying...),
+	/* To prevent students from staying for too long with a negative balance (and eventually leaving university without paying...),
 	 * they had to give an amount of money that would be only used if they get in such a situation. This flag tells if they have paid it or not.
 	*/
 	
@@ -124,7 +124,7 @@ public class User implements Serializable{
 	/**
 	 * Returns a string for the database file
 	 * The format used is the one for the so-called 'original software' for backwards compatibility
-	 * @return
+	 * @return promo, lastName, firstName and balance, each field surrounded by <...>
 	 */
 	public String getTextForFile(){
 		return "<"+String.valueOf(promo)+"><"+lastName+"><"+firstName+"><"+String.valueOf(balance)+">";

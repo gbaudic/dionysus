@@ -21,8 +21,8 @@ import java.io.Serializable;
 
 public enum PaymentMethod implements Serializable{
 	CASH("Cash"), CHECK("Check"), CREDIT_CARD("Card"), MONEO_CARD("Moneo"), COFFEE_CARD("Coffee card"), MISC("Misc.");
-	// "Coffee card" was a paper card paid in advance that entitled the buyer to drink 11 coffees at the price of 10
-	/* "Moneo" is a French card system which looks like a credit card, except that it is loaded with a given amount and can be refilled.
+	/* "Coffee card" was a paper card paid in advance that entitled the buyer to drink 11 coffees at the price of 10
+	 * "Moneo" is a French card system which looks like a credit card, except that it is loaded with a given amount and can be refilled.
 	 * It was originally designed to pay small amounts, thus avoiding using small coins (0.01, 0.02, 0.05€ e.g.), for example at the butcher's or at the baker's.
 	 * In reality, almost no one uses it because only a few shops are equipped. But in our city it was used for student restaurants and vending machines in the university,
 	 * and we had planned to be equipped in the student pub. This feature was basically implemented in Dionysus for future use.

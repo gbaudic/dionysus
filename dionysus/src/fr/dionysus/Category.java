@@ -30,6 +30,17 @@ public class Category implements Serializable {
 	private String name; //Name of the category
 	private String imagePath; //Absolute path to an image
 	private ArrayList<Article> articlesList;
+	
+	/**
+	 * @param name name of the category
+	 * @param imagePath 
+	 * @param articlesList
+	 */
+	public Category(String name, String imagePath, ArrayList<Article> articlesList) {
+		this.name = name;
+		this.imagePath = imagePath;
+		this.articlesList = articlesList;
+	}
 	/**
 	 * @return the name
 	 */
@@ -52,7 +63,10 @@ public class Category implements Serializable {
 	 * @param imagePath the imagePath to set
 	 */
 	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
+		if(imagePath != null && !imagePath.isEmpty()){
+			this.imagePath = imagePath;
+		}
+		
 	}
 	/**
 	 * @return the articlesList
@@ -61,5 +75,10 @@ public class Category implements Serializable {
 		return articlesList;
 	}
 	
-	
+	public void addArticle(Article a){
+		if(a != null){
+			articlesList.add(a);
+		}
+		
+	}
 }

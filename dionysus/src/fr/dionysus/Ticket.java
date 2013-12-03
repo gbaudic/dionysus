@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.*;
@@ -34,14 +35,14 @@ import fr.dionysus.database.*;
 
 public class Ticket {
 
-	private TicketItem [] items;
+	private ArrayList<TicketItem> items;
 	private User customer;
 	private double amount;
 	private PaymentMethod pMethod; //Only one payment method per ticket
 	
 	public Ticket(User u)
 	{
-		items = new TicketItem[1];
+		items = new ArrayList<TicketItem>();
 		customer = u;
 	}
 	
@@ -49,23 +50,19 @@ public class Ticket {
 	{
 		//Check that article at this price does not exist yet
 		//Otherwise add to existing Item
-		for(int i = 0 ; i < items.length ; i++)
+		for(int i = 0 ; i < items.size() ; i++)
 		{
-			if(items[i] != null)
+			if(items.get(i) != null)
 			{
-				if(items[i].getArticle() == newItem.getArticle() && items[i].getFee() == newItem.getFee()){ //Check if comparison works
-					items[i].addArticles(newItem.getQuantity());
+				if(items.get(i).getArticle() == newItem.getArticle() && items.get(i).getFee() == newItem.getFee()){ //Check if comparison works
+					items.get(i).addArticles(newItem.getQuantity());
 					return;
 				}
 			}
 		}
 		
-		TicketItem [] newItems = new TicketItem[items.length + 1];
-		for(int i = 0 ; i < items.length ; i++){
-			newItems[i] = items[i];
-		}
-		newItems[items.length] = newItem;
-		items = newItems;
+		items.add(newItem);
+		
 		
 		updateAmount();
 	}
@@ -77,18 +74,18 @@ public class Ticket {
 	public void removeArticle(TicketItem a)
 	{
 		//Check that article exists
-		for(int i = 0 ; i < items.length ; i++)
+		for(int i = 0 ; i < items.size() ; i++)
 		{
-			if(items[i] != null)
+			if(items.get(i) != null)
 			{
-				if(items[i].getArticle().getName() == a.getArticle().getName() && items[i].getFee() == a.getFee()){
-					int remainder = items[i].getQuantity() - a.getQuantity();
+				if(items.get(i).getArticle().getName() == a.getArticle().getName() && items.get(i).getFee() == a.getFee()){
+					int remainder = items.get(i).getQuantity() - a.getQuantity();
 					if(remainder == 0){
 						//If quantity drops to zero, delete article
-						items[i] = null;
+						items.set(i,null);
 					} else {
 						if(remainder > 0){
-							items[i].removeArticles(a.getQuantity());
+							items.get(i).removeArticles(a.getQuantity());
 						} else {
 							//TODO: exception if we remove more than we have
 						}
@@ -105,11 +102,11 @@ public class Ticket {
 	{
 		amount = 0;
 		
-		for(int i = 0 ; i < items.length ; i++)
+		for(int i = 0 ; i < items.size() ; i++)
 		{
-			if(items[i] != null)
+			if(items.get(i) != null)
 			{
-				amount += items[i].getAmount();
+				amount += items.get(i).getAmount();
 			}
 		}
 	}
@@ -142,11 +139,11 @@ public class Ticket {
 	public void printTicketToScreen(JTextArea target, JLabel total, JLabel apres)
 	{
 		target.setText(null);
-		for(int i=0 ; i < items.length ; i++)
+		for(int i=0 ; i < items.size() ; i++)
 		{
-			if(items[i] != null){
+			if(items.get(i) != null){
 				//Add to GUI component the lines for each article
-				target.setText(target.getText() + items[i].toString() + "\n");
+				target.setText(target.getText() + items.get(i).toString() + "\n");
 			}
 		}
 		
@@ -177,10 +174,10 @@ public class Ticket {
 		
 		accu.append("From "+customer.getFullName()+"\r\n");
 		
-		for(int i=0 ; i < items.length ; i++)
+		for(int i=0 ; i < items.size() ; i++)
 		{
-			if(items[i] != null){
-				accu.append("\t" + items[i].toString() + "\r\n");
+			if(items.get(i) != null){
+				accu.append("\t" + items.get(i).toString() + "\r\n");
 			}
 		}
 		
@@ -222,7 +219,7 @@ public class Ticket {
 	}
 	
 	public int getNumberOfItems(){
-		return items.length;
+		return items.size();
 	}
 	
 	/**
@@ -232,14 +229,14 @@ public class Ticket {
 	 */
 	public void submit(User destUser, TransactionDB tdb)
 	{
-		for(int i = 0 ; i < items.length ; i++)
+		for(int i = 0 ; i < items.size() ; i++)
 		{
-			if(items[i] != null){
-				Transaction t = new Transaction((int)(items[i].getAmount())*100, customer, destUser, items[i].getArticle(), items[i].getQuantity(), pMethod);
+			if(items.get(i) != null){
+				Transaction t = new Transaction((int)(items.get(i).getAmount())*100, customer, destUser, items.get(i).getArticle(), items.get(i).getQuantity(), pMethod);
 				tdb.addTransaction(t);
-				Article solde = items[i].getArticle();
+				Article solde = items.get(i).getArticle();
 				if(solde.hasStockMgmtEnabled())
-					solde.setStock(solde.getStock() - items[i].getQuantity());
+					solde.setStock(solde.getStock() - items.get(i).getQuantity());
 				
 				solde.use();
 				
