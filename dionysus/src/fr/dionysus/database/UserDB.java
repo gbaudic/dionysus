@@ -31,7 +31,7 @@ import javax.swing.JOptionPane;
 
 import fr.dionysus.*;
 
-public class UserDB implements Database {
+public class UserDB implements Database<User> {
 	
 	private User [] data;
 	private Object [][] foodForTable;
@@ -96,7 +96,7 @@ public class UserDB implements Database {
 		}		
 	}
 	
-	public void addUser(User u)
+	public void add(User u)
 	{
 		if(u != null){
 			if(numberOfUsers >= data.length){
@@ -115,7 +115,7 @@ public class UserDB implements Database {
 		}
 	}
 	
-	public void removeUser(User u)
+	public void remove(User u)
 	{
 		if(u != null){
 			if(u.getBalance() != 0){
@@ -139,7 +139,7 @@ public class UserDB implements Database {
 		}
 	}
 	
-	public void modifyUser(User u, int indice)
+	public void modify(User u, int indice)
 	{
 		if(u != null){ //No reason to pass a null argument, there is a function for cleaning up...
 			data[indice] = u;
@@ -150,7 +150,7 @@ public class UserDB implements Database {
 	}
 
 	@Override
-	public Object[] getArray() {
+	public User[] getArray() {
 		return data;
 	}
 

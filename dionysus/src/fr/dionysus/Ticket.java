@@ -233,7 +233,7 @@ public class Ticket {
 		{
 			if(items.get(i) != null){
 				Transaction t = new Transaction((int)(items.get(i).getAmount())*100, customer, destUser, items.get(i).getArticle(), items.get(i).getQuantity(), pMethod);
-				tdb.addTransaction(t);
+				tdb.add(t);
 				Article solde = items.get(i).getArticle();
 				if(solde.hasStockMgmtEnabled())
 					solde.setStock(solde.getStock() - items.get(i).getQuantity());
