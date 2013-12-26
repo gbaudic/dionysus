@@ -710,7 +710,7 @@ public class MainGUI2 extends JFrame {
 				NewUserDialog2 newUser = new NewUserDialog2();
 				newUser.setVisible(true);
 				User nu = newUser.getUser();
-				users.addUser(nu);
+				users.add(nu);
 			}
 		});
 		comptesP.add(btnAddUser, gbc_btnAddUser);
@@ -735,7 +735,7 @@ public class MainGUI2 extends JFrame {
 						NewUserDialog2 mud = new NewUserDialog2(currentUser);
 						mud.setVisible(true);
 						currentUser = mud.getUser();
-						users.modifyUser(currentUser, realRow);
+						users.modify(currentUser, realRow);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
@@ -764,7 +764,7 @@ public class MainGUI2 extends JFrame {
 					if(currentUser != null){
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this account?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
-							users.removeUser(currentUser);
+							users.remove(currentUser);
 							AbstractTableModel atm = (AbstractTableModel) userTable.getModel();
 							atm.fireTableRowsDeleted(realRow, realRow);
 						}
@@ -800,6 +800,10 @@ public class MainGUI2 extends JFrame {
 		gbc_userTable.gridx = 0;
 		gbc_userTable.gridy = 1;
 		comptesP.add(userTable, gbc_userTable);*/
+		
+		//********************************************************************************************
+		//********************************************************************************************
+		//********************************************************************************************
 		
 		JPanel articlesP = new JPanel();
 		tabbedPane.addTab("Articles", null, articlesP, null);
@@ -852,7 +856,7 @@ public class MainGUI2 extends JFrame {
 				NewArticleDialog nad = new NewArticleDialog();
 				nad.setVisible(true);
 				Article a = nad.getArticle();
-				catalogue.addArticle(a);
+				catalogue.add(a);
 			}
 		});
 		articlesP.add(btnAddArticle, gbc_btnAddArticle);
@@ -879,7 +883,7 @@ public class MainGUI2 extends JFrame {
 						nad.setVisible(true);
 						currentArticle = nad.getArticle();
 						//Keep original index to modify without adding
-						catalogue.modifyArticle(currentArticle, realRow);
+						catalogue.modify(currentArticle, realRow);
 					} 
 				} else {
 					JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
@@ -907,7 +911,7 @@ public class MainGUI2 extends JFrame {
 					if(currentArticle != null){
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure to delete this article?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
-							catalogue.removeArticle(currentArticle);
+							catalogue.remove(currentArticle);
 						}
 					}
 				} else {
@@ -934,6 +938,10 @@ public class MainGUI2 extends JFrame {
 		gbc_table_1.gridx = 0;
 		gbc_table_1.gridy = 1;
 		articlesP.add(t1SP, gbc_table_1);
+		
+		//*******************************************************************************************
+		//*******************************************************************************************
+		//*******************************************************************************************
 		
 		JPanel transactionsP = new JPanel();
 		tabbedPane.addTab("Transactions", null, transactionsP, null);
@@ -991,7 +999,7 @@ public class MainGUI2 extends JFrame {
 					if(currentTransaction != null){
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure to delete this transaction?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
-							journal.addTransaction(new Transaction(currentTransaction));
+							journal.add(new Transaction(currentTransaction));
 							//TODO : complete cancellation of effects (restore balances, stocks...) if asked
 
 							choice = JOptionPane.showConfirmDialog(null,"Do you also want to revert its consequences?","",JOptionPane.YES_NO_OPTION);

@@ -26,13 +26,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.DateFormat;
-
 import javax.swing.JOptionPane;
 
 import fr.dionysus.*;
 
-public class TransactionDB implements Database {
+public class TransactionDB implements Database<Transaction> {
 
 	private Transaction [] data;
 	private Object[][] foodForTable;
@@ -101,12 +99,12 @@ public class TransactionDB implements Database {
 	}
 
 	@Override
-	public Object[] getArray() {
+	public Transaction[] getArray() {
 		return data;
 	}
 	
 	//It is only permitted to add transactions, they can be cancelled afterwards but not deleted
-	public void addTransaction(Transaction t)
+	public void add(Transaction t)
 	{
 		if(t != null){
 			if(numberOfTransactions >= data.length){
@@ -157,4 +155,18 @@ public class TransactionDB implements Database {
 	public Object[][] getArrayForTables(){
 		return foodForTable;
 	}
+
+	@Override
+	public void modify(Transaction t, int index) {
+		// Transactions cannot be modified
+		
+	}
+
+	@Override
+	public void remove(Transaction t) {
+		// Transactions cannot be removed, only reverted
+		
+	}
+
+	
 }

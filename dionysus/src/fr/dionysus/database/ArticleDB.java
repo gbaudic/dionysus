@@ -26,17 +26,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import fr.dionysus.*;
 
 /**
- * A class implementing a somewhat article database
- * TODO: move from an array to a variable-length stucture, like ArrayList
+ * A class implementing an article database
+ * TODO: exploit ArrayLists at their full potential ;)
  */
-public class ArticleDB implements Database {
+public class ArticleDB implements Database<Article> {
 
-	private Article [] data;
+	private ArrayList<Article> data;
 	private Object [][] foodForTable;
 	private File targetF;
 	private int numberOfArticles;
@@ -46,7 +47,7 @@ public class ArticleDB implements Database {
 	//Not necessarily in a text file
 	
 	public ArticleDB(){
-		data = new Article[20];
+		data = new ArrayList<Article>(20);
 		numberOfArticles = 0;
 	}
 	
@@ -65,10 +66,10 @@ public class ArticleDB implements Database {
 			//Reading the number of saved articles
 			int size = ois.readInt();
 			
-			data = new Article[size];
+			data.ensureCapacity(size);
 			numberOfArticles = size; //We assume no null has been stored
 			for(int i = 0 ; i < size ; i++){
-				data[i] = (Article) ois.readObject();
+				data.add((Article) ois.readObject());
 			}
 			
 			ois.close();
@@ -92,7 +93,7 @@ public class ArticleDB implements Database {
 			oos.writeInt(numberOfArticles); //Write the number of articles
 			for(int i=0 ; i < numberOfArticles ; i++){
 				//if(data[i] != null) //Do not exclude nulls for coherence
-					oos.writeObject(data[i]);
+					oos.writeObject(data.get(i));
 			}
 			oos.close();
 		} catch (FileNotFoundException e) {
@@ -103,26 +104,19 @@ public class ArticleDB implements Database {
 	}
 
 	@Override
-	public Object[] getArray() {
-		return data;
+	public Article[] getArray() {
+		return (Article[]) data.toArray();
 	}
 	
 	/**
 	 * Adds an article to the database
 	 * @param a the article to add
 	 */
-	public void addArticle(Article a)
+	public void add(Article a)
 	{
 		if(a != null){
-			if(numberOfArticles >= data.length){
-				Article[] newData = new Article[numberOfArticles + 1];
-				for(int i = 0 ; i < data.length ; i++){
-					newData[i] = data[i];
-				}
-				data = newData;
-			}
-			
-			data[numberOfArticles] = a;
+						
+			data.add(a);
 			numberOfArticles++;
 			
 			saveToTextFile();
@@ -134,7 +128,7 @@ public class ArticleDB implements Database {
 	 * Removes an article from the list, and cleans up the array to remove any null
 	 * @param a article to be removed
 	 */
-	public void removeArticle(Article a)
+	public void remove(Article a)
 	{
 		if(a != null){
 			if(a.hasBeenUsed()){
@@ -145,17 +139,10 @@ public class ArticleDB implements Database {
 
 			if(choice != JOptionPane.YES_OPTION)
 				return;
-
-			for(int i = 0 ; i < numberOfArticles ; i++){
-				if(data[i].equals(a)){
-					data[i] = null;
-					for(int j = i+1 ; j < numberOfArticles ; j++){
-						data[j-1] = data[j];
-					}
-					numberOfArticles--;
-					break;
-				}
-			}
+			
+			data.remove(a);
+			numberOfArticles--;
+			
 		}
 		saveToTextFile();
 		makeArrayForTables();
@@ -166,10 +153,10 @@ public class ArticleDB implements Database {
 	 * @param a
 	 * @param indice
 	 */
-	public void modifyArticle(Article a, int indice){
+	public void modify(Article a, int index){
 		if(a != null){ //No reason to pass a null, there is a function for cleaning up...
-			if(indice >= 0 && indice < numberOfArticles){
-				data[indice] = a;
+			if(index >= 0 && index < numberOfArticles){
+				data.set(index, a);
 
 				saveToTextFile();
 				makeArrayForTables(); //TODO : optimize!
@@ -184,8 +171,8 @@ public class ArticleDB implements Database {
 	 */
 	public Article getArticleByCode(long code){
 		for(int i = 0 ; i < numberOfArticles ; i++){
-			if(data[i] != null && data[i].getCode() == code){
-				return data[i];
+			if(data.get(i) != null && data.get(i).getCode() == code){
+				return data.get(i);
 			}
 		}
 		
@@ -200,31 +187,31 @@ public class ArticleDB implements Database {
 	public void makeArrayForTables() {
 		foodForTable = new Object[numberOfArticles][8];
 		for(int i = 0 ; i < numberOfArticles ; i++){
-			foodForTable[i][0] = data[i].getName();
-			foodForTable[i][1] = new Long(data[i].getCode());
-			foodForTable[i][2] = new Boolean(data[i].isActive());
-			foodForTable[i][3] = new Double(data[i].getArticlePrice());
+			foodForTable[i][0] = data.get(i).getName();
+			foodForTable[i][1] = new Long(data.get(i).getCode());
+			foodForTable[i][2] = new Boolean(data.get(i).isActive());
+			foodForTable[i][3] = new Double(data.get(i).getArticlePrice());
 			
-			if(data[i].getNumberOfPrices() >= 1){
-				foodForTable[i][4] = new Double(data[i].getArticlePrice(1));
+			if(data.get(i).getNumberOfPrices() >= 1){
+				foodForTable[i][4] = new Double(data.get(i).getArticlePrice(1));
 			} else {
 				foodForTable[i][4] = new Double(0.00);
 			}
 			
-			if(data[i].getNumberOfPrices() >= 2){
-				foodForTable[i][5] = new Double(data[i].getArticlePrice(2));
+			if(data.get(i).getNumberOfPrices() >= 2){
+				foodForTable[i][5] = new Double(data.get(i).getArticlePrice(2));
 			} else {
 				foodForTable[i][5] = new Double(0.00);
 			}
 			
-			if(data[i].hasStockMgmtEnabled()){
-				foodForTable[i][6] = String.valueOf((data[i].getStock()));
+			if(data.get(i).hasStockMgmtEnabled()){
+				foodForTable[i][6] = String.valueOf((data.get(i).getStock()));
 			} else {
 				foodForTable[i][6] = "NA";
 			}
 			
-			if(data[i].hasStockAlertEnabled()){
-				foodForTable[i][7] = String.valueOf(data[i].getLimitStock());
+			if(data.get(i).hasStockAlertEnabled()){
+				foodForTable[i][7] = String.valueOf(data.get(i).getLimitStock());
 			} else {
 				foodForTable[i][7] = "NA";
 			}

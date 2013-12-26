@@ -17,8 +17,13 @@
 
 package fr.dionysus.database;
 
-
-public interface Database {
+/**
+ * Generic interface for databases
+ * @author G. B.
+ *
+ * @param <T> The class which will be held in the database (User, Article...)
+ */
+public interface Database<T> {
 
 	/**
 	 * Initializes DB with the binary data from a given file
@@ -36,7 +41,7 @@ public interface Database {
 	 * An ArrayList might be better suited for this purpose
 	 * @return
 	 */
-	public Object [] getArray();
+	public T [] getArray();
 	
 	/**
 	 * Generates an array compliant with a display in a JTable component
@@ -48,4 +53,23 @@ public interface Database {
 	 * Generates the array required for display
 	 */
 	public void makeArrayForTables();
+	
+	/**
+	 * Adds an entry to the database
+	 * @param t entry to add
+	 */
+	public void add(T t);
+	
+	/**
+	 * Modifies an entry in the database
+	 * @param t modified version of the entry
+	 * @param index place to insert
+	 */
+	public void modify(T t, int index);
+	
+	/**
+	 * Deletes an entry in the database
+	 * @param t entry to remove
+	 */
+	public void remove(T t);
 }
