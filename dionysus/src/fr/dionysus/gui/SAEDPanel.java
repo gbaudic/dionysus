@@ -22,6 +22,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,14 +33,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.dionysus.Article;
+import fr.dionysus.database.Database;
 
-public class SAEDPanel extends JPanel {
+public class SAEDPanel<T extends DefaultTableModel> extends JPanel {
 
 	/**
 	 * A generic JPanel to hold the databases views.
@@ -48,15 +50,14 @@ public class SAEDPanel extends JPanel {
 	private static final long serialVersionUID = 178212460318145049L;
 	private JTextField searchField;
 	private JTable table;
-	private TableRowSorter<ArticleTableModel> sorter;
+	private TableRowSorter<T> sorter;
 	
 	public SAEDPanel(ActionListener addAL, ActionListener editAL, ActionListener deleteAL,
-			DefaultTableModel tModel){
+			T tModel, Database db){
 		
 		ImageIcon plus = new ImageIcon("images/list-add.png");
 		ImageIcon minus = new ImageIcon("images/list-remove.png");
 		ImageIcon edit = new ImageIcon("images/gtk-edit.png");
-		ImageIcon cancel = new ImageIcon("images/gtk-cancel.png");
 		
 		GridBagLayout gbl_articlesP = new GridBagLayout();
 		gbl_articlesP.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
@@ -82,35 +83,38 @@ public class SAEDPanel extends JPanel {
 		searchField.getDocument().addDocumentListener(
                 new DocumentListener() {
                     public void changedUpdate(DocumentEvent e) {
-                        newArticleFilter();
+                        newFilter();
                     }
                     public void insertUpdate(DocumentEvent e) {
-                        newArticleFilter();
+                        newFilter();
                     }
                     public void removeUpdate(DocumentEvent e) {
-                        newArticleFilter();
+                        newFilter();
                     }
                 });
 		this.add(searchField, gbc_textField);
 		searchField.setColumns(10);
 		
+		if(addAL != null){
+			JButton btnAddArticle = new JButton("Add", plus);
+			GridBagConstraints gbc_btnAddArticle = new GridBagConstraints();
+			gbc_btnAddArticle.insets = new Insets(0, 0, 5, 5);
+			gbc_btnAddArticle.gridx = 2;
+			gbc_btnAddArticle.gridy = 0;
+			btnAddArticle.addActionListener(addAL);
+			this.add(btnAddArticle, gbc_btnAddArticle);
+		}
 		
-		JButton btnAddArticle = new JButton("Add", plus);
-		GridBagConstraints gbc_btnAddArticle = new GridBagConstraints();
-		gbc_btnAddArticle.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAddArticle.gridx = 2;
-		gbc_btnAddArticle.gridy = 0;
-		btnAddArticle.addActionListener(addAL);
-		this.add(btnAddArticle, gbc_btnAddArticle);
-		
-		JButton btnEditArticle = new JButton("Edit", edit);
-		GridBagConstraints gbc_btnEditArticle = new GridBagConstraints();
-		gbc_btnEditArticle.anchor = GridBagConstraints.NORTHEAST;
-		gbc_btnEditArticle.insets = new Insets(0, 0, 5, 5);
-		gbc_btnEditArticle.gridx = 3;
-		gbc_btnEditArticle.gridy = 0;
-		btnEditArticle.addActionListener(editAL);
-		this.add(btnEditArticle, gbc_btnEditArticle);
+		if(editAL != null){
+			JButton btnEditArticle = new JButton("Edit", edit);
+			GridBagConstraints gbc_btnEditArticle = new GridBagConstraints();
+			gbc_btnEditArticle.anchor = GridBagConstraints.NORTHEAST;
+			gbc_btnEditArticle.insets = new Insets(0, 0, 5, 5);
+			gbc_btnEditArticle.gridx = 3;
+			gbc_btnEditArticle.gridy = 0;
+			btnEditArticle.addActionListener(editAL);
+			this.add(btnEditArticle, gbc_btnEditArticle);
+		}
 		
 		JButton btnDeleteArticle = new JButton("Delete", minus);
 		GridBagConstraints gbc_btnDeleteArticle = new GridBagConstraints();
@@ -121,9 +125,9 @@ public class SAEDPanel extends JPanel {
 		this.add(btnDeleteArticle, gbc_btnDeleteArticle);
 		
 		table = new JTable();
-		ArticleTableModel atModel = new ArticleTableModel(catalogue.getArrayForTables());
-		table.setModel(atModel);
-		sorter = new TableRowSorter<ArticleTableModel>(atModel);
+		//T atModel = new T(db.getArrayForTables());
+		table.setModel(tModel);
+		sorter = new TableRowSorter<T>(tModel);
 		table.setRowSorter(sorter);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setFillsViewportHeight(true);
@@ -138,5 +142,18 @@ public class SAEDPanel extends JPanel {
 		this.add(t1SP, gbc_table);
 		
 	}
+	
+	private void newFilter() {
+        RowFilter<T, Object> rf = null;
+        //If current expression doesn't parse, don't update.
+        try {
+        	rf = RowFilter.regexFilter("(?i)(?u)" + searchField.getText());         
+        } catch (PatternSyntaxException e) {
+        	return;
+        } catch (NullPointerException e) {
+        	return;
+        }
+        sorter.setRowFilter(rf);
+    }
 
 }

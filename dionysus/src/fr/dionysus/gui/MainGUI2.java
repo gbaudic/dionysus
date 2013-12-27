@@ -415,7 +415,7 @@ public class MainGUI2 extends JFrame {
 		vueP.add(panel_articles, gbc_panel_articles);
 		panel_articles.setLayout(new GridLayout(5, 6, 0, 0));
 		
-		Article [] cat = (Article[]) catalogue.getArray();
+		Article [] cat = catalogue.getArray();
 		if(cat != null){
 			for(final Article c : cat){
 				if(c != null && c.isActive()){

@@ -17,143 +17,46 @@
 
 package fr.dionysus.database;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
 
 import fr.dionysus.*;
 
-public class TransactionDB implements Database<Transaction> {
-
-	private Transaction [] data;
-	private Object[][] foodForTable;
-	private File targetF;
-	private int numberOfTransactions;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
+public class TransactionDB extends Database<Transaction> {
 	
 	//Not necessarily in a text file
 	
 	public TransactionDB(){
-		data = new Transaction[20];
-		numberOfTransactions = 0;
-	}
-	
-	@Override
-	public void createFromTextFile(String filename) {
-		targetF = new File(filename);
-		if(!targetF.exists()){
-			JOptionPane.showMessageDialog(null, "Error while accessing transaction database!", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		//File exists, go on!
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(targetF)));
-			
-			//Read the number of saved articles
-			int size = ois.readInt();
-			
-			data = new Transaction[size];
-			numberOfTransactions = size; //We assume no null has been stored
-			for(int i = 0 ; i < size ; i++){
-				data[i] = (Transaction) ois.readObject();
-			}
-			
-			ois.close();
-			
-			makeArrayForTables();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void saveToTextFile() {
-		try {
-			oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetF)));
-			
-			oos.writeInt(numberOfTransactions); //Write the number of transactions
-			for(int i=0 ; i < numberOfTransactions ; i++){
-				//if(data[i] != null) //Do not exclude nulls for coherence
-					oos.writeObject(data[i]);
-			}
-			oos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public Transaction[] getArray() {
-		return data;
-	}
-	
-	//It is only permitted to add transactions, they can be cancelled afterwards but not deleted
-	public void add(Transaction t)
-	{
-		if(t != null){
-			if(numberOfTransactions >= data.length){
-				Transaction[] newData = new Transaction[numberOfTransactions + 1];
-				for(int i = 0 ; i < data.length ; i++){
-					newData[i] = data[i];
-				}
-				data = newData;
-			}
-			
-			data[numberOfTransactions] = t;
-			numberOfTransactions++;
-			
-			saveToTextFile();
-			makeArrayForTables();
-		}
+		data = new ArrayList<Transaction>(20);
+		numberOfRecords = 0;
 	}
 
 	public void makeArrayForTables() {
-		foodForTable = new Object[numberOfTransactions][7];
+		foodForTable = new Object[numberOfRecords][7];
 		
-		for(int i = 0 ; i < numberOfTransactions ; i++){
-			foodForTable[i][0] = data[i].getDate();
-			foodForTable[i][1] = data[i].getArticle().getName();
-			foodForTable[i][2] = new Integer(data[i].getNumberOfItems());
-			foodForTable[i][3] = new Double(data[i].getAmount().getPrice()); //do not try to understand...
+		for(int i = 0 ; i < numberOfRecords ; i++){
+			foodForTable[i][0] = data.get(i).getDate();
+			foodForTable[i][1] = data.get(i).getArticle().getName();
+			foodForTable[i][2] = new Integer(data.get(i).getNumberOfItems());
+			foodForTable[i][3] = new Double(data.get(i).getAmount().getPrice()); //do not try to understand...
 			
-			if(data[i].getSourceUser() != null){
-				foodForTable[i][4] = data[i].getSourceUser().getFullName();
+			if(data.get(i).getSourceUser() != null){
+				foodForTable[i][4] = data.get(i).getSourceUser().getFullName();
 			} else {
 				foodForTable[i][4] = "none";
 			}
 			
-			if(data[i].getDestUser() != null){
-				foodForTable[i][5] = data[i].getDestUser().getFullName();
+			if(data.get(i).getDestUser() != null){
+				foodForTable[i][5] = data.get(i).getDestUser().getFullName();
 			} else {
 				foodForTable[i][5] = "none";
 			}
 			
-			if(data[i].getPaymentMethod() != null){
-				foodForTable[i][6] = data[i].getPaymentMethod().getName();
+			if(data.get(i).getPaymentMethod() != null){
+				foodForTable[i][6] = data.get(i).getPaymentMethod().getName();
 			} else {
 				foodForTable[i][6] = "Account";
 			}	
 		}	
-	}
-	
-	public Object[][] getArrayForTables(){
-		return foodForTable;
 	}
 
 	@Override
@@ -166,6 +69,11 @@ public class TransactionDB implements Database<Transaction> {
 	public void remove(Transaction t) {
 		// Transactions cannot be removed, only reverted
 		
+	}
+
+	@Override
+	public Transaction[] getArray() {
+		return (Transaction []) data.toArray(new Transaction[numberOfRecords]);
 	}
 
 	
