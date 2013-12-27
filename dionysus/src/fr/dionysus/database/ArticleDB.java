@@ -17,15 +17,6 @@
 
 package fr.dionysus.database;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -35,93 +26,11 @@ import fr.dionysus.*;
  * A class implementing an article database
  * TODO: exploit ArrayLists at their full potential ;)
  */
-public class ArticleDB implements Database<Article> {
-
-	private ArrayList<Article> data;
-	private Object [][] foodForTable;
-	private File targetF;
-	private int numberOfArticles;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
-	
-	//Not necessarily in a text file
+public class ArticleDB extends Database<Article> {
 	
 	public ArticleDB(){
 		data = new ArrayList<Article>(20);
-		numberOfArticles = 0;
-	}
-	
-	@Override
-	public void createFromTextFile(String filename) {
-		targetF = new File(filename);
-		if(!targetF.exists()){
-			JOptionPane.showMessageDialog(null, "Error while accessing article database!", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		
-		//File exists, go on!
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(targetF)));
-			
-			//Reading the number of saved articles
-			int size = ois.readInt();
-			
-			data.ensureCapacity(size);
-			numberOfArticles = size; //We assume no null has been stored
-			for(int i = 0 ; i < size ; i++){
-				data.add((Article) ois.readObject());
-			}
-			
-			ois.close();
-			
-			makeArrayForTables();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public void saveToTextFile() {
-		try {
-			oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetF)));
-			
-			oos.writeInt(numberOfArticles); //Write the number of articles
-			for(int i=0 ; i < numberOfArticles ; i++){
-				//if(data[i] != null) //Do not exclude nulls for coherence
-					oos.writeObject(data.get(i));
-			}
-			oos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public Article[] getArray() {
-		return (Article[]) data.toArray();
-	}
-	
-	/**
-	 * Adds an article to the database
-	 * @param a the article to add
-	 */
-	public void add(Article a)
-	{
-		if(a != null){
-						
-			data.add(a);
-			numberOfArticles++;
-			
-			saveToTextFile();
-			makeArrayForTables();
-		}
+		numberOfRecords = 0;
 	}
 	
 	/**
@@ -141,7 +50,7 @@ public class ArticleDB implements Database<Article> {
 				return;
 			
 			data.remove(a);
-			numberOfArticles--;
+			numberOfRecords--;
 			
 		}
 		saveToTextFile();
@@ -155,7 +64,7 @@ public class ArticleDB implements Database<Article> {
 	 */
 	public void modify(Article a, int index){
 		if(a != null){ //No reason to pass a null, there is a function for cleaning up...
-			if(index >= 0 && index < numberOfArticles){
+			if(index >= 0 && index < numberOfRecords){
 				data.set(index, a);
 
 				saveToTextFile();
@@ -170,7 +79,7 @@ public class ArticleDB implements Database<Article> {
 	 * @return first article found with this code, null if no article matches
 	 */
 	public Article getArticleByCode(long code){
-		for(int i = 0 ; i < numberOfArticles ; i++){
+		for(int i = 0 ; i < numberOfRecords ; i++){
 			if(data.get(i) != null && data.get(i).getCode() == code){
 				return data.get(i);
 			}
@@ -180,13 +89,13 @@ public class ArticleDB implements Database<Article> {
 	}
 	
 	public int getNumberOfArticles() {
-		return numberOfArticles;
+		return numberOfRecords;
 	}
 
 	@Override
 	public void makeArrayForTables() {
-		foodForTable = new Object[numberOfArticles][8];
-		for(int i = 0 ; i < numberOfArticles ; i++){
+		foodForTable = new Object[numberOfRecords][8];
+		for(int i = 0 ; i < numberOfRecords ; i++){
 			foodForTable[i][0] = data.get(i).getName();
 			foodForTable[i][1] = new Long(data.get(i).getCode());
 			foodForTable[i][2] = new Boolean(data.get(i).isActive());
@@ -219,8 +128,7 @@ public class ArticleDB implements Database<Article> {
 	}
 
 	@Override
-	public Object [][] getArrayForTables() {
-		return foodForTable;
-		
+	public Article[] getArray() {
+		return (Article []) data.toArray(new Article[numberOfRecords]);
 	}
 }

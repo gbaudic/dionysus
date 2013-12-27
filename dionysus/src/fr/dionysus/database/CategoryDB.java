@@ -19,42 +19,12 @@ package fr.dionysus.database;
 
 import fr.dionysus.Category;
 
-public class CategoryDB implements Database<Category> {
-
-	@Override
-	public void createFromTextFile(String filename) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void saveToTextFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Category[] getArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object[][] getArrayForTables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+public class CategoryDB extends Database<Category> {
 
 	@Override
 	public void makeArrayForTables() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void add(Category t) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -67,6 +37,12 @@ public class CategoryDB implements Database<Category> {
 	public void remove(Category t) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Category[] getArray() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

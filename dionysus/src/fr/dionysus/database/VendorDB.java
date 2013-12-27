@@ -19,43 +19,7 @@ package fr.dionysus.database;
 
 import fr.dionysus.Vendor;
 
-public class VendorDB implements Database<Vendor> {
-
-	@Override
-	public void createFromTextFile(String filename) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void saveToTextFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Vendor[] getArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object[][] getArrayForTables() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void makeArrayForTables() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void add(Vendor t) {
-		// TODO Auto-generated method stub
-		
-	}
+public class VendorDB extends Database<Vendor> {
 
 	@Override
 	public void modify(Vendor t, int index) {
@@ -67,6 +31,18 @@ public class VendorDB implements Database<Vendor> {
 	public void remove(Vendor t) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void makeArrayForTables() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Vendor[] getArray() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
