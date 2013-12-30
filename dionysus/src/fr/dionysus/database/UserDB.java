@@ -13,55 +13,104 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-*/
+ */
 
 package fr.dionysus.database;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import fr.dionysus.*;
 
-public class UserDB extends Database<User> {	
-	
-	public UserDB(){
+public class UserDB extends Database<User> {
+
+	public UserDB() {
 		data = new ArrayList<User>(20);
 		numberOfRecords = 0;
 	}
-	
-	public void remove(User u)
-	{
-		if(u != null){
-			if(u.getBalance() != 0){
-				int choice = JOptionPane.showConfirmDialog(null, "This user has a nonzero balance.\nAre you sure to delete him/her?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if(choice != JOptionPane.YES_OPTION)
-					return;
+	/**
+	 * Initializes user database from a text file originating from the "original" software
+	 * 
+	 * @param filename
+	 */
+	public void createFromLegacyTextFile(String filename){
+			
+		targetF = new File(filename);
+		if(!targetF.exists()){
+			JOptionPane.showMessageDialog(null, "Error when trying to access database!", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		//File exists, go on!
+		try {
+			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(targetF)));
+			String s;
+			
+			while((s = lnr.readLine()) != null){ //TODO: test this!
+				String [] values = s.split("<|<>|>");
+				int promo = Integer.parseInt(values[0]);
+				int balance = (int) (Double.parseDouble(values[3]) * 100);
+				
+				data.add(new User(values[1], values[2], promo, balance));
 			}
 			
-			data.remove(u);
-			numberOfRecords--;
-
-			saveToTextFile();
+			lnr.close();
+			
 			makeArrayForTables();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void remove(User u) {
+		if (u != null) {
+			if (u.getBalance() != 0) {
+				int choice = JOptionPane
+						.showConfirmDialog(
+								null,
+								"This user has a nonzero balance.\nAre you sure to delete him/her?",
+								"Confirmation", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
+
+				if (choice != JOptionPane.YES_OPTION)
+					return;
+			}
+
+			if (data.remove(u)) {
+				numberOfRecords--;
+
+				saveToTextFile();
+				makeArrayForTables();
+			}
+
 		}
 	}
-	
-	public void modify(User u, int indice)
-	{
-		if(u != null){ //No reason to pass a null argument, there is a function for cleaning up...
+
+	public void modify(User u, int indice) {
+		if (u != null && indice >= 0 && indice < numberOfRecords) { 
+			// No reason to pass a null argument, there is a function for cleaning up...
 			data.set(indice, u);
-			
+
 			saveToTextFile();
-			makeArrayForTables();//TODO: optimize !
+			makeArrayForTables();// TODO: optimize !
 		}
 	}
 
 	@Override
 	public void makeArrayForTables() {
 		foodForTable = new Object[numberOfRecords][5];
-		for(int i = 0 ; i < numberOfRecords ; i++){
+		for (int i = 0; i < numberOfRecords; i++) {
 			foodForTable[i][0] = data.get(i).getLastName();
 			foodForTable[i][1] = data.get(i).getFirstName();
 			foodForTable[i][2] = new Integer(data.get(i).getPromo());
@@ -77,7 +126,7 @@ public class UserDB extends Database<User> {
 
 	@Override
 	public User[] getArray() {
-		return (User []) data.toArray(new User[numberOfRecords]);
+		return (User[]) data.toArray(new User[numberOfRecords]);
 	}
-	
+
 }

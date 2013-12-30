@@ -39,7 +39,7 @@ public abstract class Database<T> {
 
 	protected ArrayList<T> data;
 	protected Object [][] foodForTable;
-	private File targetF;
+	protected File targetF;
 	protected int numberOfRecords;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
@@ -103,8 +103,7 @@ public abstract class Database<T> {
 	
 	/**
 	 * Returns the data array which is at the heart of the database
-	 * An ArrayList might be better suited for this purpose
-	 * @return
+	 * @return the content of the database as an array of the recorded objects (with the right type)
 	 */
 	public abstract T [] getArray();
 	
@@ -117,13 +116,13 @@ public abstract class Database<T> {
 	}
 	
 	/**
-	 * Generates the array required for display
+	 * Generates internally the array required for display
 	 */
 	public abstract void makeArrayForTables();
 	
 	/**
 	 * Adds an entry to the database
-	 * @param t entry to add
+	 * @param t the entry to add
 	 */
 	public void add(T t) {
 		if(t != null){
