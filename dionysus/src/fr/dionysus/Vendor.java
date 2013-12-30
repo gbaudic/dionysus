@@ -31,7 +31,7 @@ public class Vendor implements Serializable {
 
 	private String name; //Name appearing on the screen and on tickets
 	private String login; //Login for the identification process
-	private char[] cPassword;//There is also a password
+	private String cPassword;//There is also a password
 	
 	/**
 	 * @return the name
@@ -59,18 +59,6 @@ public class Vendor implements Serializable {
 	 */
 	public void setLogin(String login) {
 		this.login = login;
-	}
-	
-	public static boolean validateIdentification(String login, String password) {
-		
-		//Check that the login exists
-		
-		//If it does, create a user with the user file and verify the corresponding password
-		return false;
-	}
-	
-	private boolean checkPassword(String password) {
-		return false;
 	}
 	
 	/**

@@ -23,8 +23,14 @@ public class VendorDB extends Database<Vendor> {
 
 	@Override
 	public void modify(Vendor t, int index) {
-		// TODO Auto-generated method stub
-		
+
+		if(t != null && index >= 0 && index < numberOfRecords){ 
+			data.set(index, t);
+
+			saveToTextFile();
+			makeArrayForTables();
+		}
+
 	}
 
 	@Override
@@ -41,8 +47,25 @@ public class VendorDB extends Database<Vendor> {
 
 	@Override
 	public Vendor[] getArray() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Vendor []) data.toArray(new Vendor[numberOfRecords]);
 	}
 
+	/**
+	 * Checks if a given login and password match a user in the database
+	 * @param login
+	 * @param password
+	 * @return true if the login/password pair matches, false otherwise
+	 */
+	public boolean validateIdentification(String login, String password) {
+		
+		if(login != null && password != null && !login.isEmpty()){ //yes, password can be empty...
+			//Check that the login exists
+
+			//If it does, verify the corresponding password
+		} else {
+			return false;
+		}
+		return false;
+	}
+	
 }

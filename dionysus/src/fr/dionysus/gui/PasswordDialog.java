@@ -19,7 +19,6 @@ package fr.dionysus.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -37,6 +36,10 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class PasswordDialog extends JDialog {
 
@@ -46,26 +49,15 @@ public class PasswordDialog extends JDialog {
 	private JPasswordField passwordField;
 	
 	private boolean result = false;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			PasswordDialog dialog = new PasswordDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	private JTextField loginField;
 
 	/**
 	 * Create the dialog.
 	 */
 	public PasswordDialog() {
 		setResizable(false);
-		setTitle("Password required");
+		setTitle("Identification required");
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModal(true);
 		setSize(450,123);
 		setLocationRelativeTo(null);
@@ -73,15 +65,53 @@ public class PasswordDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new GridLayout(2, 1, 0, 0));
+		GridBagLayout gbl_contentPanel = new GridBagLayout();
+		gbl_contentPanel.columnWidths = new int[]{46, 377, 0};
+		gbl_contentPanel.rowHeights = new int[]{20, 20, 0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblEnterLeWord = new JLabel("Enter password: ");
-			lblEnterLeWord.setHorizontalAlignment(SwingConstants.CENTER);
-			contentPanel.add(lblEnterLeWord);
+			JLabel lblLogin = new JLabel("Login");
+			lblLogin.setHorizontalAlignment(SwingConstants.RIGHT);
+			GridBagConstraints gbc_lblLogin = new GridBagConstraints();
+			gbc_lblLogin.anchor = GridBagConstraints.EAST;
+			gbc_lblLogin.insets = new Insets(0, 0, 5, 5);
+			gbc_lblLogin.gridx = 0;
+			gbc_lblLogin.gridy = 0;
+			contentPanel.add(lblLogin, gbc_lblLogin);
+		}
+		{
+			loginField = new JTextField();
+			loginField.setText("default");
+			loginField.setEnabled(false);
+			GridBagConstraints gbc_loginField = new GridBagConstraints();
+			gbc_loginField.anchor = GridBagConstraints.NORTH;
+			gbc_loginField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_loginField.insets = new Insets(0, 0, 5, 0);
+			gbc_loginField.gridx = 1;
+			gbc_loginField.gridy = 0;
+			contentPanel.add(loginField, gbc_loginField);
+			loginField.setColumns(10);
+		}
+		{
+			JLabel lblEnterLeWord = new JLabel("Password");
+			lblEnterLeWord.setHorizontalAlignment(SwingConstants.RIGHT);
+			GridBagConstraints gbc_lblEnterLeWord = new GridBagConstraints();
+			gbc_lblEnterLeWord.anchor = GridBagConstraints.EAST;
+			gbc_lblEnterLeWord.insets = new Insets(0, 0, 0, 5);
+			gbc_lblEnterLeWord.gridx = 0;
+			gbc_lblEnterLeWord.gridy = 1;
+			contentPanel.add(lblEnterLeWord, gbc_lblEnterLeWord);
 		}
 		{
 			passwordField = new JPasswordField();
-			contentPanel.add(passwordField);
+			GridBagConstraints gbc_passwordField = new GridBagConstraints();
+			gbc_passwordField.anchor = GridBagConstraints.NORTH;
+			gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_passwordField.gridx = 1;
+			gbc_passwordField.gridy = 1;
+			contentPanel.add(passwordField, gbc_passwordField);
 		}
 		{
 			JPanel buttonPane = new JPanel();
