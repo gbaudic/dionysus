@@ -150,6 +150,23 @@ public class MainGUI2 extends JFrame {
 		
 		JMenuItem mntmQuit = new JMenuItem("Quit");
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
+		mntmQuit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				if(currentTicket != null){
+					int choice = JOptionPane.showConfirmDialog(null,
+									"There is a ticket currently being processed.\nAre you sure you want to quit?",
+									"Confirmation", JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE);
+					//If a ticket is started, we need to confirm the wish to quit
+					if (choice != JOptionPane.YES_OPTION)
+						return;
+				}
+				
+				System.exit(0); //Everything is fine, so we stop here
+				
+			}
+		});
 		mnFile.add(mntmQuit);
 		
 		JMenu mnHelp = new JMenu("Help");
