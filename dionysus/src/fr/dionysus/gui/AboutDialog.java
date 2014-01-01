@@ -90,7 +90,8 @@ public class AboutDialog extends JDialog {
 		gbc_lblDesc.gridy = 1;
 		panel.add(lblDesc, gbc_lblDesc);
 		
-		JLabel lblCopyright = new JLabel("(C) 2011-2013 podgy_piglet");
+		JLabel lblCopyright = new JLabel("(C) 2011-2013 podgy_piglet;    "
+				+ "http://sf.net/p/dionysus");
 		lblCopyright.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblCopyright = new GridBagConstraints();
 		gbc_lblCopyright.insets = new Insets(0, 0, 5, 0);
