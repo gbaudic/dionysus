@@ -127,7 +127,8 @@ public class User implements Serializable{
 	 * @return promo, lastName, firstName and balance, each field surrounded by <...>
 	 */
 	public String getTextForFile(){
-		return "<"+String.valueOf(promo)+"><"+lastName+"><"+firstName+"><"+String.valueOf(balance)+">";
+		String bal = String.valueOf(balance / 100.0);
+		return "<"+String.valueOf(promo)+"><"+lastName+"><"+firstName+"><"+bal+">";
 	}
 
 	public boolean hasPaidCaution() {

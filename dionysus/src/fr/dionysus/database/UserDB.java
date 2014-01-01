@@ -18,11 +18,13 @@
 package fr.dionysus.database;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -39,7 +41,7 @@ public class UserDB extends Database<User> {
 	/**
 	 * Initializes user database from a text file originating from the "original" software
 	 * 
-	 * @param filename
+	 * @param filename the path to the database text file
 	 */
 	public void createFromLegacyTextFile(String filename){
 			
@@ -54,12 +56,13 @@ public class UserDB extends Database<User> {
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(targetF)));
 			String s;
 			
-			while((s = lnr.readLine()) != null){ //TODO: test this!
-				String [] values = s.split("<|<>|>");
-				int promo = Integer.parseInt(values[0]);
-				int balance = (int) (Double.parseDouble(values[3]) * 100);
+			while((s = lnr.readLine()) != null){
+				String [] values = s.split("><|<|>");
+				int promo = Integer.parseInt(values[1]);
+				int balance = Math.round(Float.parseFloat(values[4]) * 100F); //Float because Double led to rounding issues
 				
-				data.add(new User(values[1], values[2], promo, balance));
+				data.add(new User(values[2], values[3], promo, balance));
+				numberOfRecords++;
 			}
 			
 			lnr.close();
@@ -69,8 +72,34 @@ public class UserDB extends Database<User> {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Illegal numeric value encountered while loading legacy user database.", "Error", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Saves the user database to a text format compliant with the "original" software
+	 * This should not be used for normal operation
+	 * @param filename
+	 */
+	public void exportToLegacyTextFile(String filename){
+		try {
+			BufferedWriter bw = new BufferedWriter(new PrintWriter(filename));
+			
+			for(int i=0 ; i < data.size() ; i++){
+				//if(data[i] != null) //Do not exclude nulls for coherence
+					bw.write(data.get(i).getTextForFile()+"\r\n");
+			}
+			bw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void remove(User u) {
