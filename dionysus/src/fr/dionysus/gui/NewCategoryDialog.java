@@ -37,7 +37,7 @@ import java.awt.event.ActionListener;
 public class NewCategoryDialog extends JDialog {
 	
 	/**
-	 * A dialog box for editing the categories
+	 * A dialog box to edit the categories
 	 * This dialog does not manage articles for the categories
 	 */
 	private static final long serialVersionUID = -3243725927349670922L;
@@ -109,8 +109,10 @@ public class NewCategoryDialog extends JDialog {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
 					int returnVal = fc.showOpenDialog(contentPanel);
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						//TODO: check image and initialize the corresponding field
+					}
 				}
 			});
 			contentPanel.add(btnImage, gbc_btnImage);

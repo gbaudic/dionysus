@@ -41,15 +41,20 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+/**
+ * The initial dialog box, which is intended to protect the software from unauthorized users
+ *
+ */
 public class PasswordDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
+	private static final String passFile = "passe.txt";
 	private final JPanel contentPanel = new JPanel();
 	private char[] correctPassword;
 	private JPasswordField passwordField;
 	
 	private boolean result = false;
-	private JTextField loginField;
+	private JTextField loginField; //Login field to allow multiple users (with each one having a login/password pair)
 
 	/**
 	 * Create the dialog.
@@ -124,6 +129,7 @@ public class PasswordDialog extends JDialog {
 				okButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
 						if(checkPassword(passwordField.getPassword())){
+							//Hide this dialog box and show the main window
 							result = true;
 							setVisible(false);
 							MainGUI2 frame = new MainGUI2();
@@ -155,11 +161,11 @@ public class PasswordDialog extends JDialog {
 
 	/**
 	 * Loads the password from a text file (stored in clear...)
-	 * In the original software, the file was hidden
+	 * In the original software, the file was hidden - but the data was plain text
 	 */
 	private void getCorrectPassword(){
 		//Filename: passe.txt is set here
-		File pass = new File("passe.txt");
+		File pass = new File(passFile);
 		try {
 			FileReader fr = new FileReader(pass);
 			String str = "";
@@ -195,6 +201,10 @@ public class PasswordDialog extends JDialog {
 		return isCorrect;
 	}	
 	
+	/**
+	 * Getter for identification result
+	 * @return true if identification succeeded, false otherwise
+	 */
 	public boolean getResult(){
 		return result;
 	}
