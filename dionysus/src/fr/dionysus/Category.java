@@ -20,13 +20,14 @@ package fr.dionysus;
 import java.util.ArrayList;
 import java.io.Serializable;
 
+/**
+ * A category to sort articles
+ * An article can belong to several categories at the same time (useful for discounts)
+ */
 public class Category implements Serializable {
 
 	private static final long serialVersionUID = -4335349707097715750L;
-	/**
-	 * A category to sort articles
-	 * An article can belong to several categories at the same time (useful for discounts)
-	 */
+	
 	private String name; //Name of the category
 	private String imagePath; //Absolute path to an image
 	private ArrayList<Article> articlesList;
@@ -41,6 +42,19 @@ public class Category implements Serializable {
 		this.imagePath = imagePath;
 		this.articlesList = articlesList;
 	}
+	
+	
+	/**
+	 * @param name
+	 * @param imagePath
+	 */
+	public Category(String name, String imagePath) {
+		this.name = name;
+		this.imagePath = imagePath;
+		articlesList = new ArrayList<Article>();
+	}
+
+
 	/**
 	 * @return the name
 	 */

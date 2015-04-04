@@ -41,6 +41,11 @@ import javax.swing.SpinnerNumberModel;
 import fr.dionysus.*;
 import javax.swing.JCheckBox;
 
+/**
+ * The dialog box to add a new user to the system
+ * This class contains both the GUI code and the software logic
+ *
+ */
 public class NewUserDialog2 extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -54,13 +59,14 @@ public class NewUserDialog2 extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * The dialog is intended for creation, so all fields will be empty
 	 */
 	public NewUserDialog2() {
 		setTitle("User record");
 		setModal(true);
 		//setBounds(100, 100, 451, 190);
 		setSize(451, 204);
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(null); //centering
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -176,11 +182,13 @@ public class NewUserDialog2 extends JDialog {
 							//TODO : Check
 							Integer i = new Integer((Integer) promoChooser.getValue());
 							double menton = 0; //the variable name is here a pun (in French)
+							
 							try{
 								menton = Double.parseDouble(soldeField.getText());
 							} catch (NumberFormatException e) {
 								JOptionPane.showMessageDialog(null, "Failed to retrieve user balance!", "Error", JOptionPane.ERROR_MESSAGE);
 							}
+							//Finally, we create the user
 							user = new User(nomField.getText(), prenomField.getText(), i.intValue(), (int)(menton*100), chckbxCaution.isSelected());
 							setVisible(false);
 						} else {
@@ -209,18 +217,31 @@ public class NewUserDialog2 extends JDialog {
 		}
 	}
 	
+	/**
+	 * Constructor for edition
+	 * @param u the user to be edited
+	 */
 	public NewUserDialog2(User u){
 		this();
 		setUser(u);
 	}
 	
+	/**
+	 * Getter for the current user
+	 * @return the user being edited/created
+	 */
 	public User getUser()
 	{
 		//this.setVisible(true);
 		return this.user;
 	}
 
-	public void setUser(User u){
+	/**
+	 * Initializes the contents of the dialog with preexisting data
+	 * This is required when using this dialog for edition instead of creation
+	 * @param u the user to edit
+	 */
+	private void setUser(User u){
 		this.user = u;
 		
 		if(user != null) {

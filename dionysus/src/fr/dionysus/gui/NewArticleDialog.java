@@ -36,20 +36,19 @@ import javax.swing.JCheckBox;
 
 import fr.dionysus.*;
 
+/**
+ * Dialog box to add or edit articles
+ *
+ */
 public class NewArticleDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField nomField;
-	private JTextField codeField;
-	private JTextField stockField;
-	private JTextField alertField;
+	private JTextField nomField, codeField, stockField, alertField;
 	private JTextField tarif0Field;
 	private JTextField tarif1Field;
 	private JTextField tarif2Field;
-	private JCheckBox chckbxActive;
-	private JCheckBox chckbxStockEnabled;
-	private JCheckBox chckbxAlertEnabled;
+	private JCheckBox chckbxActive, chckbxStockEnabled, chckbxAlertEnabled;
 
 	private Article article;
 
