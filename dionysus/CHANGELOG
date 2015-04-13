@@ -1,0 +1,13 @@
+v0.1.5 - 2013/05/11
+=================
+- Corrected the Annoying Password Bug.
+- Added an About window.
+- Corrected behaviour of Edit and Delete buttons in Accounts and Articles panels.
+- Changed database file names to English instead of French.
+- Simplified management of the "default" user.
+- Search boxes now work properly.
+- Minor bug corrections.
+
+v0.1 - 2013/02/24
+=================
+- Initial release of the English version of the original code.
