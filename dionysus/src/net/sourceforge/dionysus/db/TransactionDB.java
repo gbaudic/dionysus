@@ -1,5 +1,5 @@
 /* 	Dionysus, a student pub management software in Java
-    Copyright (C) 2011,2013  podgy_piglet
+    Copyright (C) 2011,2013,2015  podgy_piglet
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ public class TransactionDB extends Database<Transaction> {
 	}
 
 	public void makeArrayForTables() {
-		foodForTable = new Object[numberOfRecords][7];
+		foodForTable = new Object[numberOfRecords][8];
 		
 		for(int i = 0 ; i < numberOfRecords ; i++){
 			foodForTable[i][0] = data.get(i).getDate();
@@ -55,7 +55,9 @@ public class TransactionDB extends Database<Transaction> {
 				foodForTable[i][6] = data.get(i).getPaymentMethod().getName();
 			} else {
 				foodForTable[i][6] = "Account";
-			}	
+			}
+			
+			foodForTable[i][7] = data.get(i).getVendor().getName();
 		}	
 	}
 
