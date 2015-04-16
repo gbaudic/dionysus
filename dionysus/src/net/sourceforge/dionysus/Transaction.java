@@ -87,6 +87,10 @@ public class Transaction implements Serializable{
 	public Article getArticle() {
 		return article;
 	}
+	
+	public Vendor getVendor() {
+		return vendor;
+	}
 
 	public int getNumberOfItems() {
 		return numberOfItems;
