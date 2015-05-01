@@ -101,6 +101,7 @@ public class MainGUI2 extends JFrame {
 	private User currentUser;
 	private Article currentArticle;
 	private Transaction currentTransaction;
+	private Vendor currentVendor;
 	
 	private UserDB users;
 	private ArticleDB catalogue;
@@ -1173,5 +1174,12 @@ public class MainGUI2 extends JFrame {
         }
         articleSorter.setRowFilter(rf);
     }
+
+	/**
+	 * @param currentVendor the currentVendor to set
+	 */
+	public void setCurrentVendor(Vendor currentVendor) {
+		this.currentVendor = currentVendor;
+	}
 	
 }

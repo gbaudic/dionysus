@@ -35,13 +35,13 @@ public class VendorDB extends Database<Vendor> {
 
 	@Override
 	public void remove(Vendor t) {
-		// TODO Auto-generated method stub
+		// Do nothing for the moment
 		
 	}
 
 	@Override
 	public void makeArrayForTables() {
-		// TODO Auto-generated method stub
+		// No vendor tables for the moment
 		
 	}
 
