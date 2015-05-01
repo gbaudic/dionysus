@@ -34,6 +34,24 @@ public class Vendor implements Serializable {
 	private String cPassword;//There is also a password
 	
 	/**
+	 * @param name
+	 * @param login
+	 * @param cPassword
+	 */
+	public Vendor(String login, String name, String cPassword) {
+		this.name = name;
+		this.login = login;
+		this.cPassword = cPassword;
+	}
+
+	/**
+	 * @return the cPassword
+	 */
+	public String getcPassword() {
+		return cPassword;
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName() {

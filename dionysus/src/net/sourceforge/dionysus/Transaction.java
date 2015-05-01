@@ -42,7 +42,6 @@ public class Transaction implements Serializable{
 	
 	public Transaction(int amount, User sourceUser, User destUser,
 			Article article, int numberOfItems, PaymentMethod pMethod) {
-		super();
 		this.amount = new Price(amount);
 		this.sourceUser = sourceUser;
 		this.destUser = destUser;
@@ -50,6 +49,18 @@ public class Transaction implements Serializable{
 		this.numberOfItems = numberOfItems;
 		this.date = new Date();
 		this.pMethod = pMethod;
+	}
+	
+	public Transaction(int amount, User sourceUser, User destUser,
+			Article article, int numberOfItems, PaymentMethod pMethod,Vendor v) {
+		this.amount = new Price(amount);
+		this.sourceUser = sourceUser;
+		this.destUser = destUser;
+		this.article = article;
+		this.numberOfItems = numberOfItems;
+		this.date = new Date();
+		this.pMethod = pMethod;
+		this.vendor = v;
 	}
 	
 	public Transaction(Transaction cancelledTransaction)
@@ -104,6 +115,9 @@ public class Transaction implements Serializable{
 		return date;
 	}
 	
+	/**
+	 * Reverts all changes that were made by this transaction
+	 */
 	public void revert() {
 		article.addStock(numberOfItems);
 		if(sourceUser != null)
