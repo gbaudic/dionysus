@@ -67,6 +67,7 @@ import javax.swing.JSeparator;
 
 import net.sourceforge.dionysus.*;
 import net.sourceforge.dionysus.db.*;
+import net.sourceforge.dionysus.gui.panels.*;
 
 public class MainGUI2 extends JFrame {
 
@@ -76,8 +77,6 @@ public class MainGUI2 extends JFrame {
 	private JTable userTable;
 	private JTextField textField;
 	private JTable table_1;
-	private JTextField textField_1;
-	private JTable table_2;
 	private JTextField saisieField;
 	private JLabel nomLabel;
 	private JLabel soldeLabel;
@@ -88,8 +87,6 @@ public class MainGUI2 extends JFrame {
 	
 	private TableRowSorter<UserTableModel> userSorter;
 	private TableRowSorter<ArticleTableModel> articleSorter;
-	private TableRowSorter<TransactionTableModel> transactionSorter;
-	
 	public static String SOFTWARE_NAME = "Dionysus";
 	public static String SOFTWARE_VERSION = "0.1 \"Clairette\"";
 	
@@ -100,7 +97,6 @@ public class MainGUI2 extends JFrame {
 	
 	private User currentUser;
 	private Article currentArticle;
-	private Transaction currentTransaction;
 	private Vendor currentVendor;
 	
 	private UserDB users;
@@ -141,9 +137,12 @@ public class MainGUI2 extends JFrame {
 		setTitle(SOFTWARE_NAME + " v"+ SOFTWARE_VERSION);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 1024, 768);
-		setSize(1024,740);
-		setLocationRelativeTo(null);
+		setSize(1024,740); //TODO: adjust to screen resolution
+		setLocationRelativeTo(null); //center on screen
 		
+		//*********************************************
+		//****************** MENU *********************
+		//*********************************************
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -152,6 +151,19 @@ public class MainGUI2 extends JFrame {
 		
 		JMenuItem mntmSettings = new JMenuItem("Settings");
 		mnFile.add(mntmSettings);
+		
+		JMenuItem mntmChangeVendor = new JMenuItem("Change vendor");
+		mnFile.add(mntmChangeVendor);
+		mntmChangeVendor.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				
+				PasswordDialog pdiag = new PasswordDialog();
+				pdiag.setVisible(true);
+			}
+			
+		});
 		
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
@@ -192,7 +204,9 @@ public class MainGUI2 extends JFrame {
 		});
 		mnHelp.add(mntmAbout);
 		
-		
+		//********************************************************************************************
+		//********************************************************************************************
+		//********************************************************************************************
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -680,7 +694,7 @@ public class MainGUI2 extends JFrame {
 		//********************************************************************************************
 		//********************************************************************************************
 		JPanel comptesP = new JPanel();
-		tabbedPane.addTab("Accounts", null, comptesP, null);
+		tabbedPane.addTab("Accounts", null, comptesP, "Accounts management");
 		GridBagLayout gbl_comptesP = new GridBagLayout();
 		gbl_comptesP.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_comptesP.rowHeights = new int[]{0, 0, 0};
@@ -721,8 +735,6 @@ public class MainGUI2 extends JFrame {
 		ImageIcon plus = new ImageIcon("images/list-add.png");
 		ImageIcon minus = new ImageIcon("images/list-remove.png");
 		ImageIcon edit = new ImageIcon("images/gtk-edit.png");
-		ImageIcon cancel = new ImageIcon("images/gtk-cancel.png");
-		
 		JButton btnAddUser = new JButton("Add", plus);
 		GridBagConstraints gbc_btnAddUser = new GridBagConstraints();
 		gbc_btnAddUser.insets = new Insets(0, 0, 5, 5);
@@ -831,7 +843,7 @@ public class MainGUI2 extends JFrame {
 		//********************************************************************************************
 		
 		JPanel articlesP = new JPanel();
-		tabbedPane.addTab("Articles", null, articlesP, null);
+		tabbedPane.addTab("Articles", null, articlesP, "Manage articles in store");
 		GridBagLayout gbl_articlesP = new GridBagLayout();
 		gbl_articlesP.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_articlesP.rowHeights = new int[]{0, 0, 0};
@@ -968,95 +980,11 @@ public class MainGUI2 extends JFrame {
 		//*******************************************************************************************
 		//*******************************************************************************************
 		
-		JPanel transactionsP = new JPanel();
-		tabbedPane.addTab("Transactions", null, transactionsP, null);
-		GridBagLayout gbl_transactionsP = new GridBagLayout();
-		gbl_transactionsP.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_transactionsP.rowHeights = new int[]{0, 0, 0};
-		gbl_transactionsP.columnWeights = new double[]{1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_transactionsP.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		transactionsP.setLayout(gbl_transactionsP);
+		TransactionsPanel transactionsP = new TransactionsPanel(journal);
+		tabbedPane.addTab("Transactions", null, transactionsP, "Log of all transactions");
 		
-		JLabel lblNewLabel_2 = new JLabel("Search: ");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 0;
-		transactionsP.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 0;
-		textField_1.getDocument().addDocumentListener(
-                new DocumentListener() {
-                    public void changedUpdate(DocumentEvent e) {
-                        newTransactionFilter();
-                    }
-                    public void insertUpdate(DocumentEvent e) {
-                        newTransactionFilter();
-                    }
-                    public void removeUpdate(DocumentEvent e) {
-                        newTransactionFilter();
-                    }
-                });
-		transactionsP.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
-		
-		JButton btnNewButton_6 = new JButton("Cancel", cancel);
-		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
-		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_6.gridx = 2;
-		gbc_btnNewButton_6.gridy = 0;
-		btnNewButton_6.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int row = table_2.getSelectedRow();
-				int realRow = -1;
-				if(row >= 0){
-					realRow = table_2.convertRowIndexToModel(table_2.getSelectedRow());
-					currentTransaction = (Transaction)journal.getArray()[realRow];
-
-					if(currentTransaction != null){
-						int choice = JOptionPane.showConfirmDialog(null,"Are you sure to delete this transaction?","",JOptionPane.YES_NO_OPTION);
-						if(choice == JOptionPane.YES_OPTION){
-							journal.add(new Transaction(currentTransaction));
-							//TODO : complete cancellation of effects (restore balances, stocks...) if asked
-
-							choice = JOptionPane.showConfirmDialog(null,"Do you also want to revert its consequences?","",JOptionPane.YES_NO_OPTION);
-							if(choice == JOptionPane.YES_OPTION)
-								currentTransaction.revert();
-						}
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "No transaction selected!", "Error", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
-		transactionsP.add(btnNewButton_6, gbc_btnNewButton_6);
-		
-		table_2 = new JTable();
-		TransactionTableModel ttModel = new TransactionTableModel(journal.getArrayForTables());
-		table_2.setModel(ttModel);
-		transactionSorter = new TableRowSorter<TransactionTableModel>(ttModel);
-		table_2.setRowSorter(transactionSorter);
-		table_2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table_2.setFillsViewportHeight(true);
-		//table_2.setAutoCreateRowSorter(true);
-		
-		JScrollPane t2SP = new JScrollPane(table_2);
-		
-		GridBagConstraints gbc_table_2 = new GridBagConstraints();
-		gbc_table_2.gridwidth = 6;
-		gbc_table_2.fill = GridBagConstraints.BOTH;
-		gbc_table_2.gridx = 0;
-		gbc_table_2.gridy = 1;
-		transactionsP.add(t2SP, gbc_table_2);
-		
+		//********************************************
 		alertTextArea = new JTextArea();
 		alertTextArea.setColumns(8);
 		alertTextArea.setRows(50);
@@ -1147,20 +1075,7 @@ public class MainGUI2 extends JFrame {
         	return;
         }
         userSorter.setRowFilter(rf);
-    }
-	
-	private void newTransactionFilter() {
-        RowFilter<TransactionTableModel, Object> rf = null;
-        //If current expression doesn't parse, don't update.
-        try {
-        	rf = RowFilter.regexFilter("(?i)(?u)" + textField_1.getText());         
-        } catch (PatternSyntaxException e) {
-        	return;
-        } catch (NullPointerException e) {
-        	return;
-        }
-        transactionSorter.setRowFilter(rf);
-    }
+    }	
 	
 	private void newArticleFilter() {
         RowFilter<ArticleTableModel, Object> rf = null;

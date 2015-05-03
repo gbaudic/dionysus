@@ -38,6 +38,7 @@ public class Article implements Serializable {
 	(otherwise corresponding transactions cannot be reverted without errors) */
 	private boolean isCountable; /*Allows to distinguish between countable (two bottles) and uncountable (531g of sugar).
 	Useless in the case of a student pub, but useful for other shops*/
+	public static final int QUANTITY_DECIMALS = 3;
 	
 	/**
 	 * Simple constructor when no stock management is used
@@ -46,7 +47,6 @@ public class Article implements Serializable {
 	 * @param code the code to be used for recalling this article
 	 */
 	public Article(String name, Price[] prices, long code) {
-		super();
 		this.name = name;
 		this.code = code;
 		this.prices = prices;
@@ -63,6 +63,24 @@ public class Article implements Serializable {
 	public Article(String name, Price[] prices, int stock, long code) {
 		this(name, prices, code);
 		this.stock = stock;
+	}
+	
+	
+
+	/**
+	 * @param name article name
+	 * @param prices an array of prices
+	 * @param stock initial number of units
+	 * @param code the code to be used for recalling the article
+	 * @param isCountable unused flag to tell this article will be uncountable
+	 */
+	public Article(String name, Price[] prices, int stock, long code, 
+			boolean isCountable) {
+		this.name = name;
+		this.code = code;
+		this.prices = prices;
+		this.stock = stock;
+		this.isCountable = false;
 	}
 
 	public int getNumberOfPrices()
@@ -108,6 +126,10 @@ public class Article implements Serializable {
 		stock = newStock;
 	}
 	
+	/**
+	 * Add stock to this article, use a negative quantity to remove
+	 * @param amount the INTEGER amount to add or remove
+	 */
 	public void addStock(int amount)
 	{
 		stock += amount;
@@ -149,6 +171,13 @@ public class Article implements Serializable {
 		this.isActive = isActive;
 	}
 	
+	/**
+	 * @return true if article is countable (1, 2...), false otherwise (0.731)
+	 */
+	public boolean isCountable() {
+		return isCountable;
+	}
+
 	/**
 	 * Declare this article as having been used (read: sold) at least once
 	 */
