@@ -28,7 +28,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -138,19 +137,19 @@ public class PasswordDialog extends JDialog {
 				okButton.setActionCommand("OK");
 				okButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
-						if(checkIdentification() ){
-							if(checkPassword(passwordField.getPassword())){
-								//Hide this dialog box and show the main window
-								result = true;
-								passwordField.setText(null);
-								setVisible(false);
-								MainGUI2 frame = new MainGUI2();
-								frame.setCurrentVendor(chosenVendor);
-								frame.setVisible(true);
-							} else {
-								JOptionPane.showMessageDialog(null, "Wrong password.\nPlease retry.", "Error", JOptionPane.ERROR_MESSAGE);
-							}
+
+						if(checkIdentification() && checkPassword(passwordField.getPassword()) ){
+							//Hide this dialog box and show the main window
+							result = true;
+							passwordField.setText(null);
+							setVisible(false);
+							MainGUI2 frame = new MainGUI2();
+							frame.setCurrentVendor(chosenVendor);
+							frame.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(null, "Wrong password.\nPlease retry.", "Error", JOptionPane.ERROR_MESSAGE);
 						}
+
 					}			
 				});
 				buttonPane.add(okButton);

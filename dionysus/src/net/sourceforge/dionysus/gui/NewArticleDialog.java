@@ -54,7 +54,7 @@ public class NewArticleDialog extends JDialog {
 	private JTextField tarif0Field;
 	private JTextField tarif1Field;
 	private JTextField tarif2Field;
-	private JCheckBox chckbxActive, chckbxStockEnabled, chckbxAlertEnabled;
+	private JCheckBox chckbxActive, chckbxStockEnabled, chckbxAlertEnabled, chckbxCountable;
 
 	private Article article;
 
@@ -242,6 +242,14 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(chckbxActive, gbc_chckbxActive);
 		}
 		{
+			chckbxCountable = new JCheckBox("Countable article");
+			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
+			gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
+			gbc_chckbxCountable.gridx = 1;
+			gbc_chckbxCountable.gridy = 8;
+			contentPanel.add(chckbxCountable, gbc_chckbxCountable);
+		}
+		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -343,13 +351,16 @@ public class NewArticleDialog extends JDialog {
 			stockField.setText(String.valueOf(a.getStock()));
 			alertField.setText(String.valueOf(a.getLimitStock()));
 
-			if(a.isActive())
+			if(a.isActive() )
 				chckbxActive.setSelected(true);
+			
+			if(a.isCountable() )
+				chckbxCountable.setSelected(true);
 
-			if(a.hasStockMgmtEnabled())
+			if(a.hasStockMgmtEnabled() )
 				chckbxStockEnabled.setSelected(true);
 
-			if(a.hasStockAlertEnabled())
+			if(a.hasStockAlertEnabled() )
 				chckbxAlertEnabled.setSelected(true);
 
 			tarif0Field.setText(String.valueOf(a.getArticlePrice()));
