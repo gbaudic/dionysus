@@ -1,3 +1,20 @@
+/* 	Dionysus, a student pub management software in Java
+    Copyright (C) 2011,2013,2015  podgy_piglet
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+*/
+
 package net.sourceforge.dionysus.gui.panels;
 
 import java.awt.GridBagConstraints;
@@ -7,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.regex.PatternSyntaxException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -85,6 +103,9 @@ public class ArticlesPanel extends JPanel {
 		add(articleRechercheField, gbc_textField);
 		articleRechercheField.setColumns(10);
 		
+		ImageIcon plus = new ImageIcon("images/list-add.png");
+		ImageIcon minus = new ImageIcon("images/list-remove.png");
+		ImageIcon edit = new ImageIcon("images/gtk-edit.png");		
 		
 		JButton btnAddArticle = new JButton("Add", plus);
 		GridBagConstraints gbc_btnAddArticle = new GridBagConstraints();
