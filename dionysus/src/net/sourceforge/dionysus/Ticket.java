@@ -227,12 +227,12 @@ public class Ticket {
 	 * The Ticket object will then be able to be deleted
 	 * 
 	 */
-	public void submit(User destUser, TransactionDB tdb)
+	public void submit(User destUser, TransactionDB tdb, Vendor v)
 	{
 		for(int i = 0 ; i < items.size() ; i++)
 		{
 			if(items.get(i) != null){
-				Transaction t = new Transaction((int)(items.get(i).getAmount())*100, customer, destUser, items.get(i).getArticle(), items.get(i).getQuantity(), pMethod);
+				Transaction t = new Transaction((int)(items.get(i).getAmount())*100, customer, destUser, items.get(i).getArticle(), items.get(i).getQuantity(), pMethod,v);
 				tdb.add(t);
 				Article solde = items.get(i).getArticle();
 				if(solde.hasStockMgmtEnabled())

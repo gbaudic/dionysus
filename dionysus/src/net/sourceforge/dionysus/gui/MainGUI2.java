@@ -33,16 +33,13 @@ import javax.swing.JTextArea;
 
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.RowFilter;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableRowSorter;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -51,8 +48,6 @@ import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.regex.PatternSyntaxException;
-
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.JMenuBar;
@@ -73,30 +68,22 @@ public class MainGUI2 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField userRechercheField;
-	private JTable userTable;
-	private JTextField textField;
-	private JTable table_1;
 	private JTextField saisieField;
-	private JLabel nomLabel;
-	private JLabel soldeLabel;
+	private JLabel nomLabel; //user name
+	private JLabel soldeLabel; //user balance
 	private JTextArea ticketTextArea; 
 	private JLabel taskToDoLabel;
 	private JLabel enCours;
-	private JTextArea alertTextArea;
+	private JTextArea alertTextArea; //Stock alerts
 	
-	private TableRowSorter<UserTableModel> userSorter;
-	private TableRowSorter<ArticleTableModel> articleSorter;
 	public static String SOFTWARE_NAME = "Dionysus";
-	public static String SOFTWARE_VERSION = "0.1 \"Clairette\"";
+	public static String SOFTWARE_VERSION = "0.1.5";
+	public static String SOFTWARE_VERSION_NICK = "\"Clairette\"";
 	
 	private Ticket currentTicket;
 	private TicketItem currentItemAtDesk;
 	private User currentUserAtDesk;
 	private Article currentArticleAtDesk;
-	
-	private User currentUser;
-	private Article currentArticle;
 	private Vendor currentVendor;
 	
 	private UserDB users;
@@ -134,7 +121,7 @@ public class MainGUI2 extends JFrame {
 		fillTheDB();
 		
 		setResizable(false);
-		setTitle(SOFTWARE_NAME + " v"+ SOFTWARE_VERSION);
+		setTitle(SOFTWARE_NAME + " v"+ SOFTWARE_VERSION + " " + SOFTWARE_VERSION_NICK);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setBounds(100, 100, 1024, 768);
 		setSize(1024,740); //TODO: adjust to screen resolution
@@ -149,7 +136,7 @@ public class MainGUI2 extends JFrame {
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 		
-		JMenuItem mntmSettings = new JMenuItem("Settings");
+		JMenuItem mntmSettings = new JMenuItem("Settings (TBD)");
 		mnFile.add(mntmSettings);
 		
 		JMenuItem mntmChangeVendor = new JMenuItem("Change vendor");
@@ -770,9 +757,11 @@ public class MainGUI2 extends JFrame {
 	 * Called when a ticket is finished to trigger saving in databases and refresh of the labels and objects
 	 */
 	public void finalizeTicket(){
-		currentTicket.submit(null, journal);
+		//Save transactions
+		currentTicket.submit(null, journal,currentVendor);
 		currentTicket.saveTicketToText();
 		
+		//Clear GUI
 		currentTicket = null;
 		taskToDoLabel.setText("Choose user");
 		enCours.setText(null);
@@ -784,27 +773,12 @@ public class MainGUI2 extends JFrame {
 		nomLabel.setText("no user selected");
 		soldeLabel.setText("-.--");
 		
+		//Save updated databases
 		users.saveToTextFile();
 		catalogue.saveToTextFile();
 		updateStockAlerts();
 	}
-	
-	/**
-	 * Filter for the search box in the User panel
-	 * The two other methods below serve the same purpose for Transaction and Articles panels
-	 */
-	private void newUserFilter() {
-        RowFilter<UserTableModel, Object> rf = null;
-        //If current expression doesn't parse, don't update.
-        try {
-        	rf = RowFilter.regexFilter("(?i)(?u)" + userRechercheField.getText());         
-        } catch (PatternSyntaxException e) {
-        	return;
-        } catch (NullPointerException e) {
-        	return;
-        }
-        userSorter.setRowFilter(rf);
-    }	
+		
 
 	/**
 	 * @param currentVendor the currentVendor to set

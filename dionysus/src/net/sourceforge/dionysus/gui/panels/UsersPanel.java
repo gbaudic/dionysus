@@ -112,16 +112,7 @@ public class UsersPanel extends JPanel {
 		gbc_btnAddUser.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAddUser.gridx = 2;
 		gbc_btnAddUser.gridy = 0;
-		btnAddUser.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				NewUserDialog2 newUser = new NewUserDialog2();
-				newUser.setVisible(true);
-				User nu = newUser.getUser();
-				users.add(nu);
-			}
-		});
+		btnAddUser.addActionListener(new AddAL() );
 		add(btnAddUser, gbc_btnAddUser);
 		
 		JButton btnEditUser = new JButton("Edit", edit);
@@ -129,28 +120,7 @@ public class UsersPanel extends JPanel {
 		gbc_btnEditUser.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEditUser.gridx = 3;
 		gbc_btnEditUser.gridy = 0;
-		btnEditUser.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int row = userTable.getSelectedRow();
-				int realRow = -1;
-
-				if(row >= 0){
-					realRow = userTable.convertRowIndexToModel(userTable.getSelectedRow());
-					currentUser = (User)users.getArray()[realRow];
-
-					if(currentUser != null){
-						NewUserDialog2 mud = new NewUserDialog2(currentUser);
-						mud.setVisible(true);
-						currentUser = mud.getUser();
-						users.modify(currentUser, realRow);
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
+		btnEditUser.addActionListener(new EditAL() );
 		add(btnEditUser, gbc_btnEditUser);
 		
 		JButton btnDeleteUser = new JButton("Delete", minus);
@@ -159,30 +129,7 @@ public class UsersPanel extends JPanel {
 		gbc_btnDeleteUser.insets = new Insets(0, 0, 5, 5);
 		gbc_btnDeleteUser.gridx = 4;
 		gbc_btnDeleteUser.gridy = 0;
-		btnDeleteUser.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int row = userTable.getSelectedRow();
-				int realRow = -1;
-
-				if(row >= 0){
-					realRow = userTable.convertRowIndexToModel(userTable.getSelectedRow());
-					currentUser = (User)users.getArray()[realRow];
-
-					if(currentUser != null){
-						int choice = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this account?","",JOptionPane.YES_NO_OPTION);
-						if(choice == JOptionPane.YES_OPTION){
-							users.remove(currentUser);
-							AbstractTableModel atm = (AbstractTableModel) userTable.getModel();
-							atm.fireTableRowsDeleted(realRow, realRow);
-						}
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
+		btnDeleteUser.addActionListener(new DeleteAL() );
 		add(btnDeleteUser, gbc_btnDeleteUser);
 		
 		JButton btnCredit = new JButton("Credit");
@@ -232,7 +179,77 @@ public class UsersPanel extends JPanel {
 		add(scrollPane, gbc_scrollPane);
 	}
 	
+	/**
+	 * ActionListener for add action
+	 */
+	private class AddAL implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			NewUserDialog2 newUser = new NewUserDialog2();
+			newUser.setVisible(true);
+			User nu = newUser.getUser();
+			users.add(nu);
+		}
+	}
 	
+	/**
+	 * ActionListener for edit action
+	 */
+	private class EditAL implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			int row = userTable.getSelectedRow();
+			int realRow = -1;
+
+			if(row >= 0){
+				realRow = userTable.convertRowIndexToModel(userTable.getSelectedRow());
+				currentUser = (User)users.getArray()[realRow];
+
+				if(currentUser != null){
+					NewUserDialog2 mud = new NewUserDialog2(currentUser);
+					mud.setVisible(true);
+					currentUser = mud.getUser();
+					users.modify(currentUser, realRow);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
+			}
+		}	
+	}
+	
+	/**
+	 * ActionListener for delete action
+	 *
+	 */
+	private class DeleteAL implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int row = userTable.getSelectedRow();
+			int realRow = -1;
+
+			if(row >= 0){
+				realRow = userTable.convertRowIndexToModel(userTable.getSelectedRow());
+				currentUser = (User)users.getArray()[realRow];
+
+				if(currentUser != null){
+					int choice = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this account?","",JOptionPane.YES_NO_OPTION);
+					if(choice == JOptionPane.YES_OPTION){
+						users.remove(currentUser);
+						AbstractTableModel atm = (AbstractTableModel) userTable.getModel();
+						atm.fireTableRowsDeleted(realRow, realRow);
+					}
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
+			}
+		}
+	}
+	
+	/**
+	 * Filter for search box
+	 */
 	private void newUserFilter() {
         RowFilter<UserTableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.

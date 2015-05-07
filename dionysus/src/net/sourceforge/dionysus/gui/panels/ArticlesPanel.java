@@ -203,7 +203,9 @@ public class ArticlesPanel extends JPanel {
 		add(t1SP, gbc_articleTable);
 	}
 	
-	
+	/**
+	 * Filter for search box
+	 */
 	private void newArticleFilter() {
         RowFilter<ArticleTableModel, Object> rf = null;
         //If current expression doesn't parse, don't update.
