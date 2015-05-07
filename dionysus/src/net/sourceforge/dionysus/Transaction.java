@@ -52,14 +52,8 @@ public class Transaction implements Serializable{
 	}
 	
 	public Transaction(int amount, User sourceUser, User destUser,
-			Article article, int numberOfItems, PaymentMethod pMethod,Vendor v) {
-		this.amount = new Price(amount);
-		this.sourceUser = sourceUser;
-		this.destUser = destUser;
-		this.article = article;
-		this.numberOfItems = numberOfItems;
-		this.date = new Date();
-		this.pMethod = pMethod;
+			Article article, int numberOfItems, PaymentMethod pMethod, Vendor v) {
+		this(amount,sourceUser,destUser,article,numberOfItems,pMethod);
 		this.vendor = v;
 	}
 	
@@ -72,6 +66,11 @@ public class Transaction implements Serializable{
 		this.numberOfItems = cancelledTransaction.getNumberOfItems();
 		this.date = new Date();
 		this.pMethod = cancelledTransaction.getPaymentMethod();
+	}
+	
+	public Transaction(Transaction cancelledTransaction, Vendor v){
+		this(cancelledTransaction);
+		this.vendor = v;
 	}
 	
 	/**
