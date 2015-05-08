@@ -52,6 +52,7 @@ public class ArticlesPanel extends JPanel {
 
 	private static final long serialVersionUID = 748075565665356634L;
 	private TableRowSorter<ArticleTableModel> articleSorter;
+	private ArticleTableModel atModel;
 	private JTextField articleRechercheField;
 	private JTable articleTable;
 	
@@ -185,7 +186,7 @@ public class ArticlesPanel extends JPanel {
 		add(btnDeleteArticle, gbc_btnDeleteArticle);
 		
 		articleTable = new JTable();
-		ArticleTableModel atModel = new ArticleTableModel(catalogue.getArrayForTables());
+		atModel = new ArticleTableModel(catalogue.getArrayForTables());
 		articleTable.setModel(atModel);
 		articleSorter = new TableRowSorter<ArticleTableModel>(atModel);
 		articleTable.setRowSorter(articleSorter);
@@ -218,4 +219,8 @@ public class ArticlesPanel extends JPanel {
         }
         articleSorter.setRowFilter(rf);
     }
+	
+	public void refreshTable(){
+		atModel.fireTableDataChanged();
+	}
 }

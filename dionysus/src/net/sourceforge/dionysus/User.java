@@ -19,14 +19,15 @@ package net.sourceforge.dionysus;
 
 import java.io.Serializable;
 
+/**
+ * Structure representing a user
+ * It has roughly the same functionalities as the one in the 'original software'
+ */
+
 public class User implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	/**
-	 * Structure representing a user
-	 * It has roughly the same functionalities as the one in the 'original software'
-	 */
-
+	
 	private String lastName;
 	private String firstName;
 	private int promo;
@@ -46,10 +47,7 @@ public class User implements Serializable{
 
 	public User(String lastName, String firstName, int promo, int balance,
 			boolean paidCaution) {
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.promo = promo;
-		this.balance = balance;
+		this(lastName,firstName,promo,balance);
 		this.paidCaution = paidCaution;
 	}
 
@@ -74,8 +72,7 @@ public class User implements Serializable{
 	 * Deduces an amount from current balance
 	 * @param montant amount to debit
 	 */
-	public void debite(double montant)
-	{
+	public void debite(double montant) {
 		this.balance -= (int)(montant*100);
 	}
 	
@@ -83,8 +80,7 @@ public class User implements Serializable{
 	 * Returns the whole name
 	 * @return the whole name
 	 */
-	public String getName()
-	{
+	public String getName() {
 		return lastName+" "+firstName;
 	}
 	
@@ -92,7 +88,7 @@ public class User implements Serializable{
 	 * Returns the full name with the year
 	 * @return full name (year)
 	 */
-	public String getFullName()
+	public String getNameWithPromo()
 	{
 		return this.getName()+" ("+String.valueOf(promo)+")";
 	}

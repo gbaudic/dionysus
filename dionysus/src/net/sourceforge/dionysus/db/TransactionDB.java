@@ -40,13 +40,13 @@ public class TransactionDB extends Database<Transaction> {
 			foodForTable[i][3] = new Double(data.get(i).getAmount().getPrice()); //do not try to understand...
 			
 			if(data.get(i).getSourceUser() != null){
-				foodForTable[i][4] = data.get(i).getSourceUser().getFullName();
+				foodForTable[i][4] = data.get(i).getSourceUser().getNameWithPromo();
 			} else {
 				foodForTable[i][4] = "none";
 			}
 			
 			if(data.get(i).getDestUser() != null){
-				foodForTable[i][5] = data.get(i).getDestUser().getFullName();
+				foodForTable[i][5] = data.get(i).getDestUser().getNameWithPromo();
 			} else {
 				foodForTable[i][5] = "none";
 			}
@@ -57,7 +57,12 @@ public class TransactionDB extends Database<Transaction> {
 				foodForTable[i][6] = "Account";
 			}
 			
-			foodForTable[i][7] = data.get(i).getVendor().getName();
+			if(data.get(i).getVendor() != null){
+				foodForTable[i][7] = data.get(i).getVendor().getName();
+			} else {
+				foodForTable[i][7] = "null";
+			}
+			
 		}	
 	}
 
