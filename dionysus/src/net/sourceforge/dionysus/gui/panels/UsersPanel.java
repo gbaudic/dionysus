@@ -52,6 +52,7 @@ public class UsersPanel extends JPanel {
 
 	private static final long serialVersionUID = 2128311951562983724L;
 	private TableRowSorter<UserTableModel> userSorter;
+	private UserTableModel utModel;
 	private JTextField userRechercheField;
 	private JTable userTable;
 	
@@ -161,7 +162,7 @@ public class UsersPanel extends JPanel {
 		add(btnCredit, gbc_btnCredit);
 		
 		userTable = new JTable();
-		UserTableModel utModel = new UserTableModel(users.getArrayForTables());
+		utModel = new UserTableModel(users.getArrayForTables());
 		userTable.setModel(utModel);
 		userSorter = new TableRowSorter<UserTableModel>(utModel);
 		userTable.setRowSorter(userSorter);
@@ -262,4 +263,8 @@ public class UsersPanel extends JPanel {
         }
         userSorter.setRowFilter(rf);
     }
+	
+	public void refreshTable(){
+		utModel.fireTableDataChanged();
+	}
 }

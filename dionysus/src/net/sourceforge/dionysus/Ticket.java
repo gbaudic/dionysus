@@ -36,33 +36,29 @@ import net.sourceforge.dionysus.db.*;
 public class Ticket {
 
 	private ArrayList<TicketItem> items;
-	private User customer;
+	private User customer; //customer buying, null if not a registered user
 	private double amount;
 	private PaymentMethod pMethod; //Only one payment method per ticket
 	
-	public Ticket(User u)
-	{
+	public Ticket(User u) {
 		items = new ArrayList<TicketItem>();
 		customer = u;
 	}
 	
-	public void addArticle(TicketItem newItem)
-	{
+	public void addArticle(TicketItem newItem) {
 		//Check that article at this price does not exist yet
 		//Otherwise add to existing Item
-		for(int i = 0 ; i < items.size() ; i++)
-		{
-			if(items.get(i) != null)
-			{
-				if(items.get(i).getArticle() == newItem.getArticle() && items.get(i).getFee() == newItem.getFee()){ //Check if comparison works
-					items.get(i).addArticles(newItem.getQuantity());
+		for(TicketItem item : items) {
+			if(item != null) {
+				if(item.getArticle() == newItem.getArticle() && item.getFee() == newItem.getFee()){ //Check if comparison works
+					item.addArticles(newItem.getQuantity());
+					updateAmount();
 					return;
 				}
 			}
 		}
 		
 		items.add(newItem);
-		
 		
 		updateAmount();
 	}
@@ -98,15 +94,15 @@ public class Ticket {
 		updateAmount();
 	}
 	
-	public void updateAmount()
-	{
+	/**
+	 * Recompute the total for the ticket
+	 */
+	public void updateAmount() {
 		amount = 0;
 		
-		for(int i = 0 ; i < items.size() ; i++)
-		{
-			if(items.get(i) != null)
-			{
-				amount += items.get(i).getAmount();
+		for(TicketItem ti : items) {
+			if(ti != null) {
+				amount += ti.getAmount();
 			}
 		}
 	}
@@ -115,13 +111,11 @@ public class Ticket {
 	 * 
 	 * @return the ticket grand total in EUROS
 	 */
-	public double getAmount()
-	{
+	public double getAmount() {
 		return amount;
 	}
 	
-	public double getBalanceAfterTicket()
-	{
+	public double getBalanceAfterTicket() {
 		if(customer != null){
 			return customer.getBalance() - amount;
 		} else {
@@ -136,14 +130,12 @@ public class Ticket {
 	 * @param total Label for the total
 	 * @param apres Label balance after transaction 
 	 */
-	public void printTicketToScreen(JTextArea target, JLabel total, JLabel apres)
-	{
+	public void printTicketToScreen(JTextArea target, JLabel total, JLabel apres) {
 		target.setText(null);
-		for(int i=0 ; i < items.size() ; i++)
-		{
-			if(items.get(i) != null){
+		for(TicketItem ti : items) {
+			if(ti != null){
 				//Add to GUI component the lines for each article
-				target.setText(target.getText() + items.get(i).toString() + "\n");
+				target.setText(target.getText() + ti.toString() + "\n");
 			}
 		}
 		
@@ -172,12 +164,12 @@ public class Ticket {
 			accu.append(DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date()) + "\r\n");
 		}
 		
-		accu.append("From "+customer.getFullName()+"\r\n");
+		accu.append("From "+customer.getNameWithPromo()+"\r\n");
 		
-		for(int i=0 ; i < items.size() ; i++)
+		for(TicketItem ti : items)
 		{
-			if(items.get(i) != null){
-				accu.append("\t" + items.get(i).toString() + "\r\n");
+			if(ti != null){
+				accu.append("\t" + ti.toString() + "\r\n");
 			}
 		}
 		
@@ -210,6 +202,10 @@ public class Ticket {
 		
 	}
 	
+	/**
+	 * Setter for the payment method
+	 * @param method the payment method used
+	 */
 	public void pay(PaymentMethod method){
 		pMethod = method;
 	}
@@ -223,23 +219,21 @@ public class Ticket {
 	}
 	
 	/**
-	 * Converts a ticket with its TicketItem to transactions for saving
+	 * Converts a ticket with its TicketItem to transactions for saving,
+	 * and saves the transactions file
 	 * The Ticket object will then be able to be deleted
 	 * 
 	 */
-	public void submit(User destUser, TransactionDB tdb, Vendor v)
-	{
-		for(int i = 0 ; i < items.size() ; i++)
-		{
-			if(items.get(i) != null){
-				Transaction t = new Transaction((int)(items.get(i).getAmount())*100, customer, destUser, items.get(i).getArticle(), items.get(i).getQuantity(), pMethod,v);
+	public void submit(User destUser, TransactionDB tdb, Vendor v) {
+		for(TicketItem item : items){
+			if(item != null){
+				Transaction t = new Transaction((int)(item.getAmount())*100, customer, destUser, item.getArticle(), item.getQuantity(), pMethod,v);
 				tdb.add(t);
-				Article solde = items.get(i).getArticle();
+				Article solde = item.getArticle();
 				if(solde.hasStockMgmtEnabled())
-					solde.setStock(solde.getStock() - items.get(i).getQuantity());
+					solde.setStock(solde.getStock() - item.getQuantity());
 				
-				solde.use();
-				
+				solde.use();			
 			}
 		}
 		

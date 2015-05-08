@@ -41,11 +41,13 @@ public class TicketItem {
 	public void addArticles(int number)
 	{
 		quantity += number;
+		computeAmount();
 	}
 	
 	public void removeArticles(int number)
 	{
 		quantity -= number;
+		computeAmount();
 	}
 	
 	public int getFee()
@@ -81,6 +83,7 @@ public class TicketItem {
 	 */
 	public void setAmount(double nam){
 		amount = nam;
+		computeAmount();
 	}
 	
 	public String toString()
@@ -90,6 +93,7 @@ public class TicketItem {
 	
 	public void setQuantity(int q){
 		quantity = q;
+		computeAmount();
 	}
 	
 	public void setFee(int t){
@@ -98,5 +102,6 @@ public class TicketItem {
 		} else {
 			fee = t;
 		}
+		computeAmount();
 	}
 }

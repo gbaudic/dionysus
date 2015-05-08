@@ -268,7 +268,7 @@ public class MainGUI2 extends JFrame {
 				currentUserAtDesk = nextCUser;
 				
 				if(currentUserAtDesk != null){
-					nomLabel.setText(currentUserAtDesk.getFullName());
+					nomLabel.setText(currentUserAtDesk.getNameWithPromo());
 					soldeLabel.setText(String.valueOf(currentUserAtDesk.getBalance()));
 					
 					currentTicket = new Ticket(currentUserAtDesk);
@@ -446,12 +446,7 @@ public class MainGUI2 extends JFrame {
 			for(final Article c : cat){
 				if(c != null && c.isActive()){
 					JButton btn = new JButton(c.getName());
-					String ttt = "<html>"+ c.getName() + " ("+ String.valueOf(c.getCode()) + ")";
-					for(int i = 0 ; i < c.getNumberOfPrices() ; i++){
-						ttt += "<br/>Price "+String.valueOf(i)+": "+String.valueOf(c.getArticlePrice(i));
-					}
-					ttt += "</html>";
-					btn.setToolTipText(ttt);
+					btn.setToolTipText(c.getToolTipText());
 					btn.addActionListener(new ActionListener() {
 						
 						@Override
@@ -761,6 +756,11 @@ public class MainGUI2 extends JFrame {
 		currentTicket.submit(null, journal,currentVendor);
 		currentTicket.saveTicketToText();
 		
+		//Save updated databases
+		users.saveToTextFile();
+		catalogue.saveToTextFile();
+		updateStockAlerts();
+
 		//Clear GUI
 		currentTicket = null;
 		taskToDoLabel.setText("Choose user");
@@ -772,11 +772,6 @@ public class MainGUI2 extends JFrame {
 		currentItemAtDesk = null;
 		nomLabel.setText("no user selected");
 		soldeLabel.setText("-.--");
-		
-		//Save updated databases
-		users.saveToTextFile();
-		catalogue.saveToTextFile();
-		updateStockAlerts();
 	}
 		
 

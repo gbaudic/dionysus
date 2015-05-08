@@ -64,8 +64,6 @@ public class Article implements Serializable {
 		this(name, prices, code);
 		this.stock = stock;
 	}
-	
-	
 
 	/**
 	 * @param name article name
@@ -76,15 +74,11 @@ public class Article implements Serializable {
 	 */
 	public Article(String name, Price[] prices, int stock, long code, 
 			boolean isCountable) {
-		this.name = name;
-		this.code = code;
-		this.prices = prices;
-		this.stock = stock;
+		this(name,prices,stock,code);
 		this.isCountable = false;
 	}
 
-	public int getNumberOfPrices()
-	{
+	public int getNumberOfPrices() {
 		return prices.length;
 	}
 
@@ -96,8 +90,7 @@ public class Article implements Serializable {
 		return code;
 	}
 	
-	public double getArticlePrice()
-	{
+	public double getArticlePrice() {
 		return prices[0].getPrice();
 	}
 	
@@ -116,13 +109,11 @@ public class Article implements Serializable {
 			}
 	}
 	
-	public int getStock()
-	{
+	public int getStock() {
 		return stock;
 	}
 	
-	public void setStock(int newStock)
-	{
+	public void setStock(int newStock) {
 		stock = newStock;
 	}
 	
@@ -169,6 +160,19 @@ public class Article implements Serializable {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+	
+	/**
+	 * Produces the tooltip text for the Cash desk view
+	 * @return the correct tooltip text
+	 */
+	public String getToolTipText(){
+		StringBuilder ttt = new StringBuilder("<html>"+ name + " ("+ String.valueOf(code) + ")");
+		for(int i = 0 ; i < getNumberOfPrices() ; i++){
+			ttt.append("<br/>Price "+String.valueOf(i)+": "+String.valueOf(getArticlePrice(i)) );
+		}
+		ttt.append("</html>");
+		return ttt.toString();
 	}
 	
 	/**

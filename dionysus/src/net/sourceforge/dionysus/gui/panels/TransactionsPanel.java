@@ -50,6 +50,7 @@ public class TransactionsPanel extends JPanel {
 
 	private static final long serialVersionUID = 280813945615261532L;
 	private TableRowSorter<TransactionTableModel> transactionSorter;
+	private TransactionTableModel ttModel;
 	private JTextField transactionRechercheField;
 	private JTable transactionTable;
 	
@@ -151,9 +152,7 @@ public class TransactionsPanel extends JPanel {
 		gbc_transactionTable.gridx = 0;
 		gbc_transactionTable.gridy = 1;
 		add(t2SP, gbc_transactionTable);
-		
-		
-		
+			
 	}
 	
 	private void newTransactionFilter() {
@@ -168,4 +167,8 @@ public class TransactionsPanel extends JPanel {
         }
         transactionSorter.setRowFilter(rf);
     }
+	
+	public void refreshTable(){
+		ttModel.fireTableDataChanged();
+	}
 }
