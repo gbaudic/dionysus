@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
+
 package net.sourceforge.dionysus.gui;
 
 import javax.swing.ImageIcon;
@@ -72,7 +73,7 @@ public class AboutDialog extends JDialog {
 		gbc_lblLogo.gridy = 0;
 		panel.add(lblLogo, gbc_lblLogo);
 		
-		JLabel lblSoftwareName = new JLabel(MainGUI2.SOFTWARE_NAME + " v" + MainGUI2.SOFTWARE_VERSION);
+		JLabel lblSoftwareName = new JLabel(MainGUI2.SOFTWARE_NAME + " v" + MainGUI2.SOFTWARE_VERSION + " " + MainGUI2.SOFTWARE_VERSION_NICK);
 		lblSoftwareName.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSoftwareName.setFont(new Font("Tahoma", Font.BOLD, 20));
 		GridBagConstraints gbc_lblSoftwareName = new GridBagConstraints();

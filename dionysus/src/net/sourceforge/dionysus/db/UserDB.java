@@ -90,7 +90,7 @@ public class UserDB extends Database<User> {
 			
 			for(int i=0 ; i < data.size() ; i++){
 				//if(data[i] != null) //Do not exclude nulls for coherence
-					bw.write(data.get(i).getTextForFile()+"\r\n");
+					bw.write(data.get(i).getTextForLegacyFile()+"\r\n");
 			}
 			bw.close();
 		} catch (FileNotFoundException e) {

@@ -150,6 +150,7 @@ public class UsersPanel extends JPanel {
 					currentUser = (User)users.getArray()[realRow];
 
 					if(currentUser != null){
+						double credit = Double.parseDouble(JOptionPane.showInputDialog(null, "Credit: ", "Select amount", JOptionPane.QUESTION_MESSAGE));
 						//TODO: open a window for credit, ask for amount and payment method
 						//Perform changes, and register a transaction
 					}
@@ -190,6 +191,7 @@ public class UsersPanel extends JPanel {
 			newUser.setVisible(true);
 			User nu = newUser.getUser();
 			users.add(nu);
+			refreshTable();
 		}
 	}
 	
@@ -212,6 +214,7 @@ public class UsersPanel extends JPanel {
 					mud.setVisible(true);
 					currentUser = mud.getUser();
 					users.modify(currentUser, realRow);
+					refreshTable();
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "No user selected!", "Error", JOptionPane.WARNING_MESSAGE);
@@ -238,8 +241,7 @@ public class UsersPanel extends JPanel {
 					int choice = JOptionPane.showConfirmDialog(null,"Are you sure you want to delete this account?","",JOptionPane.YES_NO_OPTION);
 					if(choice == JOptionPane.YES_OPTION){
 						users.remove(currentUser);
-						AbstractTableModel atm = (AbstractTableModel) userTable.getModel();
-						atm.fireTableRowsDeleted(realRow, realRow);
+						utModel.fireTableRowsDeleted(realRow, realRow);
 					}
 				}
 			} else {

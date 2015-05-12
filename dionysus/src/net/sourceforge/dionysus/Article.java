@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Class to represent a specific article in the shop (for example "1 bottle of Budweiser beer" or "Florida oranges")
  *
  */
-public class Article implements Serializable {
+public class Article implements Serializable, CSVAble {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;
@@ -188,6 +188,15 @@ public class Article implements Serializable {
 	public void use() {
 		if(!hasBeenUsed)
 			this.hasBeenUsed = true;
+	}
+
+	/**
+	 * Generate the string for CSV serialization
+	 */
+	public String toCSV() {
+		StringBuilder csvline = new StringBuilder(name+","+code+",");
+		
+		return csvline.toString();
 	}
 
 }

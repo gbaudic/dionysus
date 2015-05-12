@@ -28,6 +28,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -223,7 +224,9 @@ public class PasswordDialog extends JDialog {
 			s.close();
 		} catch (FileNotFoundException e){
 			JOptionPane.showMessageDialog(null, "Login file not found. \nIt should be logins.txt", "Error", JOptionPane.ERROR_MESSAGE);
-		} 
+		} catch (NoSuchElementException e){
+			//do nothing, we simply have reached the end of the file
+		}
 	}
 	
 	/**
