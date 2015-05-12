@@ -68,6 +68,9 @@ public class MainGUI2 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private UsersPanel comptesP;
+	private TransactionsPanel transactionsP;
+	private ArticlesPanel articlesP;
 	private JTextField saisieField;
 	private JLabel nomLabel; //user name
 	private JLabel soldeLabel; //user balance
@@ -75,10 +78,12 @@ public class MainGUI2 extends JFrame {
 	private JLabel taskToDoLabel;
 	private JLabel enCours;
 	private JTextArea alertTextArea; //Stock alerts
+	private JLabel lblTotalTicket;
+	private JLabel lblSoldeApres;
 	
 	public static String SOFTWARE_NAME = "Dionysus";
-	public static String SOFTWARE_VERSION = "0.1.5";
-	public static String SOFTWARE_VERSION_NICK = "\"Clairette\"";
+	public static String SOFTWARE_VERSION = "0.3";
+	public static String SOFTWARE_VERSION_NICK = "\"Muscadet\"";
 	
 	private Ticket currentTicket;
 	private TicketItem currentItemAtDesk;
@@ -86,12 +91,11 @@ public class MainGUI2 extends JFrame {
 	private Article currentArticleAtDesk;
 	private Vendor currentVendor;
 	
+	//Databases
 	private UserDB users;
 	private ArticleDB catalogue;
 	private TransactionDB journal;
 	
-	private JLabel lblTotalTicket;
-	private JLabel lblSoldeApres;
 
 
 	/**
@@ -144,6 +148,15 @@ public class MainGUI2 extends JFrame {
 		mntmChangeVendor.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+				if(currentTicket != null){
+					int choice = JOptionPane.showConfirmDialog(null,
+									"There is a ticket currently being processed.\nAre you sure you want to quit?",
+									"Confirmation", JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE);
+					//If a ticket is started, we need to confirm the wish to quit
+					if (choice != JOptionPane.YES_OPTION)
+						return;
+				}
 				setVisible(false);
 				
 				PasswordDialog pdiag = new PasswordDialog();
@@ -675,7 +688,7 @@ public class MainGUI2 extends JFrame {
 		//********************************************************************************************
 		//********************************************************************************************
 		//********************************************************************************************
-		UsersPanel comptesP = new UsersPanel(users);
+		comptesP = new UsersPanel(users);
 		tabbedPane.addTab("Accounts", null, comptesP, "Accounts management");
 		
 		
@@ -683,7 +696,7 @@ public class MainGUI2 extends JFrame {
 		//********************************************************************************************
 		//********************************************************************************************
 		
-		ArticlesPanel articlesP = new ArticlesPanel(catalogue);
+		articlesP = new ArticlesPanel(catalogue);
 		tabbedPane.addTab("Articles", null, articlesP, "Manage articles in store");
 
 		
@@ -691,7 +704,7 @@ public class MainGUI2 extends JFrame {
 		//*******************************************************************************************
 		//*******************************************************************************************
 		
-		TransactionsPanel transactionsP = new TransactionsPanel(journal);
+		transactionsP = new TransactionsPanel(journal);
 		tabbedPane.addTab("Transactions", null, transactionsP, "Log of all transactions");
 		
 		
@@ -772,6 +785,11 @@ public class MainGUI2 extends JFrame {
 		currentItemAtDesk = null;
 		nomLabel.setText("no user selected");
 		soldeLabel.setText("-.--");
+		
+		//Refresh JTables
+		comptesP.refreshTable();
+		transactionsP.refreshTable();
+		articlesP.refreshTable();
 	}
 		
 

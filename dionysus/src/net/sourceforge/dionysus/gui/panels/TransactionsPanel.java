@@ -126,6 +126,8 @@ public class TransactionsPanel extends JPanel {
 							choice = JOptionPane.showConfirmDialog(null,"Do you also want to revert its consequences?","",JOptionPane.YES_NO_OPTION);
 							if(choice == JOptionPane.YES_OPTION)
 								currentTransaction.revert();
+							
+							refreshTable();	
 						}
 					}
 				} else {

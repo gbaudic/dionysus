@@ -27,7 +27,7 @@ import java.util.*;
  * one payment operation.
  * 
  */
-public class Transaction implements Serializable{
+public class Transaction implements Serializable,CSVAble {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -125,4 +125,12 @@ public class Transaction implements Serializable{
 		if(destUser != null)
 			destUser.debite(amount.getPrice());
 	}
+
+	@Override
+	public String toCSV() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }

@@ -24,7 +24,7 @@ import java.io.Serializable;
  * It has roughly the same functionalities as the one in the 'original software'
  */
 
-public class User implements Serializable{
+public class User implements Serializable,CSVAble {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -52,8 +52,8 @@ public class User implements Serializable{
 	}
 
 	/**
-	 * Returns the balance in euros
-	 * @return the balance in euros
+	 * Returns the balance
+	 * @return the balance
 	 * TODO: check the result of the division when balance is negative
 	 */
 	public double getBalance() {
@@ -117,22 +117,28 @@ public class User implements Serializable{
 		return promo;
 	}
 	
-	/**
-	 * Returns a string for the database file
-	 * The format used is the one for the so-called 'original software' for backwards compatibility
-	 * @return promo, lastName, firstName and balance, each field surrounded by <...>
-	 */
-	public String getTextForFile(){
-		String bal = String.valueOf(balance / 100.0);
-		return "<"+String.valueOf(promo)+"><"+lastName+"><"+firstName+"><"+bal+">";
-	}
-
 	public boolean hasPaidCaution() {
 		return paidCaution;
 	}
 
 	public void setPaidCaution(boolean paidCaution) {
 		this.paidCaution = paidCaution;
+	}
+	
+	/**
+	 * Returns a string for the database file
+	 * The format used is the one for the so-called 'original software' for backwards compatibility
+	 * @return promo, lastName, firstName and balance, each field surrounded by <...>
+	 */
+	public String getTextForLegacyFile(){
+		String bal = String.valueOf(balance / 100.0);
+		return "<"+String.valueOf(promo)+"><"+lastName+"><"+firstName+"><"+bal+">";
+	}
+
+	@Override
+	public String toCSV() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

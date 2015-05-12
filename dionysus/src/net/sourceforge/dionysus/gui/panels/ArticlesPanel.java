@@ -121,6 +121,7 @@ public class ArticlesPanel extends JPanel {
 				nad.setVisible(true);
 				Article a = nad.getArticle();
 				catalogue.add(a);
+				refreshTable();
 			}
 		});
 		add(btnAddArticle, gbc_btnAddArticle);
@@ -148,6 +149,7 @@ public class ArticlesPanel extends JPanel {
 						currentArticle = nad.getArticle();
 						//Keep original index to modify without adding
 						catalogue.modify(currentArticle, realRow);
+						refreshTable();
 					} 
 				} else {
 					JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
@@ -176,6 +178,7 @@ public class ArticlesPanel extends JPanel {
 						int choice = JOptionPane.showConfirmDialog(null,"Are you sure to delete this article?","",JOptionPane.YES_NO_OPTION);
 						if(choice == JOptionPane.YES_OPTION){
 							catalogue.remove(currentArticle);
+							refreshTable();
 						}
 					}
 				} else {
