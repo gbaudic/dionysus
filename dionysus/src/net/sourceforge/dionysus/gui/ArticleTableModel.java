@@ -23,11 +23,12 @@ import javax.swing.table.DefaultTableModel;
 public class ArticleTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = -2641198391560050967L;
+	private static String [] colNames = new String[] {
+		"Name", "Code", "Active", "Price 0", "Price 1", "Price 2", "Current stock", "Alert from"
+	};
 	
 	public ArticleTableModel(Object[][] data){
-		super(data, new String[] {
-				"Name", "Code", "Active", "Price 0", "Price 1", "Price 2", "Current stock", "Alert from"
-			});
+		super(data, colNames);
 	}
 	
 	Class[] columnTypes = new Class[] {
@@ -43,4 +44,7 @@ public class ArticleTableModel extends DefaultTableModel {
 		return columnEditables[column];
 	}
 
+	public void refreshData(Object[][] newData){
+		setDataVector(newData, colNames);
+	}
 }

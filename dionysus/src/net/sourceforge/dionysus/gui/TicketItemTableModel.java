@@ -25,11 +25,10 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TicketItemTableModel extends DefaultTableModel {
 	private static final long serialVersionUID = -2023864553780594289L;
+	private static String [] colNames = new String[] {"Name", "Quantity", "Price"};
 	
 	public TicketItemTableModel(Object[][] data){
-		super(data, new String[] {
-				"Name", "Quantity", "Price"
-			});
+		super(data, colNames);
 	}
 	
 	Class[] columnTypes = new Class[] {

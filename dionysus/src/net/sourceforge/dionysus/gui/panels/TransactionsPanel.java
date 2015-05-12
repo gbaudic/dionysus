@@ -171,6 +171,7 @@ public class TransactionsPanel extends JPanel {
     }
 	
 	public void refreshTable(){
+		ttModel.refreshData(journal.getArrayForTables() );
 		ttModel.fireTableDataChanged();
 	}
 }

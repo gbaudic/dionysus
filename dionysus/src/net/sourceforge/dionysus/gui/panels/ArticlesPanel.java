@@ -224,6 +224,7 @@ public class ArticlesPanel extends JPanel {
     }
 	
 	public void refreshTable(){
+		atModel.refreshData(catalogue.getArrayForTables() );
 		atModel.fireTableDataChanged();
 	}
 }

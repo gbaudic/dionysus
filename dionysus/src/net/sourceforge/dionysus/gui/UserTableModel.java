@@ -22,11 +22,10 @@ import javax.swing.table.DefaultTableModel;
 public class UserTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = -2841704746545744058L;
+	private static String [] colNames =  new String[] {"Last name", "First name", "Year", "Balance", "Caution"}; 
 	
 	public UserTableModel(Object[][] data){
-		super(data, new String[] {
-				"Last name", "First name", "Year", "Balance", "Caution"
-			});
+		super(data, colNames);
 	}
 	
 	
@@ -51,5 +50,9 @@ public class UserTableModel extends DefaultTableModel {
         fireTableCellUpdated(row, col);
 
     }
+	
+	public void refreshData(Object[][] newData){
+		setDataVector(newData, colNames);
+	}
 	
 }
