@@ -25,12 +25,13 @@ import javax.swing.table.DefaultTableModel;
 public class TransactionTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 7595571828972009182L;
+	private static String [] colNames =  new String[] {
+		"Date", "Article", "Quantity", "Amount", "Source account", "Dest. account", "Paid by", "Vendor"
+	};
 
 	
 	public TransactionTableModel(Object[][] data){
-		super(data, new String[] {
-				"Date", "Article", "Quantity", "Amount", "Source account", "Dest. account", "Paid by", "Vendor"
-			});
+		super(data,colNames);
 	}
 	
 	
@@ -45,5 +46,9 @@ public class TransactionTableModel extends DefaultTableModel {
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
+	}
+	
+	public void refreshData(Object[][] newData){
+		setDataVector(newData, colNames);
 	}
 }

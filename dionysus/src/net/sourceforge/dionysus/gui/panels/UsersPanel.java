@@ -135,6 +135,7 @@ public class UsersPanel extends JPanel {
 		
 		JButton btnCredit = new JButton("Credit");
 		GridBagConstraints gbc_btnCredit = new GridBagConstraints();
+		gbc_btnCredit.fill = GridBagConstraints.BOTH; //make it taller for homogeneity
 		gbc_btnCredit.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCredit.gridx = 5;
 		gbc_btnCredit.gridy = 0;
@@ -267,6 +268,7 @@ public class UsersPanel extends JPanel {
     }
 	
 	public void refreshTable(){
+		utModel.refreshData(users.getArrayForTables()); //TODO: improve
 		utModel.fireTableDataChanged();
 	}
 }
