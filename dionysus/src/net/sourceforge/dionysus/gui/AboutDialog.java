@@ -83,7 +83,7 @@ public class AboutDialog extends JDialog {
 		gbc_lblSoftwareName.gridy = 0;
 		panel.add(lblSoftwareName, gbc_lblSoftwareName);
 		
-		JLabel lblDesc = new JLabel("A shop management software written in Java");
+		JLabel lblDesc = new JLabel("A lightweight shop management software written in Java");
 		GridBagConstraints gbc_lblDesc = new GridBagConstraints();
 		gbc_lblDesc.anchor = GridBagConstraints.WEST;
 		gbc_lblDesc.insets = new Insets(0, 0, 5, 0);
@@ -91,7 +91,7 @@ public class AboutDialog extends JDialog {
 		gbc_lblDesc.gridy = 1;
 		panel.add(lblDesc, gbc_lblDesc);
 		
-		JLabel lblCopyright = new JLabel("(C) 2011,2013,2015 podgy_piglet;    "
+		JLabel lblCopyright = new JLabel("(C) 2011,2013,2015 podgy_piglet;  "
 				+ "http://sf.net/p/dionysus");
 		lblCopyright.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblCopyright = new GridBagConstraints();

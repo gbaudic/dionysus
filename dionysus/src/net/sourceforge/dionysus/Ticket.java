@@ -128,9 +128,9 @@ public class Ticket {
 	 * FIXME: THAT SHOULD NOT BE DONE BY THIS CLASS!!!!!
 	 * @param target display TextArea
 	 * @param total Label for the total
-	 * @param apres Label balance after transaction 
+	 * @param after Label for balance after transaction 
 	 */
-	public void printTicketToScreen(JTextArea target, JLabel total, JLabel apres) {
+	public void printTicketToScreen(JTextArea target, JLabel total, JLabel after) {
 		target.setText(null);
 		for(TicketItem ti : items) {
 			if(ti != null){
@@ -140,13 +140,13 @@ public class Ticket {
 		}
 		
 		//Same for total amount
-		total.setText("Total ticket: "+String.valueOf(getAmount())+ " €");
+		total.setText(String.valueOf(getAmount())+ " €");
 		
 		//Same for balance after purchase
 		if(customer != null){
-			apres.setText("Balance after ticket: "+String.valueOf(getBalanceAfterTicket()) + " €");
+			after.setText(String.valueOf(getBalanceAfterTicket()) + " €");
 		} else {
-			apres.setText("Balance after ticket: --,-- €");
+			after.setText("--,-- €");
 		}
 	}
 	
