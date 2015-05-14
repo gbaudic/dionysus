@@ -194,7 +194,7 @@ public class Article implements Serializable, CSVAble {
 	 * Generate the string for CSV serialization
 	 */
 	public String toCSV() {
-		StringBuilder csvline = new StringBuilder(name+","+code+",");
+		StringBuilder csvline = new StringBuilder(name+";"+code+";");
 		
 		return csvline.toString();
 	}

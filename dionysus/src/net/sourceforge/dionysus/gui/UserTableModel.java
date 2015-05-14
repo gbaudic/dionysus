@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class UserTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = -2841704746545744058L;
-	private static String [] colNames =  new String[] {"Last name", "First name", "Year", "Balance", "Caution"}; 
+	private static String [] colNames =  new String[] {"Last name", "First name", "Year", "Balance", "Deposit"}; 
 	
 	public UserTableModel(Object[][] data){
 		super(data, colNames);

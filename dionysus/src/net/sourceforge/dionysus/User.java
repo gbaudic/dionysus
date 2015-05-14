@@ -137,8 +137,8 @@ public class User implements Serializable,CSVAble {
 
 	@Override
 	public String toCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		String bal = String.valueOf(balance / 100.0);
+		return lastName+";"+firstName+";"+promo+";"+bal+";"+paidCaution;
 	}
 	
 }

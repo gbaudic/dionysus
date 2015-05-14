@@ -83,7 +83,6 @@ public class TicketItem {
 	 */
 	public void setAmount(double nam){
 		amount = nam;
-		computeAmount();
 	}
 	
 	public String toString()

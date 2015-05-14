@@ -162,7 +162,7 @@ public class NewUserDialog2 extends JDialog {
 			soldeField.setColumns(10);
 		}
 		{
-			chckbxCaution = new JCheckBox("Paid caution");
+			chckbxCaution = new JCheckBox("Paid deposit");
 			GridBagConstraints gbc_chckbxCaution = new GridBagConstraints();
 			gbc_chckbxCaution.gridx = 1;
 			gbc_chckbxCaution.gridy = 4;
