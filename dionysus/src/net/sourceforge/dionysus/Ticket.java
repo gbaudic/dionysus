@@ -32,13 +32,13 @@ import net.sourceforge.dionysus.db.*;
 /**
  * Class representing a ticket, structure to represent purchase of different products at various prices at a single time
  */
-
 public class Ticket {
 
 	private ArrayList<TicketItem> items;
-	private User customer; //customer buying, null if not a registered user
+	private User customer; /**customer buying, null if not a registered user*/
 	private double amount;
 	private PaymentMethod pMethod; //Only one payment method per ticket
+	private Vendor vendor;
 	
 	public Ticket(User u) {
 		items = new ArrayList<TicketItem>();
@@ -70,18 +70,18 @@ public class Ticket {
 	public void removeArticle(TicketItem a)
 	{
 		//Check that article exists
-		for(int i = 0 ; i < items.size() ; i++)
+		for(TicketItem ti : items)
 		{
-			if(items.get(i) != null)
+			if(ti != null)
 			{
-				if(items.get(i).getArticle().getName() == a.getArticle().getName() && items.get(i).getFee() == a.getFee()){
-					int remainder = items.get(i).getQuantity() - a.getQuantity();
+				if(ti.getArticle().getName() == a.getArticle().getName() && ti.getFee() == a.getFee()){
+					int remainder = ti.getQuantity() - a.getQuantity();
 					if(remainder == 0){
 						//If quantity drops to zero, delete article
-						items.set(i,null);
+						items.remove(ti);
 					} else {
 						if(remainder > 0){
-							items.get(i).removeArticles(a.getQuantity());
+							ti.removeArticles(a.getQuantity());
 						} else {
 							//TODO: exception if we remove more than we have
 						}
@@ -109,7 +109,7 @@ public class Ticket {
 	
 	/**
 	 * 
-	 * @return the ticket grand total in EUROS
+	 * @return the ticket grand total
 	 */
 	public double getAmount() {
 		return amount;
@@ -152,6 +152,7 @@ public class Ticket {
 	
 	/**
 	 * Exports the ticket to a string
+	 * The submit() method needs to have been called previously to set the vendor
 	 * TODO: this may need to be rewritten.
 	 */
 	public StringBuilder printTicketToText(String date){
@@ -165,6 +166,7 @@ public class Ticket {
 		}
 		
 		accu.append("From "+customer.getNameWithPromo()+"\r\n");
+		accu.append("Sold by "+vendor.getName()+"\r\n");
 		
 		for(TicketItem ti : items)
 		{
@@ -225,6 +227,7 @@ public class Ticket {
 	 * 
 	 */
 	public void submit(User destUser, TransactionDB tdb, Vendor v) {
+		vendor = v;
 		for(TicketItem item : items){
 			if(item != null){
 				Transaction t = new Transaction((int)(item.getAmount())*100, customer, destUser, item.getArticle(), item.getQuantity(), pMethod,v);
