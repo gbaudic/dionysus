@@ -1,5 +1,14 @@
+v0.3 - 2015/0
+=================
+Database schema 3.
+- Added multiple vendors support.
+- Tables are now refreshed correctly. 
+- Minor GUI improvements and bug corrections.
+- Refactored (partly) GUI code.
+
 v0.1.5 - 2013/05/11
 =================
+Database schema 2.
 - Corrected the Annoying Password Bug.
 - Added an About window.
 - Corrected behaviour of Edit and Delete buttons in Accounts and Articles panels.
@@ -10,4 +19,5 @@ v0.1.5 - 2013/05/11
 
 v0.1 - 2013/02/24
 =================
+Database schema 1.
 - Initial release of the English version of the original code.

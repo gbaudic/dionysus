@@ -48,6 +48,7 @@ import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.JMenuBar;
@@ -57,6 +58,8 @@ import javax.swing.KeyStroke;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.util.Currency;
+import java.util.Locale;
 
 import javax.swing.JSeparator;
 
@@ -72,19 +75,22 @@ public class MainGUI2 extends JFrame {
 	private TransactionsPanel transactionsP;
 	private ArticlesPanel articlesP;
 	private JTextField saisieField;
-	private JLabel nomLabel; //user name
-	private JLabel soldeLabel; //user balance
-	private JLabel lblVendorName; //name of cash assistant on duty
-	private JTextArea ticketTextArea; 
+	private JLabel nomLabel; /**user name*/
+	private JLabel soldeLabel; /**user balance*/
+	private JLabel lblVendorName; /**name of cash assistant on duty*/
+	private JTextArea ticketTextArea; /**text of the ticket*/
 	private JLabel taskToDoLabel;
 	private JLabel enCours;
-	private JTextArea alertTextArea; //Stock alerts
+	private JTextArea alertTextArea; /**Stock alerts*/
 	private JLabel lblTotalTicket;
 	private JLabel lblSoldeApres;
 	
 	public static String SOFTWARE_NAME = "Dionysus";
 	public static String SOFTWARE_VERSION = "0.3";
 	public static String SOFTWARE_VERSION_NICK = "\"Muscadet\"";
+	
+	public Locale locale;
+	public Currency currency;
 	
 	private Ticket currentTicket;
 	private TicketItem currentItemAtDesk;
@@ -124,8 +130,14 @@ public class MainGUI2 extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGUI2() {
+		//Localization
+		locale = Locale.getDefault();
+		currency = Currency.getInstance(locale);
+		
+		//Database filling
 		fillTheDB();
 		
+		//GUI
 		setResizable(false);
 		setTitle(SOFTWARE_NAME + " v"+ SOFTWARE_VERSION + " " + SOFTWARE_VERSION_NICK);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -509,12 +521,13 @@ public class MainGUI2 extends JFrame {
 		
 		ticketTextArea = new JTextArea();
 		ticketTextArea.setEditable(false);
+		JScrollPane sp_ticketTextArea = new JScrollPane(ticketTextArea);
 		GridBagConstraints gbc_ticketTextArea = new GridBagConstraints();
 		gbc_ticketTextArea.insets = new Insets(0, 0, 5, 5);
 		gbc_ticketTextArea.fill = GridBagConstraints.BOTH;
 		gbc_ticketTextArea.gridx = 2;
 		gbc_ticketTextArea.gridy = 0;
-		vueP.add(ticketTextArea, gbc_ticketTextArea);
+		vueP.add(sp_ticketTextArea, gbc_ticketTextArea);
 		
 		JPanel panel_pavenum = new JPanel();
 		GridBagConstraints gbc_panel_pavenum = new GridBagConstraints();
@@ -637,6 +650,7 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btn0);
 		
 		JButton btnMetre = new JButton("Dozen");
+		btnMetre.setToolTipText("12 units");
 		btnMetre.addActionListener(new ActionListener() {
 			
 			@Override
