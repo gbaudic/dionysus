@@ -243,6 +243,8 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			chckbxCountable = new JCheckBox("Countable article");
+			chckbxCountable.setSelected(true);
+			chckbxCountable.setEnabled(false); //for 0.3 release
 			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
 			gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxCountable.gridx = 1;
