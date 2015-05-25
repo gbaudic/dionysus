@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 public enum PaymentMethod implements Serializable{
 	
-	ACCOUNT("Account"),
+	//ACCOUNT("Account"), //for 0.3 release
 	CASH("Cash"), 
 	CHECK("Check"), 
 	CREDIT_CARD("Card"), 

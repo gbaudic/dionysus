@@ -134,6 +134,7 @@ public class UsersPanel extends JPanel {
 		add(btnDeleteUser, gbc_btnDeleteUser);
 		
 		JButton btnCredit = new JButton("Credit");
+		btnCredit.setEnabled(false); //for 0.3 release
 		GridBagConstraints gbc_btnCredit = new GridBagConstraints();
 		gbc_btnCredit.fill = GridBagConstraints.BOTH; //make it taller for homogeneity
 		gbc_btnCredit.insets = new Insets(0, 0, 5, 5);
