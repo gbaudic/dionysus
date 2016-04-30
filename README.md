@@ -2,7 +2,7 @@
 A student pub management software in Java
 
 This is a Java software I started writing during the summer of 2011, and which received minor bugfixes and improvements since then. 
-It was originally hosted on Sourceforge. 
+It was originally hosted on Sourceforge, now I only use Sourceforge for the binary releases. 
 
 Current version is 0.1.5, it corrects some bugs from the 0.1 original version.
 
