@@ -1,5 +1,5 @@
 /* 	Dionysus, a student pub management software in Java
-    Copyright (C) 2011,2013,2015  podgy_piglet
+    Copyright (C) 2011,2013,2015,2016  G. Baudic
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import net.sourceforge.dionysus.*;
 /**
  * A class implementing an article database
  * TODO: exploit ArrayLists at their full potential ;)
+ * Even better: use a dictionary indexed with article codes...
  */
 public class ArticleDB extends Database<Article> {
 	

@@ -1,5 +1,5 @@
 /* 	Dionysus, a student pub management software in Java
-    Copyright (C) 2011,2013,2015  podgy_piglet
+    Copyright (C) 2011,2013,2015,2016  G. Baudic
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -91,8 +91,8 @@ public class AboutDialog extends JDialog {
 		gbc_lblDesc.gridy = 1;
 		panel.add(lblDesc, gbc_lblDesc);
 		
-		JLabel lblCopyright = new JLabel("(C) 2011,2013,2015 podgy_piglet;  "
-				+ "http://sf.net/p/dionysus");
+		JLabel lblCopyright = new JLabel("(C) 2011,2013,2015,2016 G.Baudic; "
+				+ "https://github.com/gbaudic/dionysus");
 		lblCopyright.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblCopyright = new GridBagConstraints();
 		gbc_lblCopyright.insets = new Insets(0, 0, 5, 0);
