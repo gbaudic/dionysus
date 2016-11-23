@@ -74,14 +74,14 @@ public class MainGUI2 extends JFrame {
 	private UsersPanel comptesP;
 	private TransactionsPanel transactionsP;
 	private ArticlesPanel articlesP;
-	private JTextField saisieField;
-	private JLabel nomLabel; /**user name*/
-	private JLabel soldeLabel; /**user balance*/
-	private JLabel lblVendorName; /**name of cash assistant on duty*/
-	private JTextArea ticketTextArea; /**text of the ticket*/
+	private JTextField saisieField; /**THE textfield for everything*/
+	private JLabel nomLabel; /** user name*/
+	private JLabel soldeLabel; /** user balance*/
+	private JLabel lblVendorName; /** name of cash assistant on duty*/
+	private JTextArea ticketTextArea; /** text of the ticket*/
 	private JLabel taskToDoLabel;
 	private JLabel enCours;
-	private JTextArea alertTextArea; /**Stock alerts*/
+	private JTextArea alertTextArea; /** Stock alerts*/
 	private JLabel lblTotalTicket;
 	private JLabel lblSoldeApres;
 	
@@ -97,6 +97,7 @@ public class MainGUI2 extends JFrame {
 	private User currentUserAtDesk;
 	private Article currentArticleAtDesk;
 	private Vendor currentVendor;
+	private TicketState currentState;
 	
 	//Databases
 	private UserDB users;
@@ -170,7 +171,7 @@ public class MainGUI2 extends JFrame {
 									"There is a ticket currently being processed.\nAre you sure you want to quit?",
 									"Confirmation", JOptionPane.YES_NO_OPTION,
 									JOptionPane.QUESTION_MESSAGE);
-					//If a ticket is started, we need to confirm the wish to quit
+					//If a ticket is started, we need to confirm the will to quit
 					if (choice != JOptionPane.YES_OPTION)
 						return;
 				}
@@ -196,7 +197,7 @@ public class MainGUI2 extends JFrame {
 									"There is a ticket currently being processed.\nAre you sure you want to quit?",
 									"Confirmation", JOptionPane.YES_NO_OPTION,
 									JOptionPane.QUESTION_MESSAGE);
-					//If a ticket is started, we need to confirm the wish to quit
+					//If a ticket is started, we need to confirm the will to quit
 					if (choice != JOptionPane.YES_OPTION)
 						return;
 				}
@@ -852,6 +853,8 @@ public class MainGUI2 extends JFrame {
 		currentItemAtDesk = null;
 		nomLabel.setText("no user selected");
 		soldeLabel.setText("-.--");
+		
+		//Change current state
 		
 		//Refresh JTables
 		comptesP.refreshTable();
