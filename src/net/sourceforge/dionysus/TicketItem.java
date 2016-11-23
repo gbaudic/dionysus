@@ -38,25 +38,21 @@ public class TicketItem {
 		return article;
 	}
 	
-	public void addArticles(int number)
-	{
+	public void addArticles(int number) {
 		quantity += number;
 		computeAmount();
 	}
 	
-	public void removeArticles(int number)
-	{
+	public void removeArticles(int number) {
 		quantity -= number;
 		computeAmount();
 	}
 	
-	public int getFee()
-	{
+	public int getFee() {
 		return fee;
 	}
 	
-	public int getQuantity()
-	{
+	public int getQuantity() {
 		return quantity;
 	}
 	
@@ -64,7 +60,7 @@ public class TicketItem {
 	 * Compute the amount corresponding to this item under usual circumstances
 	 * (no rebates, special offers...)
 	 */
-	public void computeAmount(){
+	public void computeAmount() {
 		amount = (article.getArticlePrice(fee))*quantity;
 	}
 	
@@ -72,7 +68,7 @@ public class TicketItem {
 	 * 
 	 * @return price of this item in EUROS
 	 */
-	public double getAmount(){
+	public double getAmount() {
 		return amount;
 	}
 	
@@ -85,21 +81,24 @@ public class TicketItem {
 		amount = nam;
 	}
 	
-	public String toString()
-	{
-		return " "+String.valueOf(quantity)+" x "+article.getName()+"  "+String.valueOf(getAmount())+" €";
+	public String toString() {
+		return " "+String.valueOf(quantity)+" x "+article.getName()+"  "+String.valueOf(getAmount())+" ¤";
 	}
 	
-	public void setQuantity(int q){
+	public void setQuantity(int q) {
 		quantity = q;
 		computeAmount();
 	}
 	
-	public void setFee(int t){
-		if(t < 0 || t >= article.getNumberOfPrices()){
+	/**
+	 * Change the fee used
+	 * @param newFee new fee ID to use, illegal values default to standard fee (ID 0)
+	 */
+	public void setFee(int newFee) {
+		if(newFee < 0 || newFee >= article.getNumberOfPrices()){
 			fee = 0;
 		} else {
-			fee = t;
+			fee = newFee;
 		}
 		computeAmount();
 	}

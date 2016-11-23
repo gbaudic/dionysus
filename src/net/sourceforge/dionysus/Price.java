@@ -20,9 +20,8 @@ package net.sourceforge.dionysus;
 import java.io.Serializable;
 
 /**
- * Abstraction class to deal with amounts using cents without having rounding errors
- * It looks like the errors we had with the original software come from the Java VM and not from the code,
- * so this class is pretty much useless...
+ * Abstraction class to deal with amounts using cents instead of usual currency units
+ * This allows to use integers and to avoid occasional rounding errors
  */
 
 public class Price implements Serializable{
@@ -30,23 +29,25 @@ public class Price implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int price;
 	
-	public Price(double price)
-	{
+	/**
+	 * Constructor for amounts set as double
+	 */
+	public Price(double price) {
 		this.price = (int)(price*100);
 	}
 	
-	public Price(int price)
-	{
+	/**
+	 * Constructor for amounts set as integers (already converted in cents)
+	 */
+	public Price(int price) {
 		this.price = price;
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		return String.valueOf(price/100.);
 	}
 	
-	public double getPrice()
-	{
+	public double getPrice() {
 		return price/100.;
 	}
 }

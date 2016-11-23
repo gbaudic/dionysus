@@ -30,8 +30,8 @@ public class Vendor implements Serializable {
 	private static final long serialVersionUID = 7579644578907922526L;
 
 	private String name; //Name appearing on the screen and on tickets
-	private String login; //Login for the identification process
-	private String cPassword;//There is also a password
+	private String login; //Login for the identification process - may be different from name
+	private String cPassword; //There is also a password
 	
 	/**
 	 * @param name
@@ -79,27 +79,4 @@ public class Vendor implements Serializable {
 		this.login = login;
 	}
 	
-	/**
-	 * TODO: use java's capacities to perform encryption, this method is a POS
-	 * @param clearPass
-	 * @return
-	 */
-	public static String encrypt(String clearPass) {
-		String alphabeat = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-		
-		if(clearPass != null){
-			int pLength = clearPass.length();
-			String buffer = new String();
-			
-			for(int i = 0 ; i < pLength ; i++){
-				int j = alphabeat.indexOf(clearPass.codePointAt(i));
-				
-				buffer += alphabeat.charAt((j+1+i) % alphabeat.length());
-			}
-			
-			return buffer;
-		}
-		
-		return null;
-	}
 }

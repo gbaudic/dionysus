@@ -253,10 +253,10 @@ public class PasswordDialog extends JDialog {
 	 * @param input a character array
 	 * @return the result of the check
 	 */
-	private boolean checkPassword(char[] input){
+	private boolean checkPassword(char[] input) {
 		boolean isCorrect = false;
 		
-		if(input.length != correctPassword.length){
+		if(input.length != correctPassword.length) {
 			isCorrect = false;
 		} else {
 			isCorrect = Arrays.equals(input, correctPassword);
@@ -272,7 +272,7 @@ public class PasswordDialog extends JDialog {
 	 * Getter for identification result
 	 * @return true if identification succeeded, false otherwise
 	 */
-	public boolean getResult(){
+	public boolean getResult() {
 		return result;
 	}
 }

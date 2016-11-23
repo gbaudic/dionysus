@@ -61,27 +61,30 @@ public class Category implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	/**
 	 * @return the imagePath
 	 */
 	public String getImagePath() {
 		return imagePath;
 	}
+	
 	/**
 	 * @param imagePath the imagePath to set
 	 */
 	public void setImagePath(String imagePath) {
 		if(imagePath != null && !imagePath.isEmpty()){
 			this.imagePath = imagePath;
-		}
-		
+		}		
 	}
+	
 	/**
 	 * @return the articlesList
 	 */

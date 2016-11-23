@@ -39,8 +39,7 @@ public class ArticleDB extends Database<Article> {
 	 * Removes an article from the list, and cleans up the array to remove any null
 	 * @param a article to be removed
 	 */
-	public void remove(Article a)
-	{
+	public void remove(Article a) {
 		if(a != null){
 			if(a.hasBeenUsed()){
 				JOptionPane.showMessageDialog(null, "Article already used! \nDeleting it will prevent cancellation of all transactions involving this article.", "Info", JOptionPane.INFORMATION_MESSAGE);
@@ -62,9 +61,9 @@ public class ArticleDB extends Database<Article> {
 	/**
 	 * Modifies a given article
 	 * @param a
-	 * @param indice
+	 * @param index
 	 */
-	public void modify(Article a, int index){
+	public void modify(Article a, int index) {
 		if(a != null){ //No reason to pass a null, there is a function for cleaning up...
 			if(index >= 0 && index < numberOfRecords){
 				data.set(index, a);
@@ -80,7 +79,7 @@ public class ArticleDB extends Database<Article> {
 	 * @param code the code to find
 	 * @return first article found with this code, null if no article matches
 	 */
-	public Article getArticleByCode(long code){
+	public Article getArticleByCode(long code) {
 		for(int i = 0 ; i < numberOfRecords ; i++){
 			if(data.get(i) != null && data.get(i).getCode() == code){
 				return data.get(i);
