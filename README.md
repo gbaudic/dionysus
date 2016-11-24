@@ -1,4 +1,4 @@
-# Dionysus
+# Dionysus  [![Build Status](https://travis-ci.org/gbaudic/dionysus.svg?branch=master)](https://travis-ci.org/gbaudic/dionysus)
 A student pub management software in Java
 
 This is a Java software I started writing during the summer of 2011, and which received minor bugfixes and improvements since then. 
@@ -18,6 +18,23 @@ The software requires Java 7 or higher. I have only tested it with the Oracle JD
 but it should work fine with OpenJDK as well.
 
 For further documentation, please see the wiki. You may also find the source code useful. 
+
+## Intended audience
+
+Dionysus is for you if:
+- your shop is limited in size and does not receive many customers
+- you do not have complex offers, rebates
+- you use a single computer for sales
+- you want a lightweight piece of software which works out-of-the-box
+
+Dionysus is NOT for you if:
+- you need specific hardware support
+- your shop experiences heavy customer traffic
+- you have several POS terminals
+- you need a loyalty program for your customers
+- you have several hundreds articles in store
+- you need a stable, bug-free, supported system
+- you need interoperability with other software
 
 ## Modifications
 
