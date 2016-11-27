@@ -74,7 +74,7 @@ public class Article implements Serializable, CSVAble {
 	 */
 	public Article(String name, Price[] prices, int stock, long code, 
 			boolean isCountable) {
-		this(name,prices,stock,code);
+		this(name, prices, stock, code);
 		this.isCountable = false;
 	}
 
@@ -99,14 +99,12 @@ public class Article implements Serializable, CSVAble {
 	 * @param id price identifier. Must be 0, 1 or 2 in this implementation
 	 * @return the corresponding price, or 0 if the price does not exist
 	 */
-	public double getArticlePrice(int id)
-	{
-		if(id >= 0 && id < getNumberOfPrices())
-			{
-				return prices[id].getPrice();
-			} else {
-				return 0;
-			}
+	public double getArticlePrice(int id) {
+		if(id >= 0 && id < getNumberOfPrices()) {
+			return prices[id].getPrice();
+		} else {
+			return 0;
+		}
 	}
 	
 	public int getStock() {
@@ -121,8 +119,7 @@ public class Article implements Serializable, CSVAble {
 	 * Add stock to this article, use a negative quantity to remove
 	 * @param amount the INTEGER amount to add or remove
 	 */
-	public void addStock(int amount)
-	{
+	public void addStock(int amount) {
 		stock += amount;
 	}
 

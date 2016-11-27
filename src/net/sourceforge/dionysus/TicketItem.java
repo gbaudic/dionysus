@@ -26,7 +26,13 @@ public class TicketItem {
 	private Article article;
 	private int fee; // the price id (not the price itself)
 	private int quantity;
-	private double amount;
+	private double amount; //TODO: fix this to stay in cents here too
+	
+	public TicketItem(Article article) {
+		this.article = article;
+		this.fee = 0;
+		this.quantity = 1;
+	}
 	
 	public TicketItem(Article article, int fee, int quantity) {
 		this.article = article;
@@ -66,7 +72,7 @@ public class TicketItem {
 	
 	/**
 	 * 
-	 * @return price of this item in EUROS
+	 * @return price of this item in usual format (e.g., 12.99 and not 1299 cents)
 	 */
 	public double getAmount() {
 		return amount;
@@ -82,7 +88,7 @@ public class TicketItem {
 	}
 	
 	public String toString() {
-		return " "+String.valueOf(quantity)+" x "+article.getName()+"  "+String.valueOf(getAmount())+" ¤";
+		return " "+String.valueOf(quantity)+" x "+article.getName()+"  "+String.valueOf(getAmount());
 	}
 	
 	public void setQuantity(int q) {

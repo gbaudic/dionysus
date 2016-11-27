@@ -67,13 +67,10 @@ public class Ticket {
 	 * Removes an article at a given price in a given quantity
 	 * @param a the corresponding TicketItem
 	 */
-	public void removeArticle(TicketItem a)
-	{
+	public void removeArticle(TicketItem a) {
 		//Check that article exists
-		for(TicketItem ti : items)
-		{
-			if(ti != null)
-			{
+		for(TicketItem ti : items) {
+			if(ti != null) {
 				if(ti.getArticle().getName() == a.getArticle().getName() && ti.getFee() == a.getFee()){
 					int remainder = ti.getQuantity() - a.getQuantity();
 					if(remainder == 0){
@@ -140,13 +137,13 @@ public class Ticket {
 		}
 		
 		//Same for total amount
-		total.setText(String.valueOf(getAmount())+ " €");
+		total.setText(String.valueOf(getAmount()));
 		
 		//Same for balance after purchase
 		if(customer != null){
-			after.setText(String.valueOf(getBalanceAfterTicket()) + " €");
+			after.setText(String.valueOf(getBalanceAfterTicket()));
 		} else {
-			after.setText("--,-- €");
+			after.setText("--,--");
 		}
 	}
 	
@@ -175,7 +172,7 @@ public class Ticket {
 			}
 		}
 		
-		accu.append("Total: "+String.valueOf(amount)+" €\r\nPaid by ");
+		accu.append("Total: "+String.valueOf(amount)+"\r\nPaid by ");
 		
 		if(pMethod != null){
 			accu.append(pMethod.getName());

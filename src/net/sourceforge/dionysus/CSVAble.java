@@ -19,8 +19,9 @@ package net.sourceforge.dionysus;
 
 /**
  * Interface for all objects which may get exported with their database as CSV
- *
+ * CSV export is mainly here for interoperability
  */
 public interface CSVAble {
 	public String toCSV();
+	//public String csvHeader();
 }

@@ -461,7 +461,7 @@ public class MainGUI2 extends JFrame {
 							} else {
 								if(currentTicket.getPaymentMethod() == PaymentMethod.CASH){
 									double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-									JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+"€.","", JOptionPane.INFORMATION_MESSAGE);
+									JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
 								}
 								//Save the finished ticket
 								finalizeTicket();
@@ -737,9 +737,9 @@ public class MainGUI2 extends JFrame {
 
 						if(p == PaymentMethod.CASH){
 							double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-							JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+"€.","", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
 						} else {
-							JOptionPane.showMessageDialog(null, String.valueOf(currentTicket.getAmount())+"€ to be paid using "+ p.getName() +".\nClick OK when done.", "Payment", JOptionPane.PLAIN_MESSAGE);
+							JOptionPane.showMessageDialog(null, String.valueOf(currentTicket.getAmount())+" to be paid using "+ p.getName() +".\nClick OK when done.", "Payment", JOptionPane.PLAIN_MESSAGE);
 						}
 						//Save the finished ticket
 						finalizeTicket();
