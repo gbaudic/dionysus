@@ -439,7 +439,7 @@ public class MainGUI2 extends JFrame {
 									enCours.setText(String.valueOf(saisie)+" x "+currentArticleAtDesk.getName());
 									currentItemAtDesk = null;
 									currentArticleAtDesk = null;
-									currentTicket.printTicketToScreen(ticketTextArea, lblTotalTicket, lblSoldeApres);
+									printTicketToScreen(currentTicket);
 									taskToDoLabel.setText("Other article or finish");
 									return;
 								}
@@ -751,6 +751,8 @@ public class MainGUI2 extends JFrame {
 			panel_PaymentMethods.add(btn);
 		}
 		
+		currentState = TicketState.IDLE;
+		
 		//********************************************************************************************
 		//********************************************************************************************
 		//********************************************************************************************
@@ -855,11 +857,38 @@ public class MainGUI2 extends JFrame {
 		soldeLabel.setText("-.--");
 		
 		//Change current state
+		currentState = TicketState.IDLE;
 		
 		//Refresh JTables
 		comptesP.refreshTable();
 		transactionsP.refreshTable();
 		articlesP.refreshTable();
+	}
+	
+	/**
+	 * Display ticket information at the appropriate places in GUI
+	 * @param t the ticket to display
+	 */
+	public void printTicketToScreen(Ticket t) {
+	    if(t != null) {
+	        ticketTextArea.setText(null);
+		    for(TicketItem ti : t.getItems()) {
+			    if(ti != null){
+				    //Add to GUI component the lines for each article
+				    ticketTextArea.setText(ticketTextArea.getText() + ti.toString() + "\n");
+			    }
+		    }
+		
+		    //Same for total amount
+		    lblTotalTicket.setText(String.valueOf(t.getAmount()));
+		
+		    //Same for balance after purchase
+		    if(currentUserAtDesk != null){
+			    lblSoldeApres.setText(String.valueOf(t.getBalanceAfterTicket()));
+		    } else {
+			    lblSoldeApres.setText("-.--");
+		    }
+		}
 	}
 		
 

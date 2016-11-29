@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -46,18 +47,6 @@ public class Ticket {
 	}
 	
 	public void addArticle(TicketItem newItem) {
-		//Check that article at this price does not exist yet
-		//Otherwise add to existing Item
-		for(TicketItem item : items) {
-			if(item != null) {
-				if(item.getArticle() == newItem.getArticle() && item.getFee() == newItem.getFee()){ //Check if comparison works
-					item.addArticles(newItem.getQuantity());
-					updateAmount();
-					return;
-				}
-			}
-		}
-		
 		items.add(newItem);
 		
 		updateAmount();
@@ -120,32 +109,11 @@ public class Ticket {
 		}
 	}
 	
-	/**
-	 * Prints ticket info to GUI components
-	 * FIXME: THAT SHOULD NOT BE DONE BY THIS CLASS!!!!!
-	 * @param target display TextArea
-	 * @param total Label for the total
-	 * @param after Label for balance after transaction 
-	 */
-	public void printTicketToScreen(JTextArea target, JLabel total, JLabel after) {
-		target.setText(null);
-		for(TicketItem ti : items) {
-			if(ti != null){
-				//Add to GUI component the lines for each article
-				target.setText(target.getText() + ti.toString() + "\n");
-			}
-		}
-		
-		//Same for total amount
-		total.setText(String.valueOf(getAmount()));
-		
-		//Same for balance after purchase
-		if(customer != null){
-			after.setText(String.valueOf(getBalanceAfterTicket()));
-		} else {
-			after.setText("--,--");
-		}
+	public List<TicketItem> getItems() {
+	    return items;
+	    //TODO: find a better way, to ensure ticket cannot be modified from outside
 	}
+	
 	
 	/**
 	 * Exports the ticket to a string
