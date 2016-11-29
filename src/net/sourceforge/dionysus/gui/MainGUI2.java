@@ -435,12 +435,7 @@ public class MainGUI2 extends JFrame {
 									return;
 								} else {
 									currentItemAtDesk.setQuantity((int) saisie);
-									currentTicket.addArticle(currentItemAtDesk);
-									enCours.setText(String.valueOf(saisie)+" x "+currentArticleAtDesk.getName());
-									currentItemAtDesk = null;
-									currentArticleAtDesk = null;
-									printTicketToScreen(currentTicket);
-									taskToDoLabel.setText("Other article or finish");
+									finalizeTicketItem();
 									return;
 								}
 							}
@@ -828,6 +823,18 @@ public class MainGUI2 extends JFrame {
 				}
 			}
 		}
+	}
+	
+	/**
+	 *  Called when a ticket item is finished to store it in the current ticket
+	 */
+	public void finalizeTicketItem() {
+		currentTicket.addArticle(currentItemAtDesk);
+		enCours.setText(String.valueOf(currentItemAtDesk.getQuantity())+" x "+currentArticleAtDesk.getName());
+		currentItemAtDesk = null;
+		currentArticleAtDesk = null;
+		printTicketToScreen(currentTicket);
+		taskToDoLabel.setText("Other article or finish");
 	}
 	
 	
