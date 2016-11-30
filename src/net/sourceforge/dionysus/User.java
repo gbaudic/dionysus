@@ -141,4 +141,8 @@ public class User implements Serializable,CSVAble {
 		return lastName+";"+firstName+";"+promo+";"+bal+";"+paidCaution;
 	}
 	
+	public String csvHeader() {
+	    return "# Last name;First name;Promo;Balance;Paid caution";
+	}
+	
 }

@@ -23,5 +23,5 @@ package net.sourceforge.dionysus;
  */
 public interface CSVAble {
 	public String toCSV();
-	//public String csvHeader();
+	public String csvHeader();
 }

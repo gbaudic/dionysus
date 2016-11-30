@@ -25,7 +25,7 @@ import java.util.*;
  * The base class for transactions, which is the process of buying a single article
  * Consequently, there will be several transactions for one ticket, even if there is only
  * one payment operation.
- * 
+ * Transactions are immutable. 
  */
 public class Transaction implements Serializable,CSVAble {
 
@@ -57,8 +57,7 @@ public class Transaction implements Serializable,CSVAble {
 		this.vendor = v;
 	}
 	
-	public Transaction(Transaction cancelledTransaction)
-	{
+	public Transaction(Transaction cancelledTransaction) {
 		this.amount = new Price(cancelledTransaction.getAmount().getPrice());
 		this.sourceUser = cancelledTransaction.getDestUser();
 		this.destUser = cancelledTransaction.getSourceUser();
@@ -77,8 +76,7 @@ public class Transaction implements Serializable,CSVAble {
 	 * 
 	 * @return a nice String representing this Transaction
 	 */
-	public String print()
-	{
+	public String print() {
 		return "On "+DateFormat.getDateInstance().format(date)+", "+String.valueOf(numberOfItems)+" "+article.getName()+" ("+amount.toString()+")";
 	}
 
@@ -132,5 +130,8 @@ public class Transaction implements Serializable,CSVAble {
 		return null;
 	}
 	
-	
+	public String csvHeader() {
+	    // TODO Auto-generated method stub
+	    return null;
+	}
 }

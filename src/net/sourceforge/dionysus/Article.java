@@ -36,8 +36,8 @@ public class Article implements Serializable, CSVAble {
 	private boolean isActive; //Is currently being used (ie., is available in the pub at this very moment)
 	private boolean hasBeenUsed; /* Has already been used at least once and cannot be deleted permanently, 
 	(otherwise corresponding transactions cannot be reverted without errors) */
-	private boolean isCountable; /*Allows to distinguish between countable (two bottles) and uncountable (531g of sugar).
-	Useless in the case of a student pub, but useful for other shops*/
+	private boolean isCountable; /* Allows to distinguish between countable (two bottles) and uncountable (531g of sugar).
+	Useless in the case of a student pub, but useful for other shops */
 	public static final int QUANTITY_DECIMALS = 3;
 	
 	/**
@@ -194,6 +194,10 @@ public class Article implements Serializable, CSVAble {
 		StringBuilder csvline = new StringBuilder(name+";"+code+";");
 		
 		return csvline.toString();
+	}
+	
+	public String csvHeader() {
+	    return "# Name;Code;";
 	}
 
 }
