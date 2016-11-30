@@ -395,50 +395,59 @@ public class MainGUI2 extends JFrame {
 					if(saisieField.getText().length() > 0){
 						//Validate the content in the TextField
 						//TODO: change this so we can accommodate non-integer numbers in a locale-independent way
-						long saisie = Long.parseLong(saisieField.getText());
-						saisieField.setText(null);
-
-						if(currentItemAtDesk == null){
-							//New TicketItem
-							currentArticleAtDesk = catalogue.getArticleByCode(saisie);
+						switch(currentState){
+						case TICKET_IDLE: //article being chosen
+						    long saisie = Long.parseLong(saisieField.getText());
+						    saisieField.setText(null);
+						    currentArticleAtDesk = catalogue.getArticleByCode(saisie);
 							if(currentArticleAtDesk != null){
-								currentItemAtDesk = new TicketItem(currentArticleAtDesk, -1, 0);
+								currentItemAtDesk = new TicketItem(currentArticleAtDesk);
 
 								if(currentArticleAtDesk.getNumberOfPrices() > 1){
+								    //More than 1 price id
 									taskToDoLabel.setText("Select fee");
-								} else {
-									currentItemAtDesk.setFee(0);
+									currentState = TicketState.PRICE;
+									enCours.setText("? x "+currentArticleAtDesk.getName());
+								} else if(!currentArticleAtDesk.isCountable()){
+								    //Only 1 price id, quantity to set
 									taskToDoLabel.setText("Select quantity");
+									currentState = TicketState.QUANTITY;
+									enCours.setText("? x "+currentArticleAtDesk.getName());
+								} else {
+								    //Only 1 price id, no quantity to set: add item to ticket
+								    finalizeTicketItem();
 								}
-								enCours.setText("? x "+currentArticleAtDesk.getName());
-								return;
 							} else {
 								JOptionPane.showMessageDialog(null,"Unknown article!", "Error", JOptionPane.WARNING_MESSAGE);
-								return;
 							}
-						} else {
-							//Complete the current TicketItem
-							if(currentItemAtDesk.getFee() == -1){
-								//Fee not entered
-								if(saisie < 0 || saisie >= currentArticleAtDesk.getNumberOfPrices()){
-									JOptionPane.showMessageDialog(null,"Invalid fee for this article!", "Error", JOptionPane.WARNING_MESSAGE);
-									return;
-								} else {
-									currentItemAtDesk.setFee((int) saisie);
-									taskToDoLabel.setText("Select quantity");
-									return;
-								}
+							break;
+						case QUANTITY: //quantity being chosen
+						    double saisie2 = Double.parseDouble(saisieField.getText());
+						    saisieField.setText(null);
+						    if(saisie2 <= 0){
+								JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
 							} else {
-								//Quantity not entered
-								if(saisie <= 0){
-									JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
-									return;
-								} else {
-									currentItemAtDesk.setQuantity((int) saisie);
-									finalizeTicketItem();
-									return;
+								currentItemAtDesk.setQuantity((int) saisie2);
+								finalizeTicketItem();
+							}
+							break;
+						case PRICE: //price being chosen
+						    long saisie3 = Long.parseLong(saisieField.getText());
+						    saisieField.setText(null);
+						    if(saisie3 < 0 || saisie3 >= currentArticleAtDesk.getNumberOfPrices()){
+									JOptionPane.showMessageDialog(null,"Invalid fee for this article!", "Error", JOptionPane.WARNING_MESSAGE);
+							} else {
+								currentItemAtDesk.setFee((int) saisie3);
+								if(!currentArticleAtDesk.isCountable()){
+									taskToDoLabel.setText("Select quantity");
+									currentState = TicketState.QUANTITY;
+							    } else {
+									finalizeTicketItem(); 
 								}
 							}
+						    break;
+						default:
+						    break;
 						}
 					} else {
 						//Validations without content in the TextField
@@ -469,6 +478,7 @@ public class MainGUI2 extends JFrame {
 
 				} catch (NumberFormatException nfe){
 					nfe.printStackTrace();
+					//TODO: more graceful and user-friendly error handling here
 				}
 			}
 		});
@@ -828,13 +838,14 @@ public class MainGUI2 extends JFrame {
 	/**
 	 *  Called when a ticket item is finished to store it in the current ticket
 	 */
-	public void finalizeTicketItem() {
+	private void finalizeTicketItem() {
 		currentTicket.addArticle(currentItemAtDesk);
 		enCours.setText(String.valueOf(currentItemAtDesk.getQuantity())+" x "+currentArticleAtDesk.getName());
 		currentItemAtDesk = null;
 		currentArticleAtDesk = null;
 		printTicketToScreen(currentTicket);
 		taskToDoLabel.setText("Other article or finish");
+		currentState = TicketState.TICKET_IDLE;
 	}
 	
 	
@@ -843,7 +854,7 @@ public class MainGUI2 extends JFrame {
 	 */
 	public void finalizeTicket(){
 		//Save transactions
-		currentTicket.submit(null, journal,currentVendor);
+		currentTicket.submit(null, journal, currentVendor);
 		currentTicket.saveTicketToText();
 		
 		//Save updated databases
@@ -876,7 +887,7 @@ public class MainGUI2 extends JFrame {
 	 * Display ticket information at the appropriate places in GUI
 	 * @param t the ticket to display
 	 */
-	public void printTicketToScreen(Ticket t) {
+	private void printTicketToScreen(Ticket t) {
 	    if(t != null) {
 	        ticketTextArea.setText(null);
 		    for(TicketItem ti : t.getItems()) {
