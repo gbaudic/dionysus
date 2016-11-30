@@ -19,6 +19,7 @@ package net.sourceforge.dionysus;
 
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.awt.Color;
 
 /**
  * A category to sort articles
@@ -31,6 +32,7 @@ public class Category implements Serializable {
 	private String name; //Name of the category
 	private String imagePath; //Absolute path to an image
 	private ArrayList<Article> articlesList;
+	private Color color; //Background color of button for this category
 	
 	/**
 	 * @param name name of the category
@@ -41,6 +43,7 @@ public class Category implements Serializable {
 		this.name = name;
 		this.imagePath = imagePath;
 		this.articlesList = articlesList;
+		this.color = null;
 	}
 	
 	
@@ -52,6 +55,7 @@ public class Category implements Serializable {
 		this.name = name;
 		this.imagePath = imagePath;
 		articlesList = new ArrayList<Article>();
+		this.color = null;
 	}
 
 
@@ -86,6 +90,20 @@ public class Category implements Serializable {
 	}
 	
 	/**
+	 * @return the background color for buttons
+	 */
+	public Color getColor() {
+		return color;
+	}
+	
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	
+	/**
 	 * @return the articlesList
 	 */
 	public ArrayList<Article> getArticlesList() {
@@ -98,4 +116,6 @@ public class Category implements Serializable {
 		}
 		
 	}
+	
+	//remove
 }

@@ -477,8 +477,8 @@ public class MainGUI2 extends JFrame {
 
 
 				} catch (NumberFormatException nfe){
+					JOptionPane.showMessageDialog(null,"Invalid input! Cannot parse a number.", "Error", JOptionPane.WARNING_MESSAGE);
 					nfe.printStackTrace();
-					//TODO: more graceful and user-friendly error handling here
 				}
 			}
 		});
@@ -505,16 +505,22 @@ public class MainGUI2 extends JFrame {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							if(currentItemAtDesk == null){
+							if(currentState == TicketState.TICKET_IDLE){
 								currentArticleAtDesk = c;
-								currentItemAtDesk = new TicketItem(c, -1, 0);
+								currentItemAtDesk = new TicketItem(c);
 								enCours.setText("? x "+c.getName());
 								
 								if(c.getNumberOfPrices() > 1){
-									taskToDoLabel.setText("Choose fee");
+									taskToDoLabel.setText("Select fee");
+									currentState = TicketState.PRICE;
+								} else if(!currentArticleAtDesk.isCountable()){
+								    //Only 1 price id, quantity to set
+									taskToDoLabel.setText("Select quantity");
+									currentState = TicketState.QUANTITY;
+									enCours.setText("? x "+currentArticleAtDesk.getName());
 								} else {
-									taskToDoLabel.setText("Choose quantity");
-									currentItemAtDesk.setFee(0);
+								    //Only 1 price id, no quantity to set: add item to ticket
+								    finalizeTicketItem();
 								}
 							}
 						}

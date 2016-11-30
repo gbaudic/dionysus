@@ -233,8 +233,7 @@ public class NewUserDialog2 extends JDialog {
 	 * Getter for the current user
 	 * @return the user being edited/created
 	 */
-	public User getUser()
-	{
+	public User getUser(){
 		//this.setVisible(true);
 		return this.user;
 	}
