@@ -1,4 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = 'net.sourceforge.dionysus.gui.MainGUI2'
 
 sourceSets {
     main {
@@ -8,5 +12,13 @@ sourceSets {
         resources {
             srcDirs = ['images']
         }
+    }
+}
+
+jar {
+    baseName = 'dionysus'
+    version = '0.3.0'
+    manifest {
+        attributes 'Main-Class': 'net.sourceforge.dionysus.gui.MainGUI2'
     }
 }
