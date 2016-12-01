@@ -266,6 +266,8 @@ public class NewArticleDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						try {
+							int priceChecksum = validatePrices();
+							
 							Price p0 = new Price(Double.parseDouble(price0Field.getText()));
 							Price p1 = null;
 							if( !price1Field.getText().isEmpty() ){
@@ -307,7 +309,9 @@ public class NewArticleDialog extends JDialog {
 							}
 							setVisible(false);
 						} catch (NumberFormatException e){
-							e.printStackTrace();
+							JOptionPane.showMessageDialog(null,"Invalid input!", "Error", JOptionPane.WARNING_MESSAGE);
+						} catch (IllegalArgumentException e) {
+							//TODO
 						}
 					}
 				});
@@ -334,7 +338,7 @@ public class NewArticleDialog extends JDialog {
 
 	/**
 	 * Constructor with argument for further editing
-	 * @param a
+	 * @param a article to use
 	 */
 	public NewArticleDialog(Article a){
 		this();
@@ -380,6 +384,21 @@ public class NewArticleDialog extends JDialog {
 
 	public Article getArticle(){
 		return this.article;
+	}
+	
+	/**
+	 *  Check that prices have meaningful values and are correctly filled
+	 */
+	private int validatePrices() throws IllegalArgumentException {
+		int result = 0;
+		if(!price0Field.getText().isEmpty())
+			result += 1;
+		if(!price1Field.getText().isEmpty())
+			result += 2;
+		if(!price2Field.getText().isEmpty())
+			result += 4;
+		
+		return result;
 	}
 
 }

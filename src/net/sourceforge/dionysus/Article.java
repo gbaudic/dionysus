@@ -29,7 +29,7 @@ public class Article implements Serializable, CSVAble {
 	private String name;
 	private long code; //long code
 	private Price prices []; //articles can have different prices (max 3): members of student union, non-members, visitors (for example)
-	private int stock; //current quantity
+	private int stock; //current quantity: units or (grams or milliliters)
 	private int limitStock; //lower bound for alerts
 	private boolean hasStockMgmtEnabled; //inventory management
 	private boolean hasStockAlertEnabled; //alert when low inventory
@@ -144,7 +144,8 @@ public class Article implements Serializable, CSVAble {
 	}
 
 	public void setLimitStock(int limitStock) {
-		this.limitStock = limitStock;
+		if(limitStock >= 0)
+			this.limitStock = limitStock;
 	}
 
 	public void setStockMgmt(boolean hasStockMgmtEnabled) {
@@ -197,7 +198,7 @@ public class Article implements Serializable, CSVAble {
 	}
 	
 	public String csvHeader() {
-	    return "# Name;Code;";
+	    return "# Name;Code;Price0;Price1;Price2;Stock;Limit;Management;Alert;Active;Used;Countable";
 	}
 
 }

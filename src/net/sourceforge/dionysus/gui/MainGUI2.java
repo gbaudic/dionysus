@@ -208,6 +208,21 @@ public class MainGUI2 extends JFrame {
 		});
 		mnFile.add(mntmQuit);
 		
+		JMenu mnExport = new JMenu("Export");
+		menuBar.add(mnExport);
+		
+		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
+		mnExport.add(mntmExportUsersLegacy);
+		
+		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV (TBD)");
+		mnExport.add(mntmExportUsersCSV);
+		
+		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV (TBD)");
+		mnExport.add(mntmExportArticlesCSV);
+		
+		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV (TBD)");
+		mnExport.add(mntmExportTransCSV);
+		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
@@ -242,7 +257,7 @@ public class MainGUI2 extends JFrame {
 		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 0;
-		gbc_tabbedPane.weighty = 0.8;
+		gbc_tabbedPane.weighty = 0.85;
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 		
 		JPanel vueP = new JPanel();
@@ -797,7 +812,7 @@ public class MainGUI2 extends JFrame {
 		gbc_alertTextArea.fill = GridBagConstraints.BOTH;
 		gbc_alertTextArea.gridx = 0;
 		gbc_alertTextArea.gridy = 1;
-		gbc_alertTextArea.weighty = 0.2;
+		gbc_alertTextArea.weighty = 0.15;
 		contentPane.add(alertScrollPane, gbc_alertTextArea);
 		
 		updateStockAlerts();
