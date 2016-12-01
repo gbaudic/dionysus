@@ -57,7 +57,7 @@ public class PasswordDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static final String passFile = "passe.txt";
 	private static final String loginFile = "logins.txt";
-	private final JPanel contentPanel = new JPanel();
+	private final JPanel contentPanel;
 	private char[] correctPassword;
 	private JPasswordField passwordField;
 	private HashMap<String, Vendor> database;
@@ -70,6 +70,7 @@ public class PasswordDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public PasswordDialog() {
+		contentPanel = new JPanel();
 		setResizable(false);
 		setTitle("Identification required");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -133,7 +134,7 @@ public class PasswordDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon("images/gtk-apply.png");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 				okButton.addActionListener(new ActionListener(){
@@ -157,7 +158,7 @@ public class PasswordDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon("images/gtk-cancel.png");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 				cancelButton.addActionListener(new ActionListener(){
@@ -213,7 +214,7 @@ public class PasswordDialog extends JDialog {
 				String [] pieces = line.split(":");
 				if(pieces.length == 3){
 					//Format is login:display_name:password
-					database.put(pieces[0], new Vendor(pieces[0],pieces[1],pieces[2]) );
+					database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]) );
 				} else {
 					JOptionPane.showMessageDialog(null, "Bad line encountered while parsing login file.", "Warning", JOptionPane.WARNING_MESSAGE);
 				}
@@ -224,6 +225,7 @@ public class PasswordDialog extends JDialog {
 			s.close();
 		} catch (FileNotFoundException e){
 			JOptionPane.showMessageDialog(null, "Login file not found. \nIt should be logins.txt", "Error", JOptionPane.ERROR_MESSAGE);
+			System.exit(-1); //We need to exit here, because there is no way the user can login. 
 		} catch (NoSuchElementException e){
 			//do nothing, we simply have reached the end of the file
 		}

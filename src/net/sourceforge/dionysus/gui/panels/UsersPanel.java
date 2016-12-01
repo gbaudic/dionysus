@@ -105,9 +105,9 @@ public class UsersPanel extends JPanel {
 		add(userRechercheField, gbc_userRechercheField);
 		userRechercheField.setColumns(10);
 		
-		ImageIcon plus = new ImageIcon("images/list-add.png");
-		ImageIcon minus = new ImageIcon("images/list-remove.png");
-		ImageIcon edit = new ImageIcon("images/gtk-edit.png");
+		ImageIcon plus = new ImageIcon(getClass().getResource("/list-add.png"));
+		ImageIcon minus = new ImageIcon(getClass().getResource("/list-remove.png"));
+		ImageIcon edit = new ImageIcon(getClass().getResource("/gtk-edit.png"));
 		JButton btnAddUser = new JButton("Add", plus);
 		GridBagConstraints gbc_btnAddUser = new GridBagConstraints();
 		gbc_btnAddUser.insets = new Insets(0, 0, 5, 5);

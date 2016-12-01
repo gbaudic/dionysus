@@ -173,7 +173,7 @@ public class NewUserDialog2 extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon("images/gtk-apply.png");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 				
@@ -186,7 +186,7 @@ public class NewUserDialog2 extends JDialog {
 							Integer i = new Integer((Integer) promoChooser.getValue());
 							double menton = 0; //the variable name is here a pun (in French)
 							
-							try{
+							try {
 								menton = Double.parseDouble(soldeField.getText());
 							} catch (NumberFormatException e) {
 								JOptionPane.showMessageDialog(null, "Failed to retrieve user balance!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -204,7 +204,7 @@ public class NewUserDialog2 extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon("images/gtk-cancel.png");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 				

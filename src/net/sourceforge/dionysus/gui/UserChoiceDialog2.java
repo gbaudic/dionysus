@@ -150,7 +150,7 @@ public class UserChoiceDialog2 extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon("images/gtk-apply.png");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 				okButton.addActionListener(new ActionListener() {
@@ -170,7 +170,7 @@ public class UserChoiceDialog2 extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon("images/gtk-cancel.png");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 				cancelButton.addActionListener(new ActionListener(){

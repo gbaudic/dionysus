@@ -790,7 +790,7 @@ public class MainGUI2 extends JFrame {
 		//********************************************
 		alertTextArea = new JTextArea();
 		alertTextArea.setColumns(8);
-		alertTextArea.setRows(30);
+		alertTextArea.setRows(10);
 		alertTextArea.setEditable(false);
 		JScrollPane alertScrollPane = new JScrollPane(alertTextArea);
 		GridBagConstraints gbc_alertTextArea = new GridBagConstraints();

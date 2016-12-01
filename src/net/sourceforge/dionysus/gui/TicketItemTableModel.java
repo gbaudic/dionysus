@@ -38,7 +38,7 @@ public class TicketItemTableModel extends DefaultTableModel {
 		return columnTypes[columnIndex];
 	}
 	boolean[] columnEditables = new boolean[] {
-			false, false, false
+			false, true, false
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];

@@ -104,9 +104,9 @@ public class ArticlesPanel extends JPanel {
 		add(articleRechercheField, gbc_textField);
 		articleRechercheField.setColumns(10);
 		
-		ImageIcon plus = new ImageIcon("images/list-add.png");
-		ImageIcon minus = new ImageIcon("images/list-remove.png");
-		ImageIcon edit = new ImageIcon("images/gtk-edit.png");		
+		ImageIcon plus = new ImageIcon(getClass().getResource("/list-add.png"));
+		ImageIcon minus = new ImageIcon(getClass().getResource("/list-remove.png"));
+		ImageIcon edit = new ImageIcon(getClass().getResource("/gtk-edit.png"));		
 		
 		JButton btnAddArticle = new JButton("Add", plus);
 		GridBagConstraints gbc_btnAddArticle = new GridBagConstraints();

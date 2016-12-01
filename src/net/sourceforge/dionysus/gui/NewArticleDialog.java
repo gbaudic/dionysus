@@ -49,11 +49,11 @@ import net.sourceforge.dionysus.*;
 public class NewArticleDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
+	private final JPanel contentPanel;
 	private JTextField nomField, codeField, stockField, alertField;
-	private JTextField tarif0Field;
-	private JTextField tarif1Field;
-	private JTextField tarif2Field;
+	private JTextField price0Field;
+	private JTextField price1Field;
+	private JTextField price2Field;
 	private JCheckBox chckbxActive, chckbxStockEnabled, chckbxAlertEnabled, chckbxCountable;
 
 	private Article article;
@@ -63,6 +63,7 @@ public class NewArticleDialog extends JDialog {
 	 * Default constructor without argument for new articles
 	 */
 	public NewArticleDialog() {
+		contentPanel = new JPanel();
 		setTitle("Article record");
 		//setBounds(100, 100, 369, 290);
 		setModal(true);
@@ -115,7 +116,7 @@ public class NewArticleDialog extends JDialog {
 			gbc_codeField.gridx = 2;
 			gbc_codeField.gridy = 1;
 			contentPanel.add(codeField, gbc_codeField);
-			codeField.setColumns(10);
+			codeField.setColumns(13); //Barcodes have a length of 13
 		}
 		{
 			chckbxStockEnabled = new JCheckBox("");
@@ -184,14 +185,14 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		}
 		{
-			tarif0Field = new JTextField();
-			GridBagConstraints gbc_tarif0Field = new GridBagConstraints();
-			gbc_tarif0Field.insets = new Insets(0, 0, 5, 0);
-			gbc_tarif0Field.fill = GridBagConstraints.HORIZONTAL;
-			gbc_tarif0Field.gridx = 2;
-			gbc_tarif0Field.gridy = 4;
-			contentPanel.add(tarif0Field, gbc_tarif0Field);
-			tarif0Field.setColumns(10);
+			price0Field = new JTextField();
+			GridBagConstraints gbc_price0Field = new GridBagConstraints();
+			gbc_price0Field.insets = new Insets(0, 0, 5, 0);
+			gbc_price0Field.fill = GridBagConstraints.HORIZONTAL;
+			gbc_price0Field.gridx = 2;
+			gbc_price0Field.gridy = 4;
+			contentPanel.add(price0Field, gbc_price0Field);
+			price0Field.setColumns(10);
 		}
 		{
 			JLabel lblNewLabel_4 = new JLabel("Price #1:");
@@ -204,14 +205,14 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		}
 		{
-			tarif1Field = new JTextField();
-			GridBagConstraints gbc_tarif1Field = new GridBagConstraints();
-			gbc_tarif1Field.insets = new Insets(0, 0, 5, 0);
-			gbc_tarif1Field.fill = GridBagConstraints.HORIZONTAL;
-			gbc_tarif1Field.gridx = 2;
-			gbc_tarif1Field.gridy = 5;
-			contentPanel.add(tarif1Field, gbc_tarif1Field);
-			tarif1Field.setColumns(10);
+			price1Field = new JTextField();
+			GridBagConstraints gbc_price1Field = new GridBagConstraints();
+			gbc_price1Field.insets = new Insets(0, 0, 5, 0);
+			gbc_price1Field.fill = GridBagConstraints.HORIZONTAL;
+			gbc_price1Field.gridx = 2;
+			gbc_price1Field.gridy = 5;
+			contentPanel.add(price1Field, gbc_price1Field);
+			price1Field.setColumns(10);
 		}
 		{
 			JLabel lblNewLabel_5 = new JLabel("Price #2:");
@@ -224,14 +225,14 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		}
 		{
-			tarif2Field = new JTextField();
-			GridBagConstraints gbc_tarif2Field = new GridBagConstraints();
-			gbc_tarif2Field.insets = new Insets(0, 0, 5, 0);
-			gbc_tarif2Field.fill = GridBagConstraints.HORIZONTAL;
-			gbc_tarif2Field.gridx = 2;
-			gbc_tarif2Field.gridy = 6;
-			contentPanel.add(tarif2Field, gbc_tarif2Field);
-			tarif2Field.setColumns(10);
+			price2Field = new JTextField();
+			GridBagConstraints gbc_price2Field = new GridBagConstraints();
+			gbc_price2Field.insets = new Insets(0, 0, 5, 0);
+			gbc_price2Field.fill = GridBagConstraints.HORIZONTAL;
+			gbc_price2Field.gridx = 2;
+			gbc_price2Field.gridy = 6;
+			contentPanel.add(price2Field, gbc_price2Field);
+			price2Field.setColumns(10);
 		}
 		{
 			chckbxActive = new JCheckBox("Activate article");
@@ -256,7 +257,7 @@ public class NewArticleDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon("images/gtk-apply.png");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 
@@ -265,14 +266,14 @@ public class NewArticleDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-							Price p0 = new Price(Double.parseDouble(tarif0Field.getText()));
+							Price p0 = new Price(Double.parseDouble(price0Field.getText()));
 							Price p1 = null;
-							if( !tarif1Field.getText().isEmpty() ){
-								p1 = new Price(Double.parseDouble(tarif1Field.getText()));
+							if( !price1Field.getText().isEmpty() ){
+								p1 = new Price(Double.parseDouble(price1Field.getText()));
 							}
 							Price p2 = null;
-							if( !tarif2Field.getText().isEmpty() ){
-								p2 = new Price(Double.parseDouble(tarif2Field.getText()));
+							if( !price2Field.getText().isEmpty() ){
+								p2 = new Price(Double.parseDouble(price2Field.getText()));
 							}
 							Price[] prices;
 							if(p2 == null){
@@ -315,7 +316,7 @@ public class NewArticleDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon("images/gtk-cancel.png");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 
@@ -365,13 +366,14 @@ public class NewArticleDialog extends JDialog {
 			if(a.hasStockAlertEnabled() )
 				chckbxAlertEnabled.setSelected(true);
 
-			tarif0Field.setText(String.valueOf(a.getArticlePrice()));
+			price0Field.setText(String.valueOf(a.getArticlePrice()));
 			int n = a.getNumberOfPrices();
 			if(n > 1){
-				if(n > 2)
-					tarif2Field.setText(String.valueOf(a.getArticlePrice(2)));
+				if(n > 2){
+					price2Field.setText(String.valueOf(a.getArticlePrice(2)));
+				}
 
-				tarif1Field.setText(String.valueOf(a.getArticlePrice(1)));
+				price1Field.setText(String.valueOf(a.getArticlePrice(1)));
 			}	
 		}
 	}

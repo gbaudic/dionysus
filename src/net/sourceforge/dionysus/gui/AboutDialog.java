@@ -124,9 +124,9 @@ public class AboutDialog extends JDialog {
 		gbc_lblLicenseInfo.gridy = 5;
 		panel.add(lblLicenseInfo, gbc_lblLicenseInfo);
 		
-		ImageIcon ok = new ImageIcon("images/gtk-ok.png");
+		ImageIcon ok = new ImageIcon(getClass().getResource("/gtk-ok.png"));
 		
-		JButton btnOK = new JButton("OK",ok);
+		JButton btnOK = new JButton("OK", ok);
 		GridBagConstraints gbc_btnOK = new GridBagConstraints();
 		gbc_btnOK.anchor = GridBagConstraints.NORTH;
 		gbc_btnOK.gridx = 0;

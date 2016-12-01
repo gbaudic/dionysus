@@ -99,7 +99,7 @@ public class TransactionsPanel extends JPanel {
 		add(transactionRechercheField, gbc_textField_1);
 		transactionRechercheField.setColumns(10);
 		
-		ImageIcon cancel = new ImageIcon("images/gtk-cancel.png");
+		ImageIcon cancel = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 		//TODO: this is done at least 4 times in the code: factor!
 		
 		JButton btnNewButton_6 = new JButton("Cancel", cancel);

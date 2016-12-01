@@ -43,10 +43,11 @@ public class NewCategoryDialog extends JDialog {
 	private static final long serialVersionUID = -3243725927349670922L;
 	private JTextField nameField;
 	private JTextField imageField;
-	private JPanel contentPanel = new JPanel();
+	private JPanel contentPanel;
 	private final JFileChooser fc = new JFileChooser();
 	
 	public NewCategoryDialog() {
+		contentPanel = new JPanel();
 		setModal(true);
 		setLocationRelativeTo(null);
 		setTitle("Category record");
@@ -122,7 +123,7 @@ public class NewCategoryDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon("images/gtk-apply.png");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 
@@ -142,7 +143,7 @@ public class NewCategoryDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon("images/gtk-cancel.png");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 

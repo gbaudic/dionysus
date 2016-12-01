@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 
 /**
  * Panel for the cash desk view
- *
+ * For the moment all this code is in MainGUI2...
  */
 public class CashDeskPanel extends JPanel {
 
