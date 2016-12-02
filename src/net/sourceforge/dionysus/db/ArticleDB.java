@@ -125,6 +125,7 @@ public class ArticleDB extends Database<Article> {
 			} else {
 				foodForTable[i][7] = "NA";
 			}
+			// TODO: additional fields!
 		}
 	}
 

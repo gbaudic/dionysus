@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,16 +39,20 @@ public class Ticket {
 	private double amount;
 	private PaymentMethod pMethod; //Only one payment method per ticket
 	private Vendor vendor;
+	private NumberFormat amountFormatter;
 	
 	public Ticket(User u) {
 		items = new ArrayList<TicketItem>();
 		customer = u;
+		amountFormatter = NumberFormat.getCurrencyInstance();
 	}
 	
 	public void addArticle(TicketItem newItem) {
-		items.add(newItem);
+		if(newItem != null && newItem.getQuantity() != 0) {
+			items.add(newItem);
 		
-		updateAmount();
+			updateAmount();
+		}		
 	}
 	
 	/**
@@ -138,13 +143,15 @@ public class Ticket {
 			}
 		}
 		
-		accu.append("Total: "+String.valueOf(amount)+"\r\nPaid by ");
+		accu.append("Total: "+amountFormatter.format(amount)+"\r\nPaid by ");
 		
 		if(pMethod != null){
 			accu.append(pMethod.getName());
 		} else {
 			accu.append("user account");
 		}
+		
+		accu.append("\r\nThanks for your purchase, welcome back");
 		
 		return accu.append("\r\n\r\n");
 	}
@@ -211,6 +218,18 @@ public class Ticket {
 		if(destUser != null && pMethod == null){
 			destUser.credite(amount);
 		}
+	}
+	
+	/**
+	 * Generates an array compliant with a display in a JTable component
+	 * @return an Object array
+	 */
+	public Object [][] getArrayForTables(){
+		Object [][] result = new Object[items.size()][3];
+		
+		//TODO
+		
+		return result;
 	}
 	
 }

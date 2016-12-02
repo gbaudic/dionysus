@@ -17,6 +17,8 @@
 
 package net.sourceforge.dionysus;
 
+import java.text.NumberFormat;
+
 /**
  * A ticket item, corresponding to a given number of a given article at a given price for a given total amount
  * (forgive me for giving such an explanation^^)
@@ -98,7 +100,7 @@ public class TicketItem {
 	public String toString() {
 	    String name = article != null ? article.getName() : "null";
 	    
-		return " "+String.valueOf(quantity)+" x "+name+"  "+String.valueOf(getAmount());
+		return " "+String.valueOf(quantity)+" x "+name+"  "+NumberFormat.getCurrencyInstance().format(getAmount());
 	}
 	
 	public void setQuantity(int q) {
