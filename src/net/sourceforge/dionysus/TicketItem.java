@@ -25,7 +25,7 @@ public class TicketItem {
 
 	private Article article;
 	private int fee; // the price id (not the price itself)
-	private int quantity;
+	private int quantity; // in units or in grams/milliliters depending on Article type
 	private double amount; //TODO: fix this to stay in cents here too
 	
 	public TicketItem(Article article) {
@@ -67,7 +67,15 @@ public class TicketItem {
 	 * (no rebates, special offers...)
 	 */
 	public void computeAmount() {
-		amount = (article.getArticlePrice(fee))*quantity;
+	    if(article != null){
+	        if(article.isCountable()) {
+		        amount = (article.getArticlePrice(fee))*quantity;
+		    } else {
+		        amount = (article.getArticlePrice(fee)/1000)*quantity;
+		    }
+		} else {
+		    amount = 0;
+		}
 	}
 	
 	/**
@@ -88,12 +96,16 @@ public class TicketItem {
 	}
 	
 	public String toString() {
-		return " "+String.valueOf(quantity)+" x "+article.getName()+"  "+String.valueOf(getAmount());
+	    String name = article != null ? article.getName() : "null";
+	    
+		return " "+String.valueOf(quantity)+" x "+name+"  "+String.valueOf(getAmount());
 	}
 	
 	public void setQuantity(int q) {
-		quantity = q;
-		computeAmount();
+	    if(q > 0) {
+	        quantity = q;
+		    computeAmount();
+	    }
 	}
 	
 	/**
