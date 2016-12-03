@@ -236,6 +236,7 @@ public class Ticket {
 					result[i][1] = df.format(ti.getQuantity());
 				} else {
 					result[i][1] = df.format(ti.getQuantity()/1000.0);
+				}
 				
 				result[i][2] = NumberFormat.getCurrencyInstance().format(ti.getAmount());
 			}
