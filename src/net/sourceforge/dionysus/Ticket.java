@@ -227,7 +227,19 @@ public class Ticket {
 	public Object [][] getArrayForTables(){
 		Object [][] result = new Object[items.size()][3];
 		
-		//TODO
+		for(int i = 0 ; i < items.size() ; i++){
+			TicketItem ti = items.get(i);
+			if(ti != null) {
+				result[i][0] = ti.getArticle().getName();
+				DecimalFormat df = new DecimalFormat("###,###.###");
+				if(ti.getArticle().isCountable()){
+					result[i][1] = df.format(ti.getQuantity());
+				} else {
+					result[i][1] = df.format(ti.getQuantity()/1000.0);
+				
+				result[i][2] = NumberFormat.getCurrencyInstance().format(ti.getAmount());
+			}
+		}
 		
 		return result;
 	}

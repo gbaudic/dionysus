@@ -32,7 +32,7 @@ public class User implements Serializable,CSVAble {
 	private String firstName;
 	private int promo;
 	private int balance; //Balance in cents
-	private boolean paidCaution; 
+	private boolean paidDeposit; 
 	/* To prevent students from staying for too long with a negative balance (and eventually leaving university without paying...),
 	 * they had to give an amount of money that would be only used if they get in such a situation. This flag tells if they have paid it or not.
 	*/
@@ -42,13 +42,13 @@ public class User implements Serializable,CSVAble {
 		this.firstName = firstName;
 		this.promo = promo;
 		this.balance = balance;
-		paidCaution = false;
+		paidDeposit = false;
 	}
 
 	public User(String lastName, String firstName, int promo, int balance,
-			boolean paidCaution) {
+			boolean paidDeposit) {
 		this(lastName,firstName,promo,balance);
-		this.paidCaution = paidCaution;
+		this.paidDeposit = paidDeposit;
 	}
 
 	/**
@@ -118,11 +118,11 @@ public class User implements Serializable,CSVAble {
 	}
 	
 	public boolean hasPaidCaution() {
-		return paidCaution;
+		return paidDeposit;
 	}
 
 	public void setPaidCaution(boolean paidCaution) {
-		this.paidCaution = paidCaution;
+		this.paidDeposit = paidDeposit;
 	}
 	
 	/**
@@ -138,11 +138,11 @@ public class User implements Serializable,CSVAble {
 	@Override
 	public String toCSV() {
 		String bal = String.valueOf(balance / 100.0);
-		return lastName+";"+firstName+";"+promo+";"+bal+";"+paidCaution;
+		return lastName+";"+firstName+";"+promo+";"+bal+";"+paidDeposit;
 	}
 	
 	public String csvHeader() {
-	    return "# Last name;First name;Promo;Balance;Paid caution";
+	    return "# Last name;First name;Promo;Balance;Paid deposit";
 	}
 	
 }

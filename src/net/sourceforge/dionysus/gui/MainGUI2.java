@@ -17,22 +17,17 @@
 
 package net.sourceforge.dionysus.gui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import java.awt.EventQueue;
 import java.awt.GridBagLayout;
-
-import javax.swing.JTabbedPane;
-
 import java.awt.GridBagConstraints;
-
-import javax.swing.JTextArea;
-
 import java.awt.Insets;
 
+import javax.swing.JTextArea;
+import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -60,6 +55,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.util.Currency;
 import java.util.Locale;
+import java.text.NumberFormat;
 
 import javax.swing.JSeparator;
 
@@ -317,7 +313,7 @@ public class MainGUI2 extends JFrame {
 				
 				if(currentUserAtDesk != null){
 					nomLabel.setText(currentUserAtDesk.getNameWithPromo());
-					soldeLabel.setText(String.valueOf(currentUserAtDesk.getBalance()));
+					soldeLabel.setText(NumberFormat.getCurrencyInstance().format(currentUserAtDesk.getBalance()));
 					
 					currentTicket = new Ticket(currentUserAtDesk);
 					taskToDoLabel.setText("Choose article");
@@ -340,7 +336,7 @@ public class MainGUI2 extends JFrame {
 				currentUserAtDesk = null;
 
 				nomLabel.setText("default (00)"); 
-				soldeLabel.setText(String.valueOf(0.00));
+				soldeLabel.setText(NumberFormat.getCurrencyInstance().format(0.00));
 
 				currentTicket = new Ticket(currentUserAtDesk);
 				taskToDoLabel.setText("Choose article");
@@ -356,7 +352,7 @@ public class MainGUI2 extends JFrame {
 		gbc_lblSolde.gridy = 1;
 		panel.add(lblSolde, gbc_lblSolde);
 		
-		soldeLabel = new JLabel("-.--");
+		soldeLabel = new JLabel("--");
 		soldeLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GridBagConstraints gbc_soldeLabel = new GridBagConstraints();
 		gbc_soldeLabel.insets = new Insets(0, 0, 5, 5);
@@ -442,7 +438,7 @@ public class MainGUI2 extends JFrame {
 						    if(saisie2 <= 0){
 								JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
 							} else {
-								currentItemAtDesk.setQuantity((int) saisie2);
+								currentItemAtDesk.setQuantity((int) saisie2); //TODO: non-integer support !!!
 								finalizeTicketItem();
 							}
 							break;
@@ -480,7 +476,7 @@ public class MainGUI2 extends JFrame {
 							} else {
 								if(currentTicket.getPaymentMethod() == PaymentMethod.CASH){
 									double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-									JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
+									JOptionPane.showMessageDialog(null, "You owe "+NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
 								}
 								//Save the finished ticket
 								finalizeTicket();
@@ -758,12 +754,12 @@ public class MainGUI2 extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					if(currentTicket != null){
+					if(currentTicket != null && currentState == TicketState.TICKET_IDLE){
 						currentTicket.pay(p);
 
 						if(p == PaymentMethod.CASH){
 							double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-							JOptionPane.showMessageDialog(null, "You owe "+String.valueOf(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null, "You owe "+NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
 						} else {
 							JOptionPane.showMessageDialog(null, String.valueOf(currentTicket.getAmount())+" to be paid using "+ p.getName() +".\nClick OK when done.", "Payment", JOptionPane.PLAIN_MESSAGE);
 						}
@@ -893,7 +889,7 @@ public class MainGUI2 extends JFrame {
 		currentUserAtDesk = null;
 		currentItemAtDesk = null;
 		nomLabel.setText("no user selected");
-		soldeLabel.setText("-.--");
+		soldeLabel.setText("--");
 		
 		//Change current state
 		currentState = TicketState.IDLE;
@@ -919,13 +915,13 @@ public class MainGUI2 extends JFrame {
 		    }
 		
 		    //Same for total amount
-		    lblTotalTicket.setText(String.valueOf(t.getAmount()));
+		    lblTotalTicket.setText(NumberFormat.getCurrencyInstance().format(t.getAmount()));
 		
 		    //Same for balance after purchase
 		    if(currentUserAtDesk != null){
-			    lblSoldeApres.setText(String.valueOf(t.getBalanceAfterTicket()));
+			    lblSoldeApres.setText(NumberFormat.getCurrencyInstance().format(t.getBalanceAfterTicket()));
 		    } else {
-			    lblSoldeApres.setText("-.--");
+			    lblSoldeApres.setText("--");
 		    }
 		}
 	}

@@ -291,6 +291,8 @@ public class NewArticleDialog extends JDialog {
 								prices = new Price[3];
 								prices[0] = p0; prices[1] = p1; prices[2] = p2;
 							}
+							
+							//TODO: check code presence and not a duplicate
 
 							article = new Article(nomField.getText(), prices, Long.parseLong(codeField.getText()));
 

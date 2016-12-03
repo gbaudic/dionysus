@@ -73,7 +73,7 @@ public class TicketItem {
 	        if(article.isCountable()) {
 		        amount = (article.getArticlePrice(fee))*quantity;
 		    } else {
-		        amount = (article.getArticlePrice(fee)/1000)*quantity;
+		        amount = (article.getArticlePrice(fee)/1000.0)*quantity;
 		    }
 		} else {
 		    amount = 0;
