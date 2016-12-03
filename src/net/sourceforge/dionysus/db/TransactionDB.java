@@ -18,6 +18,7 @@
 package net.sourceforge.dionysus.db;
 
 import java.util.ArrayList;
+import java.text.NumberFormat;
 
 import net.sourceforge.dionysus.*;
 
@@ -37,7 +38,7 @@ public class TransactionDB extends Database<Transaction> {
 			foodForTable[i][0] = data.get(i).getDate();
 			foodForTable[i][1] = data.get(i).getArticle().getName();
 			foodForTable[i][2] = new Integer(data.get(i).getNumberOfItems());
-			foodForTable[i][3] = new Double(data.get(i).getAmount().getPrice()); //do not try to understand...
+			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getAmount().getPrice()); //do not try to understand...
 			
 			if(data.get(i).getSourceUser() != null){
 				foodForTable[i][4] = data.get(i).getSourceUser().getNameWithPromo();

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.text.NumberFormat;
 
 import javax.swing.JOptionPane;
 
@@ -143,7 +144,7 @@ public class UserDB extends Database<User> {
 			foodForTable[i][0] = data.get(i).getLastName();
 			foodForTable[i][1] = data.get(i).getFirstName();
 			foodForTable[i][2] = new Integer(data.get(i).getPromo());
-			foodForTable[i][3] = new Double(data.get(i).getBalance());
+			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getBalance());
 			foodForTable[i][4] = new Boolean(data.get(i).hasPaidCaution());
 		}
 	}

@@ -176,7 +176,7 @@ public class UserChoiceDialog2 extends JDialog {
 				cancelButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
 						setVisible(false);
-					}			
+					}
 				});
 				
 				buttonPane.add(cancelButton);

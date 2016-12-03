@@ -32,7 +32,7 @@ public class TicketItemTableModel extends DefaultTableModel {
 	}
 	
 	Class[] columnTypes = new Class[] {
-			String.class, Integer.class, Double.class
+			String.class, Double.class, String.class
 	};
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];

@@ -211,12 +211,14 @@ public class PasswordDialog extends JDialog {
 			String line = s.nextLine();
 			
 			while (line != null){
-				String [] pieces = line.split(":");
-				if(pieces.length == 3){
-					//Format is login:display_name:password
-					database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]) );
-				} else {
-					JOptionPane.showMessageDialog(null, "Bad line encountered while parsing login file.", "Warning", JOptionPane.WARNING_MESSAGE);
+                if(!line.startsWith("#")){
+                    String [] pieces = line.split(":");
+                    if(pieces.length == 3){
+                        //Format is login:display_name:password
+                        database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]) );
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Bad line encountered while parsing login file.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
 				}
 				
 				line = s.nextLine();

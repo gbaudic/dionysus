@@ -18,6 +18,7 @@
 package net.sourceforge.dionysus.db;
 
 import java.util.ArrayList;
+import java.text.NumberFormat;
 
 import javax.swing.JOptionPane;
 
@@ -100,19 +101,23 @@ public class ArticleDB extends Database<Article> {
 			foodForTable[i][0] = data.get(i).getName();
 			foodForTable[i][1] = new Long(data.get(i).getCode());
 			foodForTable[i][2] = new Boolean(data.get(i).isActive());
-			foodForTable[i][3] = new Double(data.get(i).getArticlePrice());
+			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getArticlePrice());
+			
+			double price1, price2;
 			
 			if(data.get(i).getNumberOfPrices() >= 1){
-				foodForTable[i][4] = new Double(data.get(i).getArticlePrice(1));
+				price1 = data.get(i).getArticlePrice(1);
 			} else {
-				foodForTable[i][4] = new Double(0.00);
+				price1 = 0.00;
 			}
+			foodForTable[i][4] = NumberFormat.getCurrencyInstance().format(price1);
 			
 			if(data.get(i).getNumberOfPrices() >= 2){
-				foodForTable[i][5] = new Double(data.get(i).getArticlePrice(2));
+				price2 = data.get(i).getArticlePrice(2);
 			} else {
-				foodForTable[i][5] = new Double(0.00);
+				price2 = 0.00;
 			}
+			foodForTable[i][5] = NumberFormat.getCurrencyInstance().format(price2);
 			
 			if(data.get(i).hasStockMgmtEnabled()){
 				foodForTable[i][6] = String.valueOf((data.get(i).getStock()));

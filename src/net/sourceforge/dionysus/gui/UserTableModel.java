@@ -30,7 +30,7 @@ public class UserTableModel extends DefaultTableModel {
 	
 	
 	Class[] columnTypes = new Class[] {
-			String.class, String.class, Integer.class, Double.class, Boolean.class
+			String.class, String.class, Integer.class, String.class, Boolean.class
 	};
 	
 	public Class getColumnClass(int columnIndex) {
