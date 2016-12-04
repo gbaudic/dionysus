@@ -38,6 +38,17 @@ public class Category implements Serializable {
 	 * @param name name of the category
 	 * @param imagePath 
 	 * @param articlesList
+	 * @param color
+	 */
+	public Category(String name, String imagePath, ArrayList<Article> articlesList, Color color) {
+		this(name, imagePath, articlesList);
+		this.color = color;
+	}
+	
+	/**
+	 * @param name name of the category
+	 * @param imagePath 
+	 * @param articlesList
 	 */
 	public Category(String name, String imagePath, ArrayList<Article> articlesList) {
 		this.name = name;

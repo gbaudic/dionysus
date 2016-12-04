@@ -162,6 +162,7 @@ public class Article implements Serializable, CSVAble {
 	
 	/**
 	 * Produces the tooltip text for the Cash desk view
+	 * Use of HTML is a trick to achieve multiline tooltips
 	 * @return the correct tooltip text
 	 */
 	public String getToolTipText(){

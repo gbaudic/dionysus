@@ -18,6 +18,7 @@
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 
 /**
  * Abstraction class to deal with amounts using cents instead of usual currency units
@@ -44,7 +45,7 @@ public class Price implements Serializable{
 	}
 	
 	public String toString() {
-		return String.valueOf(price/100.);
+		return NumberFormat.getCurrencyInstance().format(price/100.);
 	}
 	
 	public double getPrice() {
