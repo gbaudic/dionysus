@@ -120,8 +120,16 @@ public class ArticlesPanel extends JPanel {
 				NewArticleDialog nad = new NewArticleDialog();
 				nad.setVisible(true);
 				Article a = nad.getArticle();
-				catalogue.add(a);
-				refreshTable();
+				if(a != null) {
+					Article b = catalogue.getArticleByCode(a.getCode());
+					if(b == null) {
+						catalogue.add(a);
+						refreshTable();
+					} else {
+						JOptionPane.showMessageDialog(null, "An article with this code already exists.", "Error", JOptionPane.WARNING_MESSAGE);
+						nad.setVisible(true); //let the user edit to fix the error
+					}
+				}
 			}
 		});
 		add(btnAddArticle, gbc_btnAddArticle);
