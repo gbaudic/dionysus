@@ -401,100 +401,24 @@ public class MainGUI2 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-
-					if(saisieField.getText().length() > 0){
-						//Validate the content in the TextField
-						//TODO: change this so we can accommodate non-integer numbers in a locale-independent way
-						switch(currentState){
-						case TICKET_IDLE: //article being chosen
-						    long saisie = Long.parseLong(saisieField.getText());
-						    saisieField.setText(null);
-						    currentArticleAtDesk = catalogue.getArticleByCode(saisie);
-							if(currentArticleAtDesk != null){
-								currentItemAtDesk = new TicketItem(currentArticleAtDesk);
-
-								if(currentArticleAtDesk.getNumberOfPrices() > 1){
-								    //More than 1 price id
-									taskToDoLabel.setText("Select fee");
-									currentState = TicketState.PRICE;
-									enCours.setText("? x "+currentArticleAtDesk.getName());
-								} else if(!currentArticleAtDesk.isCountable()){
-								    //Only 1 price id, quantity to set
-									taskToDoLabel.setText("Select quantity");
-									currentState = TicketState.QUANTITY;
-									enCours.setText("? x "+currentArticleAtDesk.getName());
-								} else {
-								    //Only 1 price id, no quantity to set: add item to ticket
-								    finalizeTicketItem();
-								}
-							} else {
-								JOptionPane.showMessageDialog(null,"Unknown article!", "Error", JOptionPane.WARNING_MESSAGE);
-							}
-							break;
-						case QUANTITY: //quantity being chosen
-						    double saisie2 = Double.parseDouble(saisieField.getText());
-						    saisieField.setText(null);
-						    if(saisie2 <= 0){
-								JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
-							} else {
-								currentItemAtDesk.setQuantity((int) saisie2); //TODO: non-integer support !!!
-								finalizeTicketItem();
-							}
-							break;
-						case PRICE: //price being chosen
-						    long saisie3 = Long.parseLong(saisieField.getText());
-						    saisieField.setText(null);
-						    if(saisie3 < 0 || saisie3 >= currentArticleAtDesk.getNumberOfPrices()){
-									JOptionPane.showMessageDialog(null,"Invalid fee for this article!", "Error", JOptionPane.WARNING_MESSAGE);
-							} else {
-								currentItemAtDesk.setFee((int) saisie3);
-								if(!currentArticleAtDesk.isCountable()){
-									taskToDoLabel.setText("Select quantity");
-									currentState = TicketState.QUANTITY;
-							    } else {
-									finalizeTicketItem(); 
-								}
-							}
-						    break;
-						default:
-						    break;
-						}
-					} else {
-						//Validations without content in the TextField
-						if(currentTicket.getNumberOfItems() >= 1){
-							if(currentTicket.getPaymentMethod() == null){
-								if(currentUserAtDesk == null){
-									taskToDoLabel.setText("Choose payment method");
-									return;
-								} else {
-									//Save ticket
-									finalizeTicket();
-									
-									return;
-								}
-							} else {
-								if(currentTicket.getPaymentMethod() == PaymentMethod.CASH){
-									double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-									JOptionPane.showMessageDialog(null, "You owe "+NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
-								}
-								//Save the finished ticket
-								finalizeTicket();
-								return;
-							}
-							
-						}
-					}
-
-
-				} catch (NumberFormatException nfe){
-					JOptionPane.showMessageDialog(null,"Invalid input! Cannot parse a number.", "Error", JOptionPane.WARNING_MESSAGE);
-					nfe.printStackTrace();
-				}
+				inputLogic();
 			}
 		});
+		saisieField.getDocument().addDocumentListener(
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    insertUpdate(e);
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    if(saisieField.getText().length() == 13) //barcode length
+                        inputLogic();
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    //Nothing to do here
+                }
+            });
 		panel_2.add(saisieField);
-		saisieField.setColumns(10);
+		saisieField.setColumns(13);
 		
 		JPanel panel_articles = new JPanel();
 		GridBagConstraints gbc_panel_articles = new GridBagConstraints();
@@ -755,18 +679,24 @@ public class MainGUI2 extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					if(currentTicket != null && currentState == TicketState.TICKET_IDLE){
-						currentTicket.pay(p);
+			            currentTicket.pay(p);
 
-						if(p == PaymentMethod.CASH){
-							double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
-							JOptionPane.showMessageDialog(null, "You owe "+NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
-						} else {
-							JOptionPane.showMessageDialog(null, String.valueOf(currentTicket.getAmount())+" to be paid using "+ p.getName() +".\nClick OK when done.", "Payment", JOptionPane.PLAIN_MESSAGE);
-						}
-						//Save the finished ticket
-						finalizeTicket();
-						return;
-					}
+			            if(p == PaymentMethod.CASH){
+				            double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
+				            JOptionPane.showMessageDialog(null, 
+				                                          "You owe "+NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())+".",
+				                                          "", 
+				                                          JOptionPane.INFORMATION_MESSAGE);
+			            } else {
+				            JOptionPane.showMessageDialog(null, 
+				                                          String.valueOf(currentTicket.getAmount())+" to be paid using "+ p.getName() +".\nClick OK when done.", 
+				                                          "Payment", 
+				                                          JOptionPane.PLAIN_MESSAGE);
+			            }
+			            //Save the finished ticket
+			            finalizeTicket();
+			            return;
+		            }
 				}
 			});
 			
@@ -925,6 +855,97 @@ public class MainGUI2 extends JFrame {
 		    }
 		}
 	}
+	
+	/**
+	 * Contains the logic for input field validation
+	 */
+	private void inputLogic() {
+	    try {
+			if(saisieField.getText().length() > 0){
+				//Validate the content in the TextField
+				//TODO: change this so we can accommodate non-integer numbers in a locale-independent way
+				switch(currentState){
+				case TICKET_IDLE: //article being chosen
+				    long saisie = Long.parseLong(saisieField.getText());
+				    saisieField.setText(null);
+				    currentArticleAtDesk = catalogue.getArticleByCode(saisie);
+					if(currentArticleAtDesk != null){
+						currentItemAtDesk = new TicketItem(currentArticleAtDesk);
+
+						if(currentArticleAtDesk.getNumberOfPrices() > 1){
+						    //More than 1 price id
+							taskToDoLabel.setText("Select fee");
+							currentState = TicketState.PRICE;
+							enCours.setText("? x "+currentArticleAtDesk.getName());
+						} else if(!currentArticleAtDesk.isCountable()){
+						    //Only 1 price id, quantity to set
+							taskToDoLabel.setText("Select quantity");
+							currentState = TicketState.QUANTITY;
+							enCours.setText("? x "+currentArticleAtDesk.getName());
+						} else {
+						    //Only 1 price id, no quantity to set: add item to ticket
+						    finalizeTicketItem();
+						}
+					} else {
+						JOptionPane.showMessageDialog(null,"Unknown article!", "Error", JOptionPane.WARNING_MESSAGE);
+					}
+					break;
+				case QUANTITY: //quantity being chosen
+				    double saisie2 = Double.parseDouble(saisieField.getText());
+				    saisieField.setText(null);
+				    if(saisie2 <= 0){
+						JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
+					} else {
+						currentItemAtDesk.setQuantity((int) saisie2); //TODO: non-integer support !!!
+						finalizeTicketItem();
+					}
+					break;
+				case PRICE: //price being chosen
+				    long saisie3 = Long.parseLong(saisieField.getText());
+				    saisieField.setText(null);
+				    if(saisie3 < 0 || saisie3 >= currentArticleAtDesk.getNumberOfPrices()){
+							JOptionPane.showMessageDialog(null,"Invalid fee for this article!", "Error", JOptionPane.WARNING_MESSAGE);
+					} else {
+						currentItemAtDesk.setFee((int) saisie3);
+						if(!currentArticleAtDesk.isCountable()){
+							taskToDoLabel.setText("Select quantity");
+							currentState = TicketState.QUANTITY;
+					    } else {
+							finalizeTicketItem(); 
+						}
+					}
+				    break;
+				default:
+				    break;
+				}
+			} else {
+				//Validations without content in the TextField
+				if(currentTicket.getNumberOfItems() >= 1){
+					if(currentTicket.getPaymentMethod() == null){
+						if(currentUserAtDesk == null){
+							taskToDoLabel.setText("Choose payment method");
+							return;
+						} else {
+							//Save ticket
+							finalizeTicket();							
+							return;
+						}
+					} else {
+						if(currentTicket.getPaymentMethod() == PaymentMethod.CASH){
+							double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change", JOptionPane.QUESTION_MESSAGE));
+							JOptionPane.showMessageDialog(null, "You owe "+NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())+".","", JOptionPane.INFORMATION_MESSAGE);
+						}
+						//Save the finished ticket
+						finalizeTicket();
+						return;
+					}					
+				}
+			}
+		} catch (NumberFormatException nfe){
+			JOptionPane.showMessageDialog(null,"Invalid input! Cannot parse a number.", "Error", JOptionPane.WARNING_MESSAGE);
+			nfe.printStackTrace();
+		}
+	}	
 		
 
 	/**
