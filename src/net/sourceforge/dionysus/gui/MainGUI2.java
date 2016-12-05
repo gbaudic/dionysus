@@ -317,6 +317,7 @@ public class MainGUI2 extends JFrame {
 					
 					currentTicket = new Ticket(currentUserAtDesk);
 					taskToDoLabel.setText("Choose article");
+					currentState = TicketState.TICKET_IDLE;
 				}	
 			}
 		});
@@ -340,6 +341,7 @@ public class MainGUI2 extends JFrame {
 
 				currentTicket = new Ticket(currentUserAtDesk);
 				taskToDoLabel.setText("Choose article");
+				currentState = TicketState.TICKET_IDLE;
 			}
 		});
 		panel.add(btnX, gbc_btnX);

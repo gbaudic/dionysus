@@ -140,19 +140,22 @@ public class PasswordDialog extends JDialog {
 				okButton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
 
-						if(checkIdentification() && checkPassword(passwordField.getPassword()) ){
-							//Hide this dialog box and show the main window
-							result = true;
-							passwordField.setText(null);
-							setVisible(false);
-							MainGUI2 frame = new MainGUI2();
-							frame.setCurrentVendor(chosenVendor);
-							frame.setVisible(true);
-						} else {
-							JOptionPane.showMessageDialog(null, "Wrong password.\nPlease retry.", "Error", JOptionPane.ERROR_MESSAGE);
-						}
-
-					}			
+						if(checkIdentification()){
+						    if(checkPassword(passwordField.getPassword())) {
+							    //Hide this dialog box and show the main window
+							    result = true;
+							    passwordField.setText(null);
+							    setVisible(false);
+							    MainGUI2 frame = new MainGUI2();
+							    frame.setCurrentVendor(chosenVendor);
+							    frame.setVisible(true);
+						    } else {
+							    JOptionPane.showMessageDialog(null, "Wrong password.\nPlease retry.", "Error", JOptionPane.ERROR_MESSAGE);
+						    }
+					    } else {
+					        JOptionPane.showMessageDialog(null, "Login does not exist.", "Error", JOptionPane.WARNING_MESSAGE);
+					    }
+					}	
 				});
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -243,7 +246,6 @@ public class PasswordDialog extends JDialog {
 		chosenVendor = database.get(targetLogin);
 		
 		if(chosenVendor == null){
-			JOptionPane.showMessageDialog(null, "Login does not exist.", "Error", JOptionPane.WARNING_MESSAGE);
 			return false;
 		} else {
 			correctPassword = chosenVendor.getcPassword().toCharArray();

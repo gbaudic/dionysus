@@ -52,7 +52,7 @@ public abstract class Database<T> {
 
 		targetF = new File(filename);
 		if(!targetF.exists()){
-			JOptionPane.showMessageDialog(null, "Error when trying to access database!", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error when trying to access database file: "+filename, "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
