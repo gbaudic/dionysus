@@ -26,6 +26,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -183,7 +184,7 @@ public class MainGUI2 extends JFrame {
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 		
-		JMenuItem mntmQuit = new JMenuItem("Quit");
+		JMenuItem mntmQuit = new JMenuItem("Quit", new ImageIcon(getClass().getResource("/application-exit.png")));
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
 		mntmQuit.addActionListener(new ActionListener() {
 			
@@ -207,16 +208,18 @@ public class MainGUI2 extends JFrame {
 		JMenu mnExport = new JMenu("Export");
 		menuBar.add(mnExport);
 		
+		ImageIcon convertIcon = new ImageIcon(getClass().getResource("/gtk-convert.png"));
+		
 		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
 		mnExport.add(mntmExportUsersLegacy);
 		
-		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV (TBD)");
+		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV (TBD)", convertIcon);
 		mnExport.add(mntmExportUsersCSV);
 		
-		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV (TBD)");
+		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV (TBD)", convertIcon);
 		mnExport.add(mntmExportArticlesCSV);
 		
-		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV (TBD)");
+		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV (TBD)", convertIcon);
 		mnExport.add(mntmExportTransCSV);
 		
 		JMenu mnHelp = new JMenu("Help");

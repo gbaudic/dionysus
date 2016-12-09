@@ -36,6 +36,7 @@ public class User implements Serializable,CSVAble {
 	/* To prevent students from staying for too long with a negative balance (and eventually leaving university without paying...),
 	 * they had to give an amount of money that would be only used if they get in such a situation. This flag tells if they have paid it or not.
 	*/
+	private String id; //unique identifier, such as a barcode or QR code on a member card
 	
 	public User(String lastName, String firstName, int promo, int balance) {
 		this.lastName = lastName;
@@ -88,8 +89,7 @@ public class User implements Serializable,CSVAble {
 	 * Returns the full name with the year
 	 * @return full name (year)
 	 */
-	public String getNameWithPromo()
-	{
+	public String getNameWithPromo() {
 		return this.getName()+" ("+String.valueOf(promo)+")";
 	}
 
@@ -107,6 +107,10 @@ public class User implements Serializable,CSVAble {
 	 */
 	public String getFirstName() {
 		return firstName;
+	}
+	
+	public String getID() {
+		return id;
 	}
 
 	/**
@@ -138,11 +142,11 @@ public class User implements Serializable,CSVAble {
 	@Override
 	public String toCSV() {
 		String bal = String.valueOf(balance / 100.0);
-		return lastName+";"+firstName+";"+promo+";"+bal+";"+paidDeposit;
+		return lastName+";"+firstName+";"+id+";"+promo+";"+bal+";"+paidDeposit;
 	}
 	
 	public String csvHeader() {
-	    return "# Last name;First name;Promo;Balance;Paid deposit";
+	    return "# Last name;First name;ID;Promo;Balance;Paid deposit";
 	}
 	
 }

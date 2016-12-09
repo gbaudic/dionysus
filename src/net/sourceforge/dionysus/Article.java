@@ -195,6 +195,15 @@ public class Article implements Serializable, CSVAble {
 	 */
 	public String toCSV() {
 		StringBuilder csvline = new StringBuilder(name+";"+code+";");
+		csvline.append(String.valueOf(getArticlePrice()) + ";");
+		
+		if(getNumberOfPrices() > 1)
+			csvline.append(String.valueOf(getArticlePrice(1)));
+		csvline.append(";");
+		if(getNumberOfPrices() > 2)
+			csvline.append(String.valueOf(getArticlePrice(2)));
+		csvline.append(";");
+		
 		
 		return csvline.toString();
 	}
