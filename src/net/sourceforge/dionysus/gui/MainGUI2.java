@@ -404,12 +404,13 @@ public class MainGUI2 extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				inputLogic();
+				saisieField.setText(null);
 			}
 		});
 		saisieField.getDocument().addDocumentListener(
             new DocumentListener() {
                 public void changedUpdate(DocumentEvent e) {
-                    insertUpdate(e);
+                    //insertUpdate(e);
                 }
                 public void insertUpdate(DocumentEvent e) {
                     if(saisieField.getText().length() == 13) //barcode length
@@ -869,7 +870,6 @@ public class MainGUI2 extends JFrame {
 				switch(currentState){
 				case TICKET_IDLE: //article being chosen
 				    long saisie = Long.parseLong(saisieField.getText());
-				    saisieField.setText(null);
 				    currentArticleAtDesk = catalogue.getArticleByCode(saisie);
 					if(currentArticleAtDesk != null){
 						currentItemAtDesk = new TicketItem(currentArticleAtDesk);
@@ -894,17 +894,20 @@ public class MainGUI2 extends JFrame {
 					break;
 				case QUANTITY: //quantity being chosen
 				    double saisie2 = Double.parseDouble(saisieField.getText());
-				    saisieField.setText(null);
-				    if(saisie2 <= 0){
+				    if(saisie2 == 0){
 						JOptionPane.showMessageDialog(null,"Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
-						currentItemAtDesk.setQuantity((int) saisie2); //TODO: non-integer support !!!
+						//Negative quantities are allowed so that corrections are possible
+						if(currentArticleAtDesk.isCountable()){
+							currentItemAtDesk.setQuantity((int) saisie2);
+						} else {
+							currentItemAtDesk.setQuantity((int) (saisie2 * 1000));
+						}
 						finalizeTicketItem();
 					}
 					break;
 				case PRICE: //price being chosen
 				    long saisie3 = Long.parseLong(saisieField.getText());
-				    saisieField.setText(null);
 				    if(saisie3 < 0 || saisie3 >= currentArticleAtDesk.getNumberOfPrices()){
 							JOptionPane.showMessageDialog(null,"Invalid fee for this article!", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
@@ -928,7 +931,7 @@ public class MainGUI2 extends JFrame {
 							taskToDoLabel.setText("Choose payment method");
 							return;
 						} else {
-							//Save ticket
+							//Save ticket -- pay with current account balance
 							finalizeTicket();							
 							return;
 						}

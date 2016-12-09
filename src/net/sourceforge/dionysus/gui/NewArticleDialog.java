@@ -80,7 +80,7 @@ public class NewArticleDialog extends JDialog {
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblNewLabel = new JLabel("Article name:");
+			JLabel lblNewLabel = new JLabel("Article name*:");
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -100,7 +100,7 @@ public class NewArticleDialog extends JDialog {
 			nomField.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_1 = new JLabel("Article code:");
+			JLabel lblNewLabel_1 = new JLabel("Article code*:");
 			GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 			gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_1.anchor = GridBagConstraints.LINE_END;
@@ -176,7 +176,7 @@ public class NewArticleDialog extends JDialog {
 			alertField.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_3 = new JLabel("Price #0:");
+			JLabel lblNewLabel_3 = new JLabel("Price #0*:");
 			GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 			gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_3.anchor = GridBagConstraints.LINE_END;
@@ -236,7 +236,7 @@ public class NewArticleDialog extends JDialog {
 			price2Field.setColumns(10);
 		}
 		{
-			chckbxActive = new JCheckBox("Activate article");
+			chckbxActive = new JCheckBox("Activate article*");
 			GridBagConstraints gbc_chckbxActive = new GridBagConstraints();
 			gbc_chckbxActive.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxActive.gridx = 1;
@@ -244,9 +244,9 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(chckbxActive, gbc_chckbxActive);
 		}
 		{
-			chckbxCountable = new JCheckBox("Countable article");
+			chckbxCountable = new JCheckBox("Countable article*");
 			chckbxCountable.setSelected(true);
-			chckbxCountable.setEnabled(false); //for 0.3 release
+			//chckbxCountable.setEnabled(false); //for 0.3 release
 			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
 			gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxCountable.gridx = 1;
@@ -267,7 +267,10 @@ public class NewArticleDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-							int priceChecksum = validatePrices();
+							int priceChecksum = validatePrices(); //TODO
+							
+							if(priceChecksum != 1 && priceChecksum != 3 && priceChecksum != 7)
+								throw new IllegalArgumentException("Prices must be filled in order, and at least one is required.");
 							
 							Price p0 = new Price(Double.parseDouble(price0Field.getText()));
 							Price p1 = null;
@@ -292,29 +295,38 @@ public class NewArticleDialog extends JDialog {
 								prices[0] = p0; prices[1] = p1; prices[2] = p2;
 							}
 							
-							//TODO: check code presence and not a duplicate
+							if(nomField.getText().isEmpty()){
+								throw new IllegalArgumentException("Name cannot be empty.");
+							}
+							
+							//Checking for code duplicates will be done afterwards
 
 							article = new Article(nomField.getText(), prices, Long.parseLong(codeField.getText()));
 
 							article.setActive(chckbxActive.isSelected());
+							article.setCountable(chckbxCountable.isSelected());
+							
+							int qtyFactor = article.isCountable() ? 1 : 1000; //Multiplicative factor for uncountable articles
+							
 							if(chckbxAlertEnabled.isSelected()){
 								article.setStockAlertEnabled(true);
-								article.setLimitStock(Integer.parseInt(alertField.getText()));
+								article.setLimitStock(Integer.parseInt(alertField.getText()) * qtyFactor);
 							} else {
 								article.setStockAlertEnabled(false);
 							}
 
 							if(chckbxStockEnabled.isSelected()){
 								article.setStockMgmt(true);
-								article.setStock(Integer.parseInt(stockField.getText()));
+								article.setStock(Integer.parseInt(stockField.getText()) * qtyFactor);
 							} else {
 								article.setStockMgmt(false);
-							}
+							}	
+							
 							setVisible(false);
 						} catch (NumberFormatException e){
 							JOptionPane.showMessageDialog(null,"Invalid input!", "Error", JOptionPane.WARNING_MESSAGE);
 						} catch (IllegalArgumentException e) {
-							//TODO
+							JOptionPane.showMessageDialog(null,"Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				});
@@ -356,22 +368,20 @@ public class NewArticleDialog extends JDialog {
 		article = a;
 
 		if(a != null){
+			double qtyFactor  = a.isCountable() ? 1. : 1000.;
+			
 			nomField.setText(a.getName());
 			codeField.setText(String.valueOf(a.getCode()));
-			stockField.setText(String.valueOf(a.getStock()));
-			alertField.setText(String.valueOf(a.getLimitStock()));
+			stockField.setText(String.valueOf(a.getStock() / qtyFactor));
+			alertField.setText(String.valueOf(a.getLimitStock() / qtyFactor));
 
-			if(a.isActive() )
-				chckbxActive.setSelected(true);
+			chckbxActive.setSelected(a.isActive());
 			
-			if(a.isCountable() )
-				chckbxCountable.setSelected(true);
+			chckbxCountable.setSelected(a.isCountable()); 
 
-			if(a.hasStockMgmtEnabled() )
-				chckbxStockEnabled.setSelected(true);
+			chckbxStockEnabled.setSelected(a.hasStockMgmtEnabled());
 
-			if(a.hasStockAlertEnabled() )
-				chckbxAlertEnabled.setSelected(true);
+			chckbxAlertEnabled.setSelected(a.hasStockAlertEnabled());
 
 			price0Field.setText(String.valueOf(a.getArticlePrice()));
 			int n = a.getNumberOfPrices();
