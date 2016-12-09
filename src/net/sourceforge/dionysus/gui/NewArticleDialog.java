@@ -301,10 +301,9 @@ public class NewArticleDialog extends JDialog {
 							
 							//Checking for code duplicates will be done afterwards
 
-							article = new Article(nomField.getText(), prices, Long.parseLong(codeField.getText()));
+							article = new Article(nomField.getText(), prices, 0, Long.parseLong(codeField.getText()), chckbxCountable.isSelected());
 
 							article.setActive(chckbxActive.isSelected());
-							article.setCountable(chckbxCountable.isSelected());
 							
 							int qtyFactor = article.isCountable() ? 1 : 1000; //Multiplicative factor for uncountable articles
 							

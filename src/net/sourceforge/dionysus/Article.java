@@ -70,12 +70,12 @@ public class Article implements Serializable, CSVAble {
 	 * @param prices an array of prices
 	 * @param stock initial number of units
 	 * @param code the code to be used for recalling the article
-	 * @param isCountable unused flag to tell this article will be uncountable
+	 * @param isCountable flag to tell this article will be uncountable
 	 */
 	public Article(String name, Price[] prices, int stock, long code, 
 			boolean isCountable) {
 		this(name, prices, stock, code);
-		this.isCountable = false;
+		this.isCountable = isCountable;
 	}
 
 	public int getNumberOfPrices() {
