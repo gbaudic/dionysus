@@ -75,9 +75,9 @@ public class NewArticleDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[]{0, 142, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel lblNewLabel = new JLabel("Article name*:");
@@ -111,6 +111,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			codeField = new JTextField();
+			codeField.setToolTipText("Unique code for this article, such as its barcode");
 			GridBagConstraints gbc_codeField = new GridBagConstraints();
 			gbc_codeField.insets = new Insets(0, 0, 5, 0);
 			gbc_codeField.fill = GridBagConstraints.HORIZONTAL;
@@ -139,6 +140,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			stockField = new JTextField();
+			stockField.setToolTipText("Current quantity");
 			GridBagConstraints gbc_stockField = new GridBagConstraints();
 			gbc_stockField.insets = new Insets(0, 0, 5, 0);
 			gbc_stockField.fill = GridBagConstraints.HORIZONTAL;
@@ -237,6 +239,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			chckbxActive = new JCheckBox("Activate article*");
+			chckbxActive.setToolTipText("If checked, article will be displayed with a button in Cash desk view");
 			GridBagConstraints gbc_chckbxActive = new GridBagConstraints();
 			gbc_chckbxActive.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxActive.gridx = 1;
@@ -245,6 +248,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			chckbxCountable = new JCheckBox("Countable article*");
+			chckbxCountable.setToolTipText("Check if this article is sold in units, uncheck if it is sold by weight or volume");
 			chckbxCountable.setSelected(true);
 			//chckbxCountable.setEnabled(false); //for 0.3 release
 			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
@@ -297,6 +301,10 @@ public class NewArticleDialog extends JDialog {
 							
 							if(nomField.getText().isEmpty()){
 								throw new IllegalArgumentException("Name cannot be empty.");
+							}
+							if(codeField.getText().isEmpty()){
+								throw new IllegalArgumentException("Code cannot be empty.");
+								//TODO: check that code is numeric only
 							}
 							
 							//Checking for code duplicates will be done afterwards
@@ -401,7 +409,7 @@ public class NewArticleDialog extends JDialog {
 	/**
 	 *  Check that prices have meaningful values and are correctly filled
 	 */
-	private int validatePrices() throws IllegalArgumentException {
+	private int validatePrices() {
 		int result = 0;
 		if(!price0Field.getText().isEmpty())
 			result += 1;

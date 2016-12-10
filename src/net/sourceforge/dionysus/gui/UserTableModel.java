@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class UserTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = -2841704746545744058L;
-	private static String [] colNames =  new String[] {"Last name", "First name", "Year", "Balance", "Deposit"}; 
+	private static String [] colNames =  new String[] {"Last name", "First name", "ID", "Year", "Balance", "Deposit"}; 
 	
 	public UserTableModel(Object[][] data){
 		super(data, colNames);
@@ -30,7 +30,7 @@ public class UserTableModel extends DefaultTableModel {
 	
 	
 	Class[] columnTypes = new Class[] {
-			String.class, String.class, Integer.class, String.class, Boolean.class
+			String.class, String.class, String.class, Integer.class, String.class, Boolean.class
 	};
 	
 	public Class getColumnClass(int columnIndex) {
@@ -38,7 +38,7 @@ public class UserTableModel extends DefaultTableModel {
 	}
 	
 	boolean[] columnEditables = new boolean[] {
-			false, false, false, false, false
+			false, false, false, false, false, false
 	};
 	
 	public boolean isCellEditable(int row, int column) {

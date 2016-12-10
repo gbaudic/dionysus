@@ -44,6 +44,7 @@ public class User implements Serializable,CSVAble {
 		this.promo = promo;
 		this.balance = balance;
 		paidDeposit = false;
+		id = "";
 	}
 
 	public User(String lastName, String firstName, int promo, int balance,
@@ -111,6 +112,12 @@ public class User implements Serializable,CSVAble {
 	
 	public String getID() {
 		return id;
+	}
+	
+	public void setID(String id) {
+		if(id != null && !id.isEmpty() && id != " "){
+			this.id = id;
+		}
 	}
 
 	/**

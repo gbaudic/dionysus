@@ -139,13 +139,14 @@ public class UserDB extends Database<User> {
 
 	@Override
 	public void makeArrayForTables() {
-		foodForTable = new Object[numberOfRecords][5];
+		foodForTable = new Object[numberOfRecords][6];
 		for (int i = 0; i < numberOfRecords; i++) {
 			foodForTable[i][0] = data.get(i).getLastName();
 			foodForTable[i][1] = data.get(i).getFirstName();
-			foodForTable[i][2] = new Integer(data.get(i).getPromo());
-			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getBalance());
-			foodForTable[i][4] = new Boolean(data.get(i).hasPaidCaution());
+			foodForTable[i][2] = data.get(i).getID();
+			foodForTable[i][3] = new Integer(data.get(i).getPromo());
+			foodForTable[i][4] = NumberFormat.getCurrencyInstance().format(data.get(i).getBalance());
+			foodForTable[i][5] = new Boolean(data.get(i).hasPaidCaution());
 		}
 	}
 

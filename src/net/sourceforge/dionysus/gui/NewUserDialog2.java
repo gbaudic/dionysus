@@ -56,6 +56,7 @@ public class NewUserDialog2 extends JDialog {
 	private User user;
 	private JTextField nomField;
 	private JTextField prenomField;
+	private JTextField idField;
 	private JTextField soldeField;
 	private JSpinner promoChooser;
 	private JCheckBox chckbxCaution;
@@ -68,19 +69,19 @@ public class NewUserDialog2 extends JDialog {
 		setTitle("User record");
 		setModal(true);
 		//setBounds(100, 100, 451, 190);
-		setSize(451, 204);
+		setSize(451, 254);
 		setLocationRelativeTo(null); //centering
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblNom = new JLabel("Last name:");
+			JLabel lblNom = new JLabel("Last name*:");
 			GridBagConstraints gbc_lblNom = new GridBagConstraints();
 			gbc_lblNom.anchor = GridBagConstraints.EAST;
 			gbc_lblNom.insets = new Insets(0, 0, 5, 5);
@@ -99,7 +100,7 @@ public class NewUserDialog2 extends JDialog {
 			nomField.setColumns(10);
 		}
 		{
-			JLabel lblPrenom = new JLabel("First name:");
+			JLabel lblPrenom = new JLabel("First name*:");
 			GridBagConstraints gbc_lblPrenom = new GridBagConstraints();
 			gbc_lblPrenom.anchor = GridBagConstraints.EAST;
 			gbc_lblPrenom.insets = new Insets(0, 0, 5, 5);
@@ -118,11 +119,31 @@ public class NewUserDialog2 extends JDialog {
 			prenomField.setColumns(10);
 		}
 		{
+			JLabel lblID = new JLabel("ID:");
+			GridBagConstraints gbc_lblID = new GridBagConstraints();
+			gbc_lblID.anchor = GridBagConstraints.EAST;
+			gbc_lblID.insets = new Insets(0, 0, 5, 5);
+			gbc_lblID.gridx = 0;
+			gbc_lblID.gridy = 2;
+			contentPanel.add(lblID, gbc_lblID);
+		}
+		{
+			idField = new JTextField();
+			idField.setToolTipText("Unique identifier for this user");
+			GridBagConstraints gbc_idField = new GridBagConstraints();
+			gbc_idField.insets = new Insets(0, 0, 5, 0);
+			gbc_idField.fill = GridBagConstraints.HORIZONTAL;
+			gbc_idField.gridx = 1;
+			gbc_idField.gridy = 2;
+			contentPanel.add(idField, gbc_idField);
+			idField.setColumns(13);
+		}
+		{
 			JLabel lblPromo = new JLabel("Year: ");
 			GridBagConstraints gbc_lblPromo = new GridBagConstraints();
 			gbc_lblPromo.insets = new Insets(0, 0, 5, 5);
 			gbc_lblPromo.gridx = 0;
-			gbc_lblPromo.gridy = 2;
+			gbc_lblPromo.gridy = 3;
 			contentPanel.add(lblPromo, gbc_lblPromo);
 		}
 		{
@@ -139,16 +160,16 @@ public class NewUserDialog2 extends JDialog {
 			gbc_promoChooser.fill = GridBagConstraints.BOTH;
 			gbc_promoChooser.insets = new Insets(0, 0, 5, 0);
 			gbc_promoChooser.gridx = 1;
-			gbc_promoChooser.gridy = 2;
+			gbc_promoChooser.gridy = 3;
 			contentPanel.add(promoChooser, gbc_promoChooser);
 		}
 		{
-			JLabel lblSolde = new JLabel("Balance: ");
+			JLabel lblSolde = new JLabel("Balance*: ");
 			GridBagConstraints gbc_lblSolde = new GridBagConstraints();
 			gbc_lblSolde.anchor = GridBagConstraints.EAST;
 			gbc_lblSolde.insets = new Insets(0, 0, 5, 5);
 			gbc_lblSolde.gridx = 0;
-			gbc_lblSolde.gridy = 3;
+			gbc_lblSolde.gridy = 4;
 			contentPanel.add(lblSolde, gbc_lblSolde);
 		}
 		{
@@ -157,7 +178,7 @@ public class NewUserDialog2 extends JDialog {
 			gbc_soldeField.insets = new Insets(0, 0, 5, 0);
 			gbc_soldeField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_soldeField.gridx = 1;
-			gbc_soldeField.gridy = 3;
+			gbc_soldeField.gridy = 4;
 			contentPanel.add(soldeField, gbc_soldeField);
 			soldeField.setColumns(10);
 		}
@@ -165,7 +186,7 @@ public class NewUserDialog2 extends JDialog {
 			chckbxCaution = new JCheckBox("Paid deposit");
 			GridBagConstraints gbc_chckbxCaution = new GridBagConstraints();
 			gbc_chckbxCaution.gridx = 1;
-			gbc_chckbxCaution.gridy = 4;
+			gbc_chckbxCaution.gridy = 5;
 			contentPanel.add(chckbxCaution, gbc_chckbxCaution);
 		}
 		{
@@ -193,6 +214,7 @@ public class NewUserDialog2 extends JDialog {
 							}
 							//Finally, we create the user
 							user = new User(nomField.getText(), prenomField.getText(), i.intValue(), (int)(menton*100), chckbxCaution.isSelected());
+							user.setID(idField.getText());
 							setVisible(false);
 						} else {
 							JOptionPane.showMessageDialog(null, "Incomplete name!", "Error", JOptionPane.WARNING_MESSAGE);
@@ -249,6 +271,7 @@ public class NewUserDialog2 extends JDialog {
 		if(user != null) {
 			nomField.setText(user.getLastName());
 			prenomField.setText(user.getFirstName());
+			idField.setText(user.getID());
 			promoChooser.setValue(new Integer(user.getPromo()));
 			soldeField.setText(String.valueOf(user.getBalance()));
 			chckbxCaution.setSelected(user.hasPaidCaution());
