@@ -2,13 +2,16 @@ v0.3 - 2016/0
 =================
 Database schema 3.
 - Added multiple vendors support.
+- Added an ID field to Users.
 - Tables are now refreshed correctly. 
 - Minor GUI improvements and bug corrections.
 - Refactored (partly) GUI code. 
 - Autoselection of quantity and fee when applicable to speed up workflow.
 - Ticket workflow is now more predictable. 
+- Validation in article and user dialogs.
 - Amounts now appear localized. 
 - Use of gradle and Travis CI for project builds. 
+- More icons. 
 
 v0.1.5 - 2013/05/11
 =================

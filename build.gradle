@@ -15,6 +15,17 @@ sourceSets {
     }
 }
 
+distributions {
+	main {
+		contents {
+			from { 'COPYING' }
+			from { 'CHANGELOG' }
+			from { '*.dat' }
+			from { 'logins.txt' }
+		}
+	}
+}
+
 jar {
     baseName = 'dionysus'
     version = '0.3.0'
