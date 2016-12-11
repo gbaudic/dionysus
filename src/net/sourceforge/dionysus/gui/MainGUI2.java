@@ -262,10 +262,10 @@ public class MainGUI2 extends JFrame {
 		JPanel vueP = new JPanel();
 		tabbedPane.addTab("Cash desk", null, vueP, "Main view");
 		GridBagLayout gbl_vueP = new GridBagLayout();
-		gbl_vueP.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_vueP.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_vueP.columnWeights = new double[]{0.6, 0.2, 0.2, Double.MIN_VALUE};
-		gbl_vueP.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_vueP.columnWidths = new int[]{0, 0, 0};
+		gbl_vueP.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_vueP.columnWeights = new double[]{0.6, 0.2, Double.MIN_VALUE};
+		gbl_vueP.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		vueP.setLayout(gbl_vueP);
 		
 		JPanel panel = new JPanel();
@@ -275,6 +275,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
+		gbc_panel.gridheight = 2;
 		vueP.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
@@ -387,6 +388,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
 		gbc_panel_2.gridx = 1;
 		gbc_panel_2.gridy = 0;
+		gbc_panel_2.gridheight = 3;
 		vueP.add(panel_2, gbc_panel_2);
 		panel_2.setLayout(new GridLayout(3, 0, 0, 0));
 		
@@ -401,7 +403,7 @@ public class MainGUI2 extends JFrame {
 		
 		saisieField = new JTextField();
 		saisieField.setHorizontalAlignment(SwingConstants.RIGHT);
-		saisieField.setFont(new Font("Tahoma", Font.BOLD, 14));
+		saisieField.setFont(new Font("Tahoma", Font.BOLD, 20));
 		saisieField.addActionListener(new ActionListener() {
 			
 			@Override
@@ -418,6 +420,7 @@ public class MainGUI2 extends JFrame {
                 public void insertUpdate(DocumentEvent e) {
                     if(saisieField.getText().length() == 13) //barcode length
                         inputLogic();
+					//TODO: clear document after validation of input
                 }
                 public void removeUpdate(DocumentEvent e) {
                     //Nothing to do here
@@ -428,7 +431,7 @@ public class MainGUI2 extends JFrame {
 		
 		JPanel panel_articles = new JPanel();
 		GridBagConstraints gbc_panel_articles = new GridBagConstraints();
-		gbc_panel_articles.gridheight = 2;
+		gbc_panel_articles.gridheight = 4;
 		gbc_panel_articles.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_articles.fill = GridBagConstraints.BOTH;
 		gbc_panel_articles.gridx = 0;
@@ -480,11 +483,12 @@ public class MainGUI2 extends JFrame {
 		gbc_ticketTextArea.fill = GridBagConstraints.BOTH;
 		gbc_ticketTextArea.gridx = 2;
 		gbc_ticketTextArea.gridy = 0;
+		gbc_ticketTextArea.gridheight = 4;
 		vueP.add(sp_ticketTextArea, gbc_ticketTextArea);
 		
 		JPanel panel_pavenum = new JPanel();
 		GridBagConstraints gbc_panel_pavenum = new GridBagConstraints();
-		gbc_panel_pavenum.gridheight = 2;
+		gbc_panel_pavenum.gridheight = 3;
 		gbc_panel_pavenum.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_pavenum.fill = GridBagConstraints.BOTH;
 		gbc_panel_pavenum.gridx = 1;
@@ -631,6 +635,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
 		gbc_panel_3.gridx = 2;
 		gbc_panel_3.gridy = 1;
+		gbc_panel_3.gridheight = 1;
 		vueP.add(panel_3, gbc_panel_3);
 		panel_3.setLayout(new GridLayout(2, 2, 0, 0));
 		
@@ -675,6 +680,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_PaymentMethods.fill = GridBagConstraints.BOTH;
 		gbc_panel_PaymentMethods.gridx = 2;
 		gbc_panel_PaymentMethods.gridy = 2;
+		gbc_panel_PaymentMethods.gridheight = 1;
 		vueP.add(panel_PaymentMethods, gbc_panel_PaymentMethods);
 		panel_PaymentMethods.setLayout(new GridLayout(2, 3, 0, 0));
 		
