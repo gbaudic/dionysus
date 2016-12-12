@@ -7,7 +7,7 @@ mainClassName = 'net.sourceforge.dionysus.gui.MainGUI2'
 sourceSets {
     main {
         java {
-            srcDirs = ['src/net/sourceforge/dionysus']
+            srcDirs = ['src']
         }
         resources {
             srcDirs = ['images']

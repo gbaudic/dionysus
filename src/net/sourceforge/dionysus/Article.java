@@ -18,6 +18,7 @@
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 
 /**
  * Class to represent a specific article in the shop (for example "1 bottle of Budweiser beer" or "Florida oranges")
@@ -168,7 +169,7 @@ public class Article implements Serializable, CSVAble {
 	public String getToolTipText(){
 		StringBuilder ttt = new StringBuilder("<html>"+ name + " ("+ String.valueOf(code) + ")");
 		for(int i = 0 ; i < getNumberOfPrices() ; i++){
-			ttt.append("<br/>Price "+String.valueOf(i)+": "+String.valueOf(getArticlePrice(i)) );
+			ttt.append("<br/>Price "+String.valueOf(i)+": "+NumberFormat.getCurrencyInstance().format(getArticlePrice(i)) );
 		}
 		ttt.append("</html>");
 		return ttt.toString();
@@ -204,6 +205,7 @@ public class Article implements Serializable, CSVAble {
 			csvline.append(String.valueOf(getArticlePrice(2)));
 		csvline.append(";");
 		
+		//TBC
 		
 		return csvline.toString();
 	}

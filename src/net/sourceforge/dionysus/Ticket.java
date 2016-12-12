@@ -191,6 +191,10 @@ public class Ticket {
 		return items.size();
 	}
 	
+	public void setUser(User newUser) {
+		customer = newUser; //no check on null because it has a meaning
+	}
+	
 	/**
 	 * Converts a ticket with its TicketItem to transactions for saving,
 	 * and saves the transactions file

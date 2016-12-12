@@ -319,7 +319,12 @@ public class MainGUI2 extends JFrame {
 					nomLabel.setText(currentUserAtDesk.getNameWithPromo());
 					soldeLabel.setText(NumberFormat.getCurrencyInstance().format(currentUserAtDesk.getBalance()));
 					
-					currentTicket = new Ticket(currentUserAtDesk);
+					if(currentTicket == null){
+						currentTicket = new Ticket(currentUserAtDesk);
+						ticketTextArea.setText(null);
+					} else {
+						currentTicket.setUser(currentUserAtDesk);
+					}
 					taskToDoLabel.setText("Choose article");
 					currentState = TicketState.TICKET_IDLE;
 				}	
@@ -342,8 +347,13 @@ public class MainGUI2 extends JFrame {
 
 				nomLabel.setText("default (00)"); 
 				soldeLabel.setText(NumberFormat.getCurrencyInstance().format(0.00));
-
-				currentTicket = new Ticket(currentUserAtDesk);
+				
+				if(currentTicket == null) {
+					currentTicket = new Ticket(currentUserAtDesk);
+					ticketTextArea.setText(null);
+				} else {
+					currentTicket.setUser(currentUserAtDesk);
+				}
 				taskToDoLabel.setText("Choose article");
 				currentState = TicketState.TICKET_IDLE;
 			}
@@ -435,7 +445,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_articles.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_articles.fill = GridBagConstraints.BOTH;
 		gbc_panel_articles.gridx = 0;
-		gbc_panel_articles.gridy = 1;
+		gbc_panel_articles.gridy = 2;
 		vueP.add(panel_articles, gbc_panel_articles);
 		panel_articles.setLayout(new GridLayout(5, 6, 0, 0));
 		
@@ -464,6 +474,7 @@ public class MainGUI2 extends JFrame {
 									enCours.setText("? x "+currentArticleAtDesk.getName());
 								} else {
 								    //Only 1 price id, no quantity to set: add item to ticket
+									currentItemAtDesk.computeAmount();
 								    finalizeTicketItem();
 								}
 							}
@@ -492,7 +503,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_pavenum.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_pavenum.fill = GridBagConstraints.BOTH;
 		gbc_panel_pavenum.gridx = 1;
-		gbc_panel_pavenum.gridy = 1;
+		gbc_panel_pavenum.gridy = 3;
 		vueP.add(panel_pavenum, gbc_panel_pavenum);
 		panel_pavenum.setLayout(new GridLayout(4, 3, 0, 0));
 		
@@ -634,7 +645,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
 		gbc_panel_3.gridx = 2;
-		gbc_panel_3.gridy = 1;
+		gbc_panel_3.gridy = 4;
 		gbc_panel_3.gridheight = 1;
 		vueP.add(panel_3, gbc_panel_3);
 		panel_3.setLayout(new GridLayout(2, 2, 0, 0));
@@ -679,7 +690,7 @@ public class MainGUI2 extends JFrame {
 		gbc_panel_PaymentMethods.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_PaymentMethods.fill = GridBagConstraints.BOTH;
 		gbc_panel_PaymentMethods.gridx = 2;
-		gbc_panel_PaymentMethods.gridy = 2;
+		gbc_panel_PaymentMethods.gridy = 5;
 		gbc_panel_PaymentMethods.gridheight = 1;
 		vueP.add(panel_PaymentMethods, gbc_panel_PaymentMethods);
 		panel_PaymentMethods.setLayout(new GridLayout(2, 3, 0, 0));
@@ -779,7 +790,7 @@ public class MainGUI2 extends JFrame {
 		alertTextArea.setText(null); //Clean UI component
 		if(catalogue != null){
 			for(Article a : (Article [])catalogue.getArray()){
-				if(a != null && a.isActive() && a.hasStockMgmtEnabled() && a.hasStockAlertEnabled()){
+				if(a != null && a.hasStockMgmtEnabled() && a.hasStockAlertEnabled()){
 					int stock = a.getStock();
 					if(stock <= a.getLimitStock()){
 						alertTextArea.setText(alertTextArea.getText()+"\nThere are only "+String.valueOf(a.getStock())+" "+a.getName()+" left! Consider refilling");
@@ -895,6 +906,7 @@ public class MainGUI2 extends JFrame {
 							enCours.setText("? x "+currentArticleAtDesk.getName());
 						} else {
 						    //Only 1 price id, no quantity to set: add item to ticket
+							currentItemAtDesk.computeAmount();
 						    finalizeTicketItem();
 						}
 					} else {
@@ -912,6 +924,7 @@ public class MainGUI2 extends JFrame {
 						} else {
 							currentItemAtDesk.setQuantity((int) (saisie2 * 1000));
 						}
+						currentItemAtDesk.computeAmount();
 						finalizeTicketItem();
 					}
 					break;
@@ -925,6 +938,7 @@ public class MainGUI2 extends JFrame {
 							taskToDoLabel.setText("Select quantity");
 							currentState = TicketState.QUANTITY;
 					    } else {
+					    	currentItemAtDesk.computeAmount();
 							finalizeTicketItem(); 
 						}
 					}

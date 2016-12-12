@@ -29,17 +29,17 @@ public class TicketItem {
 	private int fee; // the price id (not the price itself)
 	private int quantity; // in units or in grams/milliliters depending on Article type
 	private double amount; //TODO: fix this to stay in cents here too
+	private boolean forcedAmount; //flag to indicate amount should not be recomputed
 	
 	public TicketItem(Article article) {
-		this.article = article;
-		this.fee = 0;
-		this.quantity = 1;
+		this(article, 0, 1);
 	}
 	
 	public TicketItem(Article article, int fee, int quantity) {
 		this.article = article;
 		this.fee = fee;
 		this.quantity = quantity;
+		forcedAmount = false;
 	}
 
 	public Article getArticle() {
@@ -69,14 +69,16 @@ public class TicketItem {
 	 * (no rebates, special offers...)
 	 */
 	public void computeAmount() {
-	    if(article != null){
-	        if(article.isCountable()) {
-		        amount = (article.getArticlePrice(fee))*quantity;
-		    } else {
-		        amount = (article.getArticlePrice(fee)/1000.0)*quantity;
-		    }
+		if(article != null){
+			if(!forcedAmount){
+				if(article.isCountable()) {
+					amount = (article.getArticlePrice(fee))*quantity;
+				} else {
+					amount = (article.getArticlePrice(fee)/1000.0)*quantity;
+				}
+			}
 		} else {
-		    amount = 0;
+			amount = 0;
 		}
 	}
 	
@@ -95,6 +97,7 @@ public class TicketItem {
 	 */
 	public void setAmount(double nam){
 		amount = nam;
+		forcedAmount = true;
 	}
 	
 	public String toString() {

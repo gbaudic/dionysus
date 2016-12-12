@@ -242,6 +242,7 @@ public class NewArticleDialog extends JDialog {
 			chckbxActive.setToolTipText("If checked, article will be displayed with a button in Cash desk view");
 			GridBagConstraints gbc_chckbxActive = new GridBagConstraints();
 			gbc_chckbxActive.insets = new Insets(0, 0, 0, 5);
+			gbc_chckbxActive.anchor = GridBagConstraints.WEST;
 			gbc_chckbxActive.gridx = 1;
 			gbc_chckbxActive.gridy = 7;
 			contentPanel.add(chckbxActive, gbc_chckbxActive);
@@ -253,6 +254,7 @@ public class NewArticleDialog extends JDialog {
 			//chckbxCountable.setEnabled(false); //for 0.3 release
 			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
 			gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
+			gbc_chckbxCountable.anchor = GridBagConstraints.WEST;
 			gbc_chckbxCountable.gridx = 1;
 			gbc_chckbxCountable.gridy = 8;
 			contentPanel.add(chckbxCountable, gbc_chckbxCountable);
@@ -271,6 +273,14 @@ public class NewArticleDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						try {
+							if(nomField.getText().isEmpty()){
+								throw new IllegalArgumentException("Name cannot be empty.");
+							}
+							if(codeField.getText().isEmpty()){
+								throw new IllegalArgumentException("Code cannot be empty.");
+								//TODO: check that code is numeric only
+							}
+							
 							int priceChecksum = validatePrices(); //TODO
 							
 							if(priceChecksum != 1 && priceChecksum != 3 && priceChecksum != 7)
@@ -297,14 +307,6 @@ public class NewArticleDialog extends JDialog {
 							} else {
 								prices = new Price[3];
 								prices[0] = p0; prices[1] = p1; prices[2] = p2;
-							}
-							
-							if(nomField.getText().isEmpty()){
-								throw new IllegalArgumentException("Name cannot be empty.");
-							}
-							if(codeField.getText().isEmpty()){
-								throw new IllegalArgumentException("Code cannot be empty.");
-								//TODO: check that code is numeric only
 							}
 							
 							//Checking for code duplicates will be done afterwards
