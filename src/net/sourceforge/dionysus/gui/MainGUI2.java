@@ -32,6 +32,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -53,6 +54,7 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.awt.event.InputEvent;
 import java.util.Currency;
 import java.util.Locale;
@@ -81,6 +83,7 @@ public class MainGUI2 extends JFrame {
 	private JTextArea alertTextArea; /** Stock alerts*/
 	private JLabel lblTotalTicket;
 	private JLabel lblSoldeApres;
+	private JFileChooser fileChooser;
 	
 	public static String SOFTWARE_NAME = "Dionysus";
 	public static String SOFTWARE_VERSION = "0.3";
@@ -142,6 +145,7 @@ public class MainGUI2 extends JFrame {
 		//setBounds(100, 100, 1024, 768);
 		setSize(1024,740); //TODO: adjust to screen resolution
 		setLocationRelativeTo(null); //center on screen
+		fileChooser = new JFileChooser();
 		
 		//*********************************************
 		//****************** MENU *********************
@@ -211,6 +215,18 @@ public class MainGUI2 extends JFrame {
 		ImageIcon convertIcon = new ImageIcon(getClass().getResource("/gtk-convert.png"));
 		
 		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
+		mntmExportUsersLegacy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION){
+					File output = fileChooser.getSelectedFile();
+					//open file, write text for all users, close
+					//user.getTextForLegacyFile();
+				}
+			}
+		});
 		mnExport.add(mntmExportUsersLegacy);
 		
 		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV (TBD)", convertIcon);
@@ -225,7 +241,7 @@ public class MainGUI2 extends JFrame {
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
-		JMenuItem mntmAbout = new JMenuItem("About");
+		JMenuItem mntmAbout = new JMenuItem("About", new ImageIcon(getClass().getResource("/dialog-information.png")));
 		mntmAbout.addActionListener(new ActionListener() {
 			
 			@Override

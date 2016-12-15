@@ -30,6 +30,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import net.sourceforge.dionysus.*;
+
 /**
  * Generic interface for databases
  *
@@ -99,6 +101,14 @@ public abstract class Database<T> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	
+	}
+	
+	/**
+	 * Export the database in a human-friendly format (CSV, actually)
+	 * @param file the File object to write to
+	 */
+	public void export(File file){
+		
 	}
 	
 	/**

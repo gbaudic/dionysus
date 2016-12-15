@@ -198,14 +198,25 @@ public class Article implements Serializable, CSVAble {
 		StringBuilder csvline = new StringBuilder(name+";"+code+";");
 		csvline.append(String.valueOf(getArticlePrice()) + ";");
 		
-		if(getNumberOfPrices() > 1)
-			csvline.append(String.valueOf(getArticlePrice(1)));
-		csvline.append(";");
-		if(getNumberOfPrices() > 2)
-			csvline.append(String.valueOf(getArticlePrice(2)));
-		csvline.append(";");
+		double factor = isCountable ? 1. : 1000. ; //Hide the underlying storage as integers
 		
-		//TBC
+		if(getNumberOfPrices() > 1)
+			csvline.append(getArticlePrice(1));
+		csvline.append(';');
+		if(getNumberOfPrices() > 2)
+			csvline.append(getArticlePrice(2));
+		csvline.append(';');
+		if(hasStockMgmtEnabled)
+			csvline.append(stock / factor);
+		csvline.append(',');
+		if(hasStockAlertEnabled)
+			csvline.append(limitStock / factor);
+		csvline.append(';');
+		csvline.append(String.valueOf(hasStockMgmtEnabled) + ";");
+		csvline.append(String.valueOf(hasStockAlertEnabled) + ";");
+		csvline.append(String.valueOf(isActive) + ";");
+		csvline.append(String.valueOf(hasBeenUsed) + ";");
+		csvline.append(String.valueOf(isCountable) + ";");
 		
 		return csvline.toString();
 	}
