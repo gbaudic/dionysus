@@ -131,7 +131,6 @@ public class Transaction implements Serializable,CSVAble {
 	}
 	
 	public String csvHeader() {
-	    // TODO Auto-generated method stub
-	    return null;
+	    return "# Date;Amount;Source user;Destination user;Article;Number;Payment;Vendor";
 	}
 }

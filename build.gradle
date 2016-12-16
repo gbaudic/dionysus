@@ -20,7 +20,9 @@ distributions {
 		contents {
 			from { 'COPYING' }
 			from { 'CHANGELOG' }
-			from { '*.dat' }
+			from { 'log.dat' }
+			from { 'accounts.dat' }
+			from { 'articles.dat' }
 			from { 'logins.txt' }
 		}
 	}
