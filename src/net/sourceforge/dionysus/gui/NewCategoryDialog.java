@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
@@ -44,9 +46,10 @@ public class NewCategoryDialog extends JDialog {
 	private JTextField nameField;
 	private JTextField imageField;
 	private JPanel contentPanel;
-	private final JFileChooser fc = new JFileChooser();
+	private final JFileChooser fc;
 	
 	public NewCategoryDialog() {
+		fc = new JFileChooser();
 		contentPanel = new JPanel();
 		setModal(true);
 		setLocationRelativeTo(null);
@@ -132,9 +135,12 @@ public class NewCategoryDialog extends JDialog {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						try {
-							
+							if(nameField.getText().isEmpty())
+								throw new IllegalArgumentException("Name cannot be blank.");
 						} catch (NumberFormatException e){
 							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							JOptionPane.showMessageDialog(null,"Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 						}
 					}
 				});

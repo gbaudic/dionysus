@@ -19,6 +19,7 @@ package net.sourceforge.dionysus;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 /**
@@ -126,8 +127,11 @@ public class Transaction implements Serializable,CSVAble {
 
 	@Override
 	public String toCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		StringBuilder sb = new StringBuilder();
+		sb.append(DateFormat.getDateTimeInstance().format(date) + ";");
+		sb.append(NumberFormat.getCurrencyInstance().format(amount.getPrice()) + ";");
+		// TODO
+		return sb.toString();
 	}
 	
 	public String csvHeader() {

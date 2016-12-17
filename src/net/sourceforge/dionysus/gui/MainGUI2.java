@@ -86,8 +86,8 @@ public class MainGUI2 extends JFrame {
 	private JFileChooser fileChooser;
 	
 	public static String SOFTWARE_NAME = "Dionysus";
-	public static String SOFTWARE_VERSION = "0.3";
-	public static String SOFTWARE_VERSION_NICK = "\"Muscadet\"";
+	public static String SOFTWARE_VERSION = "0.4";
+	public static String SOFTWARE_VERSION_NICK = "\"Riesling\"";
 	
 	public Locale locale;
 	public Currency currency;
