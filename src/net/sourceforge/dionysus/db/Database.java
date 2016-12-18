@@ -19,6 +19,7 @@ package net.sourceforge.dionysus.db;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -108,7 +110,28 @@ public abstract class Database<T> {
 	 * @param file the File object to write to
 	 */
 	public void export(File file){
-		
+		if(file != null){
+			try {
+				BufferedWriter bw = new BufferedWriter(new PrintWriter(file));
+				
+				//Write header
+				if(data.size() > 0)
+					bw.write(((CSVAble) data.get(0)).csvHeader()+"\r\n");
+				//Write data
+				for(T obj : data){
+					bw.write(((CSVAble) obj).toCSV()+"\r\n");
+				}
+				bw.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (NullPointerException e) {
+				e.printStackTrace();
+			} catch (ClassCastException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

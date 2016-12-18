@@ -130,7 +130,18 @@ public class Transaction implements Serializable,CSVAble {
 		StringBuilder sb = new StringBuilder();
 		sb.append(DateFormat.getDateTimeInstance().format(date) + ";");
 		sb.append(NumberFormat.getCurrencyInstance().format(amount.getPrice()) + ";");
-		// TODO
+		if(sourceUser != null)
+			sb.append(sourceUser.getName());
+		sb.append(';');
+		if(destUser != null)
+			sb.append(destUser.getName());
+		sb.append(';');
+		sb.append(article.getName() + ";");
+		double factor = article.isCountable() ? 1 : 1000;
+		sb.append(String.valueOf(numberOfItems/factor) + ";");
+		String paymentName = pMethod == null ? "account" : pMethod.getName();
+		sb.append(paymentName + ";");
+		sb.append(vendor.getName());
 		return sb.toString();
 	}
 	
