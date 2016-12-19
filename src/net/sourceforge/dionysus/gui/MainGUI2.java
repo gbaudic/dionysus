@@ -217,25 +217,62 @@ public class MainGUI2 extends JFrame {
 		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
 		mntmExportUsersLegacy.addActionListener(new ActionListener() {
 			
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				int result = fileChooser.showSaveDialog(null);
 				if(result == JFileChooser.APPROVE_OPTION){
 					File output = fileChooser.getSelectedFile();
-					//open file, write text for all users, close
-					//user.getTextForLegacyFile();
+					if(output != null){
+						//Export
+					}
 				}
 			}
 		});
 		mnExport.add(mntmExportUsersLegacy);
 		
-		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV (TBD)", convertIcon);
+		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV", convertIcon);
+		mntmExportUsersCSV.addActionListener(new ActionListener() {			
+
+			public void actionPerformed(ActionEvent e) {
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION){
+					File output = fileChooser.getSelectedFile();
+					if(output != null){
+						users.export(output);
+					}
+				}
+			}
+		});
 		mnExport.add(mntmExportUsersCSV);
 		
-		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV (TBD)", convertIcon);
+		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV", convertIcon);
+		mntmExportArticlesCSV.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION){
+					File output = fileChooser.getSelectedFile();
+					if(output != null){
+						catalogue.export(output);
+					}
+				}
+			}
+		});
 		mnExport.add(mntmExportArticlesCSV);
 		
-		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV (TBD)", convertIcon);
+		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV", convertIcon);
+		mntmExportTransCSV.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int result = fileChooser.showSaveDialog(null);
+				if(result == JFileChooser.APPROVE_OPTION){
+					File output = fileChooser.getSelectedFile();
+					if(output != null){
+						journal.export(output);
+					}
+				}
+			}
+		});
 		mnExport.add(mntmExportTransCSV);
 		
 		JMenu mnHelp = new JMenu("Help");
@@ -281,7 +318,7 @@ public class MainGUI2 extends JFrame {
 		gbl_vueP.columnWidths = new int[]{0, 0, 0};
 		gbl_vueP.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_vueP.columnWeights = new double[]{0.6, 0.2, Double.MIN_VALUE};
-		gbl_vueP.rowWeights = new double[]{1.0, 1.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_vueP.rowWeights = new double[]{0.2, 0.2, 0.2, 1.0, 0.2, Double.MIN_VALUE};
 		vueP.setLayout(gbl_vueP);
 		
 		JPanel panel = new JPanel();
@@ -294,10 +331,10 @@ public class MainGUI2 extends JFrame {
 		gbc_panel.gridheight = 2;
 		vueP.add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWidths = new int[]{0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblN = new JLabel("Name: ");
@@ -319,8 +356,9 @@ public class MainGUI2 extends JFrame {
 		JButton chooser = new JButton("Select");
 		chooser.setToolTipText("Select user");
 		GridBagConstraints gbc_chooser = new GridBagConstraints();
+		gbc_chooser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chooser.insets = new Insets(0, 0, 5, 5);
-		gbc_chooser.gridx = 3;
+		gbc_chooser.gridx = 2;
 		gbc_chooser.gridy = 0;
 		chooser.addActionListener(new ActionListener() {
 
@@ -352,7 +390,7 @@ public class MainGUI2 extends JFrame {
 		btnX.setToolTipText("Accountless users");
 		GridBagConstraints gbc_btnX = new GridBagConstraints();
 		gbc_btnX.insets = new Insets(0, 0, 5, 5);
-		gbc_btnX.gridx = 3;
+		gbc_btnX.gridx = 2;
 		gbc_btnX.gridy = 1;
 		gbc_btnX.fill = GridBagConstraints.HORIZONTAL; //for esthetics
 		btnX.addActionListener(new ActionListener() {
@@ -388,7 +426,7 @@ public class MainGUI2 extends JFrame {
 		soldeLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GridBagConstraints gbc_soldeLabel = new GridBagConstraints();
 		gbc_soldeLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_soldeLabel.gridx = 2;
+		gbc_soldeLabel.gridx = 1;
 		gbc_soldeLabel.gridy = 1;
 		panel.add(soldeLabel, gbc_soldeLabel);
 		

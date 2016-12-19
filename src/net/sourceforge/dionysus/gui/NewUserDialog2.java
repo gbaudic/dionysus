@@ -210,7 +210,8 @@ public class NewUserDialog2 extends JDialog {
 							try {
 								menton = Double.parseDouble(soldeField.getText());
 							} catch (NumberFormatException e) {
-								JOptionPane.showMessageDialog(null, "Failed to retrieve user balance!", "Error", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Failed to retrieve user balance!", "Error", JOptionPane.WARNING_MESSAGE);
+								return; //do not create the user!
 							}
 							//Finally, we create the user
 							user = new User(nomField.getText(), prenomField.getText(), i.intValue(), (int)(menton*100), chckbxCaution.isSelected());
