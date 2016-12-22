@@ -233,13 +233,7 @@ public class MainGUI2 extends JFrame {
 		mntmExportUsersCSV.addActionListener(new ActionListener() {			
 
 			public void actionPerformed(ActionEvent e) {
-				int result = fileChooser.showSaveDialog(null);
-				if(result == JFileChooser.APPROVE_OPTION){
-					File output = fileChooser.getSelectedFile();
-					if(output != null){
-						users.export(output);
-					}
-				}
+				exportCSV(users);
 			}
 		});
 		mnExport.add(mntmExportUsersCSV);
@@ -249,13 +243,7 @@ public class MainGUI2 extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int result = fileChooser.showSaveDialog(null);
-				if(result == JFileChooser.APPROVE_OPTION){
-					File output = fileChooser.getSelectedFile();
-					if(output != null){
-						catalogue.export(output);
-					}
-				}
+				exportCSV(catalogue);
 			}
 		});
 		mnExport.add(mntmExportArticlesCSV);
@@ -264,13 +252,7 @@ public class MainGUI2 extends JFrame {
 		mntmExportTransCSV.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int result = fileChooser.showSaveDialog(null);
-				if(result == JFileChooser.APPROVE_OPTION){
-					File output = fileChooser.getSelectedFile();
-					if(output != null){
-						journal.export(output);
-					}
-				}
+				exportCSV(journal);
 			}
 		});
 		mnExport.add(mntmExportTransCSV);
@@ -930,6 +912,16 @@ public class MainGUI2 extends JFrame {
 		    } else {
 			    lblSoldeApres.setText("--");
 		    }
+		}
+	}
+	
+	private void exportCSV(Database db){
+		int result = fileChooser.showSaveDialog(null);
+		if(result == JFileChooser.APPROVE_OPTION){
+			File output = fileChooser.getSelectedFile();
+			if(output != null && db != null){
+				db.export(output);
+			}
 		}
 	}
 	
