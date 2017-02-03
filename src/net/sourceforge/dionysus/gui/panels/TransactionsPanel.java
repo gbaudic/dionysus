@@ -1,5 +1,5 @@
 /* 	Dionysus, a student pub management software in Java
-    Copyright (C) 2011,2013,2015,2016  G. Baudic
+    Copyright (C) 2011,2013,2015-2017  G. Baudic
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
