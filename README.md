@@ -8,7 +8,7 @@ The initial aim was to produce a management software to make the daily operation
 Current version is 0.1.5, it corrects some bugs from the 0.1 original version.
 
 To use the software, simply unpack the zip file in a directory with write permissions,
-and launch the jar file (double-clicking on Windows, or java -jar dionysus-0.1.5.jar on Unices).
+and launch the jar file (double-clicking on Windows, or `java -jar dionysus-0.1.5.jar` on Unices).
 Databases are accounts.dat for users, articles.dat for articles and log.dat for transactions.
 They are all initially empty.
 Tickets are printed as raw text files in the tickets/ subdirectory.
@@ -33,16 +33,18 @@ Dionysus is for you if:
 - your shop is limited in size and does not receive many customers
 - you do not have complex offers, rebates
 - you use a single computer for sales
-- you want a lightweight piece of software which works out-of-the-box with very limited dependencies
+- you want a lightweight piece of software which works out-of-the-box with very limited dependencies (only the JRE is required)
 
 Dionysus is NOT (yet!) for you if:
-- you need specific hardware support
+- you need specific hardware support, such as USB barcode scanners
 - your shop experiences heavy customer traffic
 - you have several POS terminals
 - you need a loyalty program for your customers
 - you have several hundreds articles in store
 - you need a stable, bug-free, supported system
 - you need interoperability with other software
+
+**Special note for users in France**: since January 1, 2018, all PoS software in use needs to have been approved by the fiscal administration. As you can imagine, this one is not approved, and is unlikely to be so, at the very least because it just does not support VAT. 
 
 ## Modifications
 
