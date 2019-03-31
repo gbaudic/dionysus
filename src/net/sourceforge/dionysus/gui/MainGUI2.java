@@ -870,7 +870,7 @@ public class MainGUI2 extends JFrame {
 				}
 			}
 		} catch (NumberFormatException nfe){
-			JOptionPane.showMessageDialog(null,"Invalid input! Cannot parse a number.", "Error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Invalid input! Cannot parse a number.", "Error", JOptionPane.WARNING_MESSAGE);
 			nfe.printStackTrace();
 		}
 	}	
