@@ -153,18 +153,14 @@ public class UserChoiceDialog2 extends JDialog {
 				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
-				okButton.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						//Choice of the user from the user which was selected in the table
-						int row = table.getSelectedRow();
-						if(row >= 0){
-							int realRow = table.convertRowIndexToModel(table.getSelectedRow());
-							chosenUser = (User)theDB.getArray()[realRow];
-						}
-						setVisible(false);
+				okButton.addActionListener((ActionEvent arg0) -> {
+					//Choice of the user from the user which was selected in the table
+					int row = table.getSelectedRow();
+					if(row >= 0){
+						int realRow = table.convertRowIndexToModel(table.getSelectedRow());
+						chosenUser = (User)theDB.getArray()[realRow];
 					}
+					setVisible(false);
 				});
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -173,11 +169,7 @@ public class UserChoiceDialog2 extends JDialog {
 				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
-				cancelButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
-						setVisible(false);
-					}
-				});
+				cancelButton.addActionListener((arg0) -> setVisible(false) );
 				
 				buttonPane.add(cancelButton);
 			}

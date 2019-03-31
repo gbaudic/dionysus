@@ -130,18 +130,14 @@ public class NewCategoryDialog extends JDialog {
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 
-				okButton.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						try {
-							if(nameField.getText().isEmpty())
-								throw new IllegalArgumentException("Name cannot be blank.");
-						} catch (NumberFormatException e){
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							JOptionPane.showMessageDialog(null,"Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-						}
+				okButton.addActionListener((arg0) -> {
+					try {
+						if(nameField.getText().isEmpty())
+							throw new IllegalArgumentException("Name cannot be blank.");
+					} catch (NumberFormatException e){
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						JOptionPane.showMessageDialog(null, "Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 					}
 				});
 
@@ -153,12 +149,7 @@ public class NewCategoryDialog extends JDialog {
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 
-				cancelButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
-						
-						setVisible(false);
-					}			
-				});
+				cancelButton.addActionListener((arg0) -> setVisible(false));
 
 				buttonPane.add(cancelButton);
 			}

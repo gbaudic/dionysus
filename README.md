@@ -13,9 +13,9 @@ Databases are accounts.dat for users, articles.dat for articles and log.dat for 
 They are all initially empty.
 Tickets are printed as raw text files in the tickets/ subdirectory.
 
-The GUI is "password-protected", the password can be found in the file passe.txt. It is clear text.
+The GUI is "password-protected", the password and logins can be found in the file `logins.txt`. It is clear text.
 
-The software requires Java 7 or higher. It works with the Oracle JDK and OpenJDK.  
+The software requires Java 8 or higher. It works with the Oracle JDK and OpenJDK.  
 
 For further documentation, please see the wiki. You may also find the source code useful. 
 

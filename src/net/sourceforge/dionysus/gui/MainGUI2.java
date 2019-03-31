@@ -34,9 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import javax.swing.JButton;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -190,22 +187,18 @@ public class MainGUI2 extends JFrame {
 		
 		JMenuItem mntmQuit = new JMenuItem("Quit", new ImageIcon(getClass().getResource("/application-exit.png")));
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
-		mntmQuit.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				if(currentTicket != null){
-					int choice = JOptionPane.showConfirmDialog(null,
-									"There is a ticket currently being processed.\nAre you sure you want to quit?",
-									"Confirmation", JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
-					//If a ticket is started, we need to confirm the will to quit
-					if (choice != JOptionPane.YES_OPTION)
-						return;
-				}
-				
-				System.exit(0); //Everything is fine, so we stop here
-				
+		mntmQuit.addActionListener((ActionEvent arg0) -> {
+			if(currentTicket != null){
+				int choice = JOptionPane.showConfirmDialog(null,
+						"There is a ticket currently being processed.\nAre you sure you want to quit?",
+						"Confirmation", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				//If a ticket is started, we need to confirm the will to quit
+				if (choice != JOptionPane.YES_OPTION)
+					return;
 			}
+
+			System.exit(0); //Everything is fine, so we stop here
 		});
 		mnFile.add(mntmQuit);
 		
@@ -215,60 +208,37 @@ public class MainGUI2 extends JFrame {
 		ImageIcon convertIcon = new ImageIcon(getClass().getResource("/gtk-convert.png"));
 		
 		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
-		mntmExportUsersLegacy.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				int result = fileChooser.showSaveDialog(null);
-				if(result == JFileChooser.APPROVE_OPTION){
-					File output = fileChooser.getSelectedFile();
-					if(output != null){
-						//Export
-					}
+		mntmExportUsersLegacy.addActionListener((ActionEvent e) -> {
+			int result = fileChooser.showSaveDialog(null);
+			if(result == JFileChooser.APPROVE_OPTION){
+				File output = fileChooser.getSelectedFile();
+				if(output != null){
+					//Export
 				}
 			}
 		});
 		mnExport.add(mntmExportUsersLegacy);
 		
 		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV", convertIcon);
-		mntmExportUsersCSV.addActionListener(new ActionListener() {			
-
-			public void actionPerformed(ActionEvent e) {
-				exportCSV(users);
-			}
-		});
+		mntmExportUsersCSV.addActionListener((e) -> exportCSV(users) );
 		mnExport.add(mntmExportUsersCSV);
 		
 		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV", convertIcon);
-		mntmExportArticlesCSV.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				exportCSV(catalogue);
-			}
-		});
+		mntmExportArticlesCSV.addActionListener((e) -> exportCSV(catalogue) );
 		mnExport.add(mntmExportArticlesCSV);
 		
 		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV", convertIcon);
-		mntmExportTransCSV.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				exportCSV(journal);
-			}
-		});
+		mntmExportTransCSV.addActionListener((e) -> exportCSV(journal) );
 		mnExport.add(mntmExportTransCSV);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem("About", new ImageIcon(getClass().getResource("/dialog-information.png")));
-		mntmAbout.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AboutDialog dlg = new AboutDialog();
-				dlg.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				dlg.setVisible(true);
-			}
+		mntmAbout.addActionListener((e) -> {
+			AboutDialog dlg = new AboutDialog();
+			dlg.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			dlg.setVisible(true);
 		});
 		mnHelp.add(mntmAbout);
 		
@@ -450,13 +420,9 @@ public class MainGUI2 extends JFrame {
 		saisieField = new JTextField();
 		saisieField.setHorizontalAlignment(SwingConstants.RIGHT);
 		saisieField.setFont(new Font("Tahoma", Font.BOLD, 20));
-		saisieField.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				inputLogic();
-				saisieField.setText(null);
-			}
+		saisieField.addActionListener((ActionEvent e) -> {
+			inputLogic();
+			saisieField.setText(null);
 		});
 		saisieField.getDocument().addDocumentListener(
             new DocumentListener() {
@@ -543,136 +509,24 @@ public class MainGUI2 extends JFrame {
 		vueP.add(panel_pavenum, gbc_panel_pavenum);
 		panel_pavenum.setLayout(new GridLayout(4, 3, 0, 0));
 		
-		JButton btn1 = new JButton("1");
-		btn1.setMnemonic('1');
-		btn1.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(1));
-			}
-		});
-		panel_pavenum.add(btn1);
-		
-		JButton btn2 = new JButton("2");
-		btn2.setMnemonic('2');
-		btn2.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(2));
-			}
-		});
-		panel_pavenum.add(btn2);
-		
-		JButton btn3 = new JButton("3");
-		btn3.setMnemonic('3');
-		btn3.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(3));
-			}
-		});
-		panel_pavenum.add(btn3);
-		
-		JButton btn4 = new JButton("4");
-		btn4.setMnemonic('4');
-		btn4.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(4));
-			}
-		});
-		panel_pavenum.add(btn4);
-		
-		JButton btn5 = new JButton("5");
-		btn5.setMnemonic('5');
-		btn5.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(5));
-			}
-		});
-		panel_pavenum.add(btn5);
-		
-		JButton btn6 = new JButton("6");
-		btn6.setMnemonic('6');
-		btn6.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(6));
-			}
-		});
-		panel_pavenum.add(btn6);
-		
-		JButton btn7 = new JButton("7");
-		btn7.setMnemonic('7');
-		btn7.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(7));
-			}
-		});
-		panel_pavenum.add(btn7);
-		
-		JButton btn8 = new JButton("8");
-		btn8.setMnemonic('8');
-		btn8.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(8));
-			}
-		});
-		panel_pavenum.add(btn8);
-		
-		JButton btn9 = new JButton("9");
-		btn9.setMnemonic('9');
-		btn9.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(9));
-			}
-		});
-		panel_pavenum.add(btn9);
-		
-		JButton btn0 = new JButton("0");
-		btn0.setMnemonic('0');
-		btn0.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(saisieField.getText()+String.valueOf(0));
-			}
-		});
-		panel_pavenum.add(btn0);
+		// Numbers from 1 to 9 then 0
+		for(int i = 1 ; i < 11 ; i++) {
+			String nbAsText = String.valueOf(i % 10);
+			JButton btn = new JButton(nbAsText);
+			btn.setMnemonic(nbAsText.charAt(0));
+			btn.addActionListener((arg0) ->
+				saisieField.setText(saisieField.getText()+nbAsText) );
+			panel_pavenum.add(btn);
+		}
 		
 		JButton btnMetre = new JButton("Dozen");
 		btnMetre.setToolTipText("12 units");
-		btnMetre.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(String.valueOf(12));
-			}
-		});
+		btnMetre.addActionListener((ActionEvent arg0) -> saisieField.setText(String.valueOf(12)) );
 		panel_pavenum.add(btnMetre);
 		
 		JButton btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Clear any input (not the ticket!)");
-		btnClear.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saisieField.setText(null);
-			}
-		});
+		btnClear.addActionListener((ActionEvent arg0) -> saisieField.setText(null));
 		panel_pavenum.add(btnClear);
 		
 		JPanel panel_3 = new JPanel();

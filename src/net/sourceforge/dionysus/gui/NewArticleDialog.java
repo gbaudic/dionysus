@@ -268,77 +268,7 @@ public class NewArticleDialog extends JDialog {
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 
-				okButton.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						try {
-							if(nomField.getText().isEmpty()){
-								throw new IllegalArgumentException("Name cannot be empty.");
-							}
-							if(codeField.getText().isEmpty()){
-								throw new IllegalArgumentException("Code cannot be empty.");
-								//TODO: check that code is numeric only
-							}
-							
-							int priceChecksum = validatePrices(); //TODO
-							
-							if(priceChecksum != 1 && priceChecksum != 3 && priceChecksum != 7)
-								throw new IllegalArgumentException("Prices must be filled in order, and at least one is required.");
-							
-							Price p0 = new Price(Double.parseDouble(price0Field.getText()));
-							Price p1 = null;
-							if( !price1Field.getText().isEmpty() ){
-								p1 = new Price(Double.parseDouble(price1Field.getText()));
-							}
-							Price p2 = null;
-							if( !price2Field.getText().isEmpty() ){
-								p2 = new Price(Double.parseDouble(price2Field.getText()));
-							}
-							Price[] prices;
-							if(p2 == null){
-								if(p1 == null){
-									prices = new Price[1];
-									prices[0] = p0;
-								} else {
-									prices = new Price[2];
-									prices[0] = p0; prices[1] = p1;
-								}
-							} else {
-								prices = new Price[3];
-								prices[0] = p0; prices[1] = p1; prices[2] = p2;
-							}
-							
-							//Checking for code duplicates will be done afterwards
-
-							article = new Article(nomField.getText(), prices, 0, Long.parseLong(codeField.getText()), chckbxCountable.isSelected());
-
-							article.setActive(chckbxActive.isSelected());
-							
-							int qtyFactor = article.isCountable() ? 1 : 1000; //Multiplicative factor for uncountable articles
-							
-							if(chckbxAlertEnabled.isSelected()){
-								article.setStockAlertEnabled(true);
-								article.setLimitStock(Integer.parseInt(alertField.getText()) * qtyFactor);
-							} else {
-								article.setStockAlertEnabled(false);
-							}
-
-							if(chckbxStockEnabled.isSelected()){
-								article.setStockMgmt(true);
-								article.setStock(Integer.parseInt(stockField.getText()) * qtyFactor);
-							} else {
-								article.setStockMgmt(false);
-							}	
-							
-							setVisible(false);
-						} catch (NumberFormatException e){
-							JOptionPane.showMessageDialog(null,"Invalid input!", "Error", JOptionPane.WARNING_MESSAGE);
-						} catch (IllegalArgumentException e) {
-							JOptionPane.showMessageDialog(null,"Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-						}
-					}
-				});
+				okButton.addActionListener(this::okClicked);
 
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -348,15 +278,81 @@ public class NewArticleDialog extends JDialog {
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 
-				cancelButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
-						article = null;
-						setVisible(false);
-					}			
+				cancelButton.addActionListener((ActionEvent arg0) -> {
+					article = null;
+					setVisible(false);
 				});
 
 				buttonPane.add(cancelButton);
 			}
+		}
+	}
+
+	private void okClicked(ActionEvent arg0) {
+		try {
+			if(nomField.getText().isEmpty()){
+				throw new IllegalArgumentException("Name cannot be empty.");
+			}
+			if(codeField.getText().isEmpty()){
+				throw new IllegalArgumentException("Code cannot be empty.");
+				//TODO: check that code is numeric only
+			}
+
+			int priceChecksum = validatePrices(); //TODO
+
+			if(priceChecksum != 1 && priceChecksum != 3 && priceChecksum != 7)
+				throw new IllegalArgumentException("Prices must be filled in order, and at least one is required.");
+
+			Price p0 = new Price(Double.parseDouble(price0Field.getText()));
+			Price p1 = null;
+			if( !price1Field.getText().isEmpty() ){
+				p1 = new Price(Double.parseDouble(price1Field.getText()));
+			}
+			Price p2 = null;
+			if( !price2Field.getText().isEmpty() ){
+				p2 = new Price(Double.parseDouble(price2Field.getText()));
+			}
+			Price[] prices;
+			if(p2 == null){
+				if(p1 == null){
+					prices = new Price[1];
+					prices[0] = p0;
+				} else {
+					prices = new Price[2];
+					prices[0] = p0; prices[1] = p1;
+				}
+			} else {
+				prices = new Price[3];
+				prices[0] = p0; prices[1] = p1; prices[2] = p2;
+			}
+
+			//Checking for code duplicates will be done afterwards
+
+			article = new Article(nomField.getText(), prices, 0, Long.parseLong(codeField.getText()), chckbxCountable.isSelected());
+
+			article.setActive(chckbxActive.isSelected());
+
+			int qtyFactor = article.isCountable() ? 1 : 1000; //Multiplicative factor for uncountable articles
+
+			if(chckbxAlertEnabled.isSelected()){
+				article.setStockAlertEnabled(true);
+				article.setLimitStock(Integer.parseInt(alertField.getText()) * qtyFactor);
+			} else {
+				article.setStockAlertEnabled(false);
+			}
+
+			if(chckbxStockEnabled.isSelected()){
+				article.setStockMgmt(true);
+				article.setStock(Integer.parseInt(stockField.getText()) * qtyFactor);
+			} else {
+				article.setStockMgmt(false);
+			}	
+
+			setVisible(false);
+		} catch (NumberFormatException e){
+			JOptionPane.showMessageDialog(null,"Invalid input!", "Error", JOptionPane.WARNING_MESSAGE);
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(null,"Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -378,14 +374,14 @@ public class NewArticleDialog extends JDialog {
 
 		if(a != null){
 			double qtyFactor  = a.isCountable() ? 1. : 1000.;
-			
+
 			nomField.setText(a.getName());
 			codeField.setText(String.valueOf(a.getCode()));
 			stockField.setText(String.valueOf(a.getStock() / qtyFactor));
 			alertField.setText(String.valueOf(a.getLimitStock() / qtyFactor));
 
 			chckbxActive.setSelected(a.isActive());
-			
+
 			chckbxCountable.setSelected(a.isCountable()); 
 
 			chckbxStockEnabled.setSelected(a.hasStockMgmtEnabled());
@@ -407,7 +403,7 @@ public class NewArticleDialog extends JDialog {
 	public Article getArticle(){
 		return this.article;
 	}
-	
+
 	/**
 	 *  Check that prices have meaningful values and are correctly filled
 	 */
@@ -419,7 +415,7 @@ public class NewArticleDialog extends JDialog {
 			result += 2;
 		if(!price2Field.getText().isEmpty())
 			result += 4;
-		
+
 		return result;
 	}
 

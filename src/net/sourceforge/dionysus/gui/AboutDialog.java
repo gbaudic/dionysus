@@ -131,13 +131,7 @@ public class AboutDialog extends JDialog {
 		gbc_btnOK.anchor = GridBagConstraints.NORTH;
 		gbc_btnOK.gridx = 0;
 		gbc_btnOK.gridy = 1;
-		btnOK.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		});
+		btnOK.addActionListener((ActionEvent arg0) -> setVisible(false));
 		getContentPane().add(btnOK, gbc_btnOK);
 	}
 

@@ -198,29 +198,25 @@ public class NewUserDialog2 extends JDialog {
 				JButton okButton = new JButton("OK", okIcon);
 				okButton.setActionCommand("OK");
 				
-				okButton.addActionListener(new ActionListener() {
-					
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						if(!nomField.getText().isEmpty() && !prenomField.getText().isEmpty()){
-							//TODO : Check
-							Integer i = new Integer((Integer) promoChooser.getValue());
-							double menton = 0; //the variable name is here a pun (in French)
-							
-							try {
-								menton = Double.parseDouble(soldeField.getText());
-							} catch (NumberFormatException e) {
-								JOptionPane.showMessageDialog(null, "Failed to retrieve user balance!", "Error", JOptionPane.WARNING_MESSAGE);
-								return; //do not create the user!
-							}
-							//Finally, we create the user
-							user = new User(nomField.getText(), prenomField.getText(), i.intValue(), (int)(menton*100), chckbxCaution.isSelected());
-							user.setID(idField.getText());
-							setVisible(false);
-						} else {
-							JOptionPane.showMessageDialog(null, "Incomplete name!", "Error", JOptionPane.WARNING_MESSAGE);
-						}			
-					}
+				okButton.addActionListener((arg0) -> {
+					if(!nomField.getText().isEmpty() && !prenomField.getText().isEmpty()){
+						//TODO : Check
+						Integer i = new Integer((Integer) promoChooser.getValue());
+						double menton = 0; //the variable name is here a pun (in French)
+
+						try {
+							menton = Double.parseDouble(soldeField.getText());
+						} catch (NumberFormatException e) {
+							JOptionPane.showMessageDialog(null, "Failed to retrieve user balance!", "Error", JOptionPane.WARNING_MESSAGE);
+							return; //do not create the user!
+						}
+						//Finally, we create the user
+						user = new User(nomField.getText(), prenomField.getText(), i.intValue(), (int)(menton*100), chckbxCaution.isSelected());
+						user.setID(idField.getText());
+						setVisible(false);
+					} else {
+						JOptionPane.showMessageDialog(null, "Incomplete name!", "Error", JOptionPane.WARNING_MESSAGE);
+					}			
 				});
 				
 				buttonPane.add(okButton);
@@ -231,11 +227,9 @@ public class NewUserDialog2 extends JDialog {
 				JButton cancelButton = new JButton("Cancel", cancelIcon);
 				cancelButton.setActionCommand("Cancel");
 				
-				cancelButton.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0) {
+				cancelButton.addActionListener((arg0) -> {
 						user = null;
 						setVisible(false);
-					}			
 				});
 				
 				buttonPane.add(cancelButton);
