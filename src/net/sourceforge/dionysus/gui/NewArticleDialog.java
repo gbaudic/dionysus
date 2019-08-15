@@ -37,8 +37,6 @@ import javax.swing.JTextField;
 
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JCheckBox;
 
 import net.sourceforge.dionysus.*;

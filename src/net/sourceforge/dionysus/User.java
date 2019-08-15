@@ -31,12 +31,12 @@ public class User implements Serializable,CSVAble {
 	private String lastName;
 	private String firstName;
 	private int promo;
-	private int balance; //Balance in cents
+	private int balance; //! Balance in cents
 	private boolean paidDeposit; 
 	/* To prevent students from staying for too long with a negative balance (and eventually leaving university without paying...),
 	 * they had to give an amount of money that would be only used if they get in such a situation. This flag tells if they have paid it or not.
 	*/
-	private String id; //unique identifier, such as a barcode or QR code on a member card
+	private String id; //! unique identifier, such as a barcode or QR code on a member card
 	
 	public User(String lastName, String firstName, int promo, int balance) {
 		this.lastName = lastName;
@@ -133,7 +133,7 @@ public class User implements Serializable,CSVAble {
 	}
 
 	public void setPaidCaution(boolean paidCaution) {
-		this.paidDeposit = paidDeposit;
+		this.paidDeposit = paidCaution;
 	}
 	
 	/**

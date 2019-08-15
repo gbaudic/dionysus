@@ -161,9 +161,7 @@ public class MainGUI2 extends JFrame {
 		
 		JMenuItem mntmChangeVendor = new JMenuItem("Change vendor");
 		mnFile.add(mntmChangeVendor);
-		mntmChangeVendor.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
+		mntmChangeVendor.addActionListener(arg0 -> {
 				if(currentTicket != null){
 					int choice = JOptionPane.showConfirmDialog(null,
 									"There is a ticket currently being processed.\nAre you sure you want to quit?",
@@ -178,9 +176,8 @@ public class MainGUI2 extends JFrame {
 				//Go back to password
 				PasswordDialog pdiag = new PasswordDialog();
 				pdiag.setVisible(true);
-			}
-			
-		});
+			}			
+		);
 		
 		JSeparator separator = new JSeparator();
 		mnFile.add(separator);
@@ -345,10 +342,7 @@ public class MainGUI2 extends JFrame {
 		gbc_btnX.gridx = 2;
 		gbc_btnX.gridy = 1;
 		gbc_btnX.fill = GridBagConstraints.HORIZONTAL; //for esthetics
-		btnX.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
+		btnX.addActionListener(arg0 -> {
 				currentUserAtDesk = null;
 
 				nomLabel.setText("default (00)"); 
@@ -363,7 +357,7 @@ public class MainGUI2 extends JFrame {
 				taskToDoLabel.setText("Choose article");
 				currentState = TicketState.TICKET_IDLE;
 			}
-		});
+		);
 		panel.add(btnX, gbc_btnX);
 		
 		JLabel lblSolde = new JLabel("Balance:");
@@ -457,10 +451,7 @@ public class MainGUI2 extends JFrame {
 				if(c != null && c.isActive()){
 					JButton btn = new JButton(c.getName());
 					btn.setToolTipText(c.getToolTipText());
-					btn.addActionListener(new ActionListener() {
-						
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
+					btn.addActionListener(arg0 -> {
 							if(currentState == TicketState.TICKET_IDLE){
 								currentArticleAtDesk = c;
 								currentItemAtDesk = new TicketItem(c);
@@ -480,8 +471,7 @@ public class MainGUI2 extends JFrame {
 								    finalizeTicketItem();
 								}
 							}
-						}
-					});
+						});
 					
 					panel_articles.add(btn);
 				}
@@ -587,10 +577,7 @@ public class MainGUI2 extends JFrame {
 		
 		for(final PaymentMethod p : PaymentMethod.values()){
 			JButton btn = new JButton(p.getName());
-			btn.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
+			btn.addActionListener(arg0 -> {
 					if(currentTicket != null && currentState == TicketState.TICKET_IDLE){
 			            currentTicket.pay(p);
 
@@ -611,7 +598,7 @@ public class MainGUI2 extends JFrame {
 			            return;
 		            }
 				}
-			});
+			);
 			
 			panel_PaymentMethods.add(btn);
 		}
@@ -881,11 +868,7 @@ public class MainGUI2 extends JFrame {
 	 */
 	public void setCurrentVendor(Vendor currentVendor) {
 		this.currentVendor = currentVendor;
-		if(currentVendor != null){
-			lblVendorName.setText(currentVendor.getName());
-		} else {
-			lblVendorName.setText("unregistered");
-		}
+		lblVendorName.setText(currentVendor != null ? currentVendor.getName() : "unregistered");
 	}
 	
 }

@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -42,12 +41,20 @@ public class Ticket {
 	private Vendor vendor;
 	private NumberFormat amountFormatter;
 	
+	/**
+	 * Constructor
+	 * @param u user making the purchase. Can be null. 
+	 */
 	public Ticket(User u) {
 		items = new ArrayList<TicketItem>();
 		customer = u;
 		amountFormatter = NumberFormat.getCurrencyInstance();
 	}
 	
+	/**
+	 * Add an article to the ticket
+	 * @param newItem item to add
+	 */
 	public void addArticle(TicketItem newItem) {
 		if(newItem != null && newItem.getQuantity() != 0) {
 			items.add(newItem);
@@ -64,16 +71,16 @@ public class Ticket {
 		//Check that article exists
 		for(TicketItem ti : items) {
 			if(ti != null) {
-				if(ti.getArticle().getName() == a.getArticle().getName() && ti.getFee() == a.getFee()){
+				if(ti.getArticle().getName().equals(a.getArticle().getName()) && ti.getFee() == a.getFee()){
 					int remainder = ti.getQuantity() - a.getQuantity();
-					if(remainder == 0){
+					if(remainder == 0) {
 						//If quantity drops to zero, delete article
 						items.remove(ti);
 					} else {
-						if(remainder > 0){
+						if(remainder > 0) {
 							ti.removeArticles(a.getQuantity());
 						} else {
-							//TODO: exception if we remove more than we have
+							throw new IllegalArgumentException("You cannot remove more articles than already present");
 						}
 					}
 					return;
@@ -88,13 +95,10 @@ public class Ticket {
 	 * Recompute the total for the ticket
 	 */
 	public void updateAmount() {
-		amount = 0;
-		
-		for(TicketItem ti : items) {
-			if(ti != null) {
-				amount += ti.getAmount();
-			}
-		}
+		amount = items.stream()
+				.filter(item -> item != null)
+				.mapToDouble(item -> item.getAmount())
+				.sum();
 	}
 	
 	/**
@@ -106,15 +110,11 @@ public class Ticket {
 	}
 	
 	public double getBalanceAfterTicket() {
-		if(customer != null){
-			return customer.getBalance() - amount;
-		} else {
-			return 0.00;
-		}
+		return customer != null ? customer.getBalance() - amount : 0.00;
 	}
 	
 	public List<TicketItem> getItems() {
-	    return items;
+	    return new ArrayList<TicketItem>(items);
 	    //TODO: find a better way, to ensure ticket cannot be modified from outside
 	}
 	
@@ -125,54 +125,53 @@ public class Ticket {
 	 * TODO: this may need to be rewritten.
 	 */
 	public StringBuilder printTicketToText(String date){
-		
 		StringBuilder accu = new StringBuilder();
 		
-		if(date != null){
+		// Ticket date
+		if(date != null) {
 			accu.append( date + "\r\n");
 		} else {
 			accu.append(DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date()) + "\r\n");
 		}
 		
-		accu.append("From "+customer.getNameWithPromo()+"\r\n");
-		accu.append("Sold by "+vendor.getName()+"\r\n");
+		// Users involved
+		accu.append(String.format("From {}\r\n", customer.getNameWithPromo()));
+		accu.append(String.format("Sold by {}\r\n", vendor.getName()));
 		
-		for(TicketItem ti : items)
-		{
-			if(ti != null){
+		// Purchased items
+		for(TicketItem ti : items) {
+			if(ti != null) {
 				accu.append("\t" + ti.toString() + "\r\n");
 			}
 		}
 		
-		accu.append("Total: "+amountFormatter.format(amount)+"\r\nPaid by ");
+		// Grand total
+		accu.append(String.format("Total: {}\r\nPaid by ", amountFormatter.format(amount)));
 		
-		if(pMethod != null){
+		// Payment method
+		if(pMethod != null) {
 			accu.append(pMethod.getName());
 		} else {
 			accu.append("user account");
 		}
 		
+		// Goodbye message
 		accu.append("\r\nThanks for your purchase, welcome back");
 		
 		return accu.append("\r\n\r\n");
 	}
 	
-	public void saveTicketToText(){
+	public void saveTicketToText() {
 		//Output the date and time of the ticket in a human readable localized form
 		String date = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date());
 		
 		File f = new File("tickets/"+date+".txt");
-		FileWriter fw;
 		
-		try {
-			fw = new FileWriter(f);
-			
+		try (FileWriter fw = new FileWriter(f)) {
 			fw.append(printTicketToText(date));
-			fw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	/**
@@ -187,10 +186,18 @@ public class Ticket {
 		return pMethod;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getNumberOfItems(){
 		return items.size();
 	}
 	
+	/**
+	 * 
+	 * @param newUser
+	 */
 	public void setUser(User newUser) {
 		customer = newUser; //no check on null because it has a meaning
 	}

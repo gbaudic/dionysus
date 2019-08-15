@@ -40,8 +40,6 @@ import javax.swing.JTextField;
 
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JTable;
 import javax.swing.table.TableRowSorter;
 import javax.swing.event.*;
