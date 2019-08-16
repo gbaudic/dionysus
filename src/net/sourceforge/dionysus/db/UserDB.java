@@ -89,9 +89,9 @@ public class UserDB extends Database<User> {
 		try {
 			BufferedWriter bw = new BufferedWriter(new PrintWriter(filename));
 			
-			for(int i=0 ; i < data.size() ; i++){
+			for(User user : data){
 				//if(data[i] != null) //Do not exclude nulls for coherence
-					bw.write(data.get(i).getTextForLegacyFile()+"\r\n");
+					bw.write(user.getTextForLegacyFile()+"\r\n");
 			}
 			bw.close();
 		} catch (FileNotFoundException e) {

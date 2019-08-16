@@ -76,12 +76,10 @@ public abstract class Database<T> {
 			ois.close();
 			
 			makeArrayForTables();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		} catch (IOException | ClassNotFoundException e) {
+			JOptionPane.showMessageDialog(null,
+					"Error when trying to save database file: "+targetF.getName()+"\n"+e.getLocalizedMessage(), 
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
@@ -98,10 +96,10 @@ public abstract class Database<T> {
 					oos.writeObject(data.get(i));
 			}
 			oos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+					"Error when trying to access database file: "+targetF.getName()+"\n"+e.getLocalizedMessage(), 
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}	
 	}
 	
@@ -111,9 +109,7 @@ public abstract class Database<T> {
 	 */
 	public void export(File file){
 		if(file != null){
-			try {
-				BufferedWriter bw = new BufferedWriter(new PrintWriter(file));
-				
+			try (BufferedWriter bw = new BufferedWriter(new PrintWriter(file))) {
 				//Write header
 				if(data.size() > 0)
 					bw.write(((CSVAble) data.get(0)).csvHeader()+"\r\n");
@@ -121,15 +117,10 @@ public abstract class Database<T> {
 				for(T obj : data){
 					bw.write(((CSVAble) obj).toCSV()+"\r\n");
 				}
-				bw.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			} catch (ClassCastException e) {
-				e.printStackTrace();
+			} catch (IOException | NullPointerException | ClassCastException e) {
+				JOptionPane.showMessageDialog(null,
+						"Error when exporting database file to "+file.getName()+"\n"+e.getLocalizedMessage(), 
+						"Export error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
