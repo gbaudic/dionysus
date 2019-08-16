@@ -44,10 +44,15 @@ public class Price implements Serializable{
 		this.price = price;
 	}
 	
+	@Override
 	public String toString() {
 		return NumberFormat.getCurrencyInstance().format(price/100.);
 	}
 	
+	/**
+	 * Getter for price
+	 * @return price, expressed in the usual human way ($12.45)
+	 */
 	public double getPrice() {
 		return price/100.;
 	}

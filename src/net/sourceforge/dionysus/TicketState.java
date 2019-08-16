@@ -21,11 +21,11 @@ package net.sourceforge.dionysus;
  * State enumeration to denote the current status of the software in Cash desk view
  */
 public enum TicketState {
-    IDLE,           // No user selected, no ticket
-    TICKET_IDLE,    // Ticket being opened, waiting for new article or payment
-    PAYMENT,        // Ticket finished and being paid
-    EDIT_ITEM,      // Modification of a previously entered ticket item
-    QUANTITY,       // Article selected
-    PRICE;          // Article and quantity selected
+    IDLE,           //! No user selected, no ticket
+    TICKET_IDLE,    //! Ticket being opened, waiting for new article or payment
+    PAYMENT,        //! Ticket finished and being paid
+    EDIT_ITEM,      //! Modification of a previously entered ticket item
+    QUANTITY,       //! Article selected
+    PRICE;          //! Article and quantity selected
 }
 

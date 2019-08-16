@@ -31,10 +31,20 @@ public class TicketItem {
 	private double amount; //TODO: fix this to stay in cents here too
 	private boolean forcedAmount; //flag to indicate amount should not be recomputed
 	
+	/**
+	 * Constructor
+	 * @param article article being bought
+	 */
 	public TicketItem(Article article) {
 		this(article, 0, 1);
 	}
 	
+	/**
+	 * Constructor
+	 * @param article article being bought
+	 * @param fee index of fee to use, starting at 0
+	 * @param quantity quantity of the product, in units or grams/milliliters
+	 */
 	public TicketItem(Article article, int fee, int quantity) {
 		this.article = article;
 		this.fee = fee;
@@ -72,7 +82,7 @@ public class TicketItem {
 		if(article != null){
 			if(!forcedAmount){
 				if(article.isCountable()) {
-					amount = (article.getArticlePrice(fee))*quantity;
+					amount = article.getArticlePrice(fee)*quantity;
 				} else {
 					amount = (article.getArticlePrice(fee)/1000.0)*quantity;
 				}
@@ -100,10 +110,11 @@ public class TicketItem {
 		forcedAmount = true;
 	}
 	
+	@Override
 	public String toString() {
 	    String name = article != null ? article.getName() : "null";
 	    
-		return " "+String.valueOf(quantity)+" x "+name+"  "+NumberFormat.getCurrencyInstance().format(getAmount());
+	    return String.format(" {} x {}  {}", quantity, name, NumberFormat.getCurrencyInstance().format(getAmount()));
 	}
 	
 	public void setQuantity(int q) {
