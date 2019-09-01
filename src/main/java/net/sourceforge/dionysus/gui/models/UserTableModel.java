@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
-package net.sourceforge.dionysus.gui;
+package net.sourceforge.dionysus.gui.models;
 
 import javax.swing.table.DefaultTableModel;
 

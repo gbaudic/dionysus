@@ -46,6 +46,7 @@ import javax.swing.event.*;
 
 import net.sourceforge.dionysus.*;
 import net.sourceforge.dionysus.db.UserDB;
+import net.sourceforge.dionysus.gui.models.UserTableModel;
 
 import java.util.regex.*;
 

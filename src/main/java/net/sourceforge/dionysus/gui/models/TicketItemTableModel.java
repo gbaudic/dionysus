@@ -15,36 +15,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
-
-package net.sourceforge.dionysus.gui;
+package net.sourceforge.dionysus.gui.models;
 
 import javax.swing.table.DefaultTableModel;
 
-public class ArticleTableModel extends DefaultTableModel {
-
-	private static final long serialVersionUID = -2641198391560050967L;
-	private static String [] colNames = new String[] {
-		"Name", "Code", "Active", "Price 0", "Price 1", "Price 2", "Current stock", "Alert from"
-	};
+/**
+ * Table model for the redesigned ticket view
+ *
+ */
+public class TicketItemTableModel extends DefaultTableModel {
+	private static final long serialVersionUID = -2023864553780594289L;
+	private static String [] colNames = new String[] {"Name", "Quantity", "Price"};
 	
-	public ArticleTableModel(Object[][] data){
+	public TicketItemTableModel(Object[][] data){
 		super(data, colNames);
 	}
 	
 	Class[] columnTypes = new Class[] {
-			String.class, Long.class, Boolean.class, String.class, String.class, String.class, String.class, String.class
+			String.class, String.class, String.class
 	};
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
 	boolean[] columnEditables = new boolean[] {
-			false, false, false, false, false, false, false, false
+			false, true, false
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
-	}
-
-	public void refreshData(Object[][] newData){
-		setDataVector(newData, colNames);
 	}
 }

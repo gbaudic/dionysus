@@ -40,7 +40,7 @@ import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.dionysus.Transaction;
 import net.sourceforge.dionysus.db.TransactionDB;
-import net.sourceforge.dionysus.gui.TransactionTableModel;
+import net.sourceforge.dionysus.gui.models.TransactionTableModel;
 
 /**
  * Class to hold the Transactions panel, with the revert button

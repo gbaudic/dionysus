@@ -26,7 +26,7 @@ import java.io.Serializable;
 
 public class User implements Serializable,CSVAble {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 728813682202079442L;
 	
 	private String lastName;
 	private String firstName;
@@ -114,7 +114,7 @@ public class User implements Serializable,CSVAble {
 		return id;
 	}
 	
-	public void setID(String id) {
+	public void setID(final String id) {
 		if(id != null && !id.isEmpty() && id != " "){
 			this.id = id;
 		}

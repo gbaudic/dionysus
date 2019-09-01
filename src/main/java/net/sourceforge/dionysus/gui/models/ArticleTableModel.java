@@ -16,27 +16,23 @@
 */
 
 
-package net.sourceforge.dionysus.gui;
-
-import java.util.Date;
+package net.sourceforge.dionysus.gui.models;
 
 import javax.swing.table.DefaultTableModel;
 
-public class TransactionTableModel extends DefaultTableModel {
+public class ArticleTableModel extends DefaultTableModel {
 
-	private static final long serialVersionUID = 7595571828972009182L;
-	private static String [] colNames =  new String[] {
-		"Date", "Article", "Quantity", "Amount", "Source account", "Dest. account", "Paid by", "Vendor"
+	private static final long serialVersionUID = -2641198391560050967L;
+	private static String [] colNames = new String[] {
+		"Name", "Code", "Active", "Price 0", "Price 1", "Price 2", "Current stock", "Alert from"
 	};
-
 	
-	public TransactionTableModel(Object[][] data){
-		super(data,colNames);
+	public ArticleTableModel(Object[][] data){
+		super(data, colNames);
 	}
 	
-	
 	Class[] columnTypes = new Class[] {
-			Date.class, String.class, Integer.class, String.class, String.class, String.class, String.class, String.class
+			String.class, Long.class, Boolean.class, String.class, String.class, String.class, String.class, String.class
 	};
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
@@ -47,7 +43,7 @@ public class TransactionTableModel extends DefaultTableModel {
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
 	}
-	
+
 	public void refreshData(Object[][] newData){
 		setDataVector(newData, colNames);
 	}

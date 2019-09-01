@@ -40,7 +40,7 @@ import javax.swing.table.TableRowSorter;
 import net.sourceforge.dionysus.User;
 import net.sourceforge.dionysus.db.UserDB;
 import net.sourceforge.dionysus.gui.NewUserDialog2;
-import net.sourceforge.dionysus.gui.UserTableModel;
+import net.sourceforge.dionysus.gui.models.UserTableModel;
 
 /**
  * Class to host the users panel, with add/modify/remove/credit buttons

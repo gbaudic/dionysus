@@ -40,8 +40,8 @@ import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.dionysus.Article;
 import net.sourceforge.dionysus.db.ArticleDB;
-import net.sourceforge.dionysus.gui.ArticleTableModel;
 import net.sourceforge.dionysus.gui.NewArticleDialog;
+import net.sourceforge.dionysus.gui.models.ArticleTableModel;
 
 /**
  * 

@@ -15,32 +15,40 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
-package net.sourceforge.dionysus.gui;
+
+package net.sourceforge.dionysus.gui.models;
+
+import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
 
-/**
- * Table model for the redesigned ticket view
- *
- */
-public class TicketItemTableModel extends DefaultTableModel {
-	private static final long serialVersionUID = -2023864553780594289L;
-	private static String [] colNames = new String[] {"Name", "Quantity", "Price"};
+public class TransactionTableModel extends DefaultTableModel {
+
+	private static final long serialVersionUID = 7595571828972009182L;
+	private static String [] colNames =  new String[] {
+		"Date", "Article", "Quantity", "Amount", "Source account", "Dest. account", "Paid by", "Vendor"
+	};
+
 	
-	public TicketItemTableModel(Object[][] data){
-		super(data, colNames);
+	public TransactionTableModel(Object[][] data){
+		super(data,colNames);
 	}
 	
+	
 	Class[] columnTypes = new Class[] {
-			String.class, String.class, String.class
+			Date.class, String.class, Integer.class, String.class, String.class, String.class, String.class, String.class
 	};
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
 	boolean[] columnEditables = new boolean[] {
-			false, true, false
+			false, false, false, false, false, false, false, false
 	};
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
+	}
+	
+	public void refreshData(Object[][] newData){
+		setDataVector(newData, colNames);
 	}
 }
