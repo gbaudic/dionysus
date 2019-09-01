@@ -4,17 +4,6 @@ apply plugin: 'application'
 
 mainClassName = 'net.sourceforge.dionysus.gui.MainGUI2'
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src']
-        }
-        resources {
-            srcDirs = ['images']
-        }
-    }
-}
-
 distributions {
 	main {
 		contents {
@@ -26,6 +15,14 @@ distributions {
 			from { 'logins.txt' }
 		}
 	}
+}
+
+repositories {
+    jcenter() 
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.12' 
 }
 
 jar {
