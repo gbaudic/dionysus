@@ -29,9 +29,12 @@ public class Vendor implements Serializable {
 
 	private static final long serialVersionUID = 7579644578907922526L;
 
-	private String name; //Name appearing on the screen and on tickets
-	private String login; //Login for the identification process - may be different from name
-	private String cPassword; //There is also a password
+	/** Name appearing on the screen and on tickets*/
+	private String name; 
+	/** Login for the identification process - may be different from name */
+	private String login; 
+	/** There is also a password */
+	private String cPassword;
 	
 	/**
 	 * @param name

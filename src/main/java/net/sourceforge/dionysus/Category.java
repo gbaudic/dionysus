@@ -17,7 +17,7 @@
 
 package net.sourceforge.dionysus;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.io.Serializable;
 import java.awt.Color;
 
@@ -31,7 +31,7 @@ public class Category implements Serializable {
 	
 	private String name; //Name of the category
 	private String imagePath; //Absolute path to an image
-	private ArrayList<Article> articlesList;
+	private HashSet<Article> articlesList;
 	private Color color; //Background color of button for this category
 	
 	/**
@@ -40,7 +40,7 @@ public class Category implements Serializable {
 	 * @param articlesList
 	 * @param color
 	 */
-	public Category(String name, String imagePath, ArrayList<Article> articlesList, Color color) {
+	public Category(String name, String imagePath, HashSet<Article> articlesList, Color color) {
 		this(name, imagePath, articlesList);
 		this.color = color;
 	}
@@ -50,7 +50,7 @@ public class Category implements Serializable {
 	 * @param imagePath 
 	 * @param articlesList
 	 */
-	public Category(String name, String imagePath, ArrayList<Article> articlesList) {
+	public Category(String name, String imagePath, HashSet<Article> articlesList) {
 		this.name = name;
 		this.imagePath = imagePath;
 		this.articlesList = articlesList;
@@ -65,7 +65,7 @@ public class Category implements Serializable {
 	public Category(String name, String imagePath) {
 		this.name = name;
 		this.imagePath = imagePath;
-		articlesList = new ArrayList<Article>();
+		articlesList = new HashSet<Article>();
 		this.color = null;
 	}
 
@@ -117,16 +117,33 @@ public class Category implements Serializable {
 	/**
 	 * @return the articlesList
 	 */
-	public ArrayList<Article> getArticlesList() {
+	public HashSet<Article> getArticlesList() {
 		return articlesList;
 	}
 	
+	/**
+	 * 
+	 * @param a article to add to this category
+	 */
 	public void addArticle(Article a){
 		if(a != null){
 			articlesList.add(a);
-		}
-		
+		}		
 	}
 	
-	//remove
+	/**
+	 * Remove an article from the category
+	 * @param a
+	 */
+	public void removeArticle(Article a) {
+		articlesList.remove(a);
+	}
+	
+	/**
+	 * Remove all articles from this category
+	 * Useful for deletion
+	 */
+	public void clear() {
+		articlesList.clear();
+	}
 }

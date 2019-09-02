@@ -22,6 +22,15 @@ package net.sourceforge.dionysus;
  * CSV export is mainly here for interoperability
  */
 public interface CSVAble {
+	/**
+	 * Getter
+	 * @return serialized representation of the object for CSV
+	 */
 	public String toCSV();
+	
+	/**
+	 * Produce a header describing contents of each field
+	 * @return the header line for the CSV file
+	 */
 	public String csvHeader();
 }
