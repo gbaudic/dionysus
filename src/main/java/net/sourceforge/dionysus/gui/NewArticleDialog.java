@@ -294,12 +294,13 @@ public class NewArticleDialog extends JDialog {
 			if(codeField.getText().isEmpty()){
 				throw new IllegalArgumentException("Code cannot be empty.");
 				//TODO: check that code is numeric only
+			} else {
+				if(!codeField.getText().matches("^\\d+$")) {
+					throw new IllegalArgumentException("Code must be numeric.");
+				}
 			}
 
-			int priceChecksum = validatePrices(); //TODO
-
-			if(priceChecksum != 1 && priceChecksum != 3 && priceChecksum != 7)
-				throw new IllegalArgumentException("Prices must be filled in order, and at least one is required.");
+			validatePrices(); 
 
 			Price p0 = new Price(Double.parseDouble(price0Field.getText()));
 			Price p1 = null;
@@ -332,6 +333,7 @@ public class NewArticleDialog extends JDialog {
 
 			int qtyFactor = article.isCountable() ? 1 : 1000; //Multiplicative factor for uncountable articles
 
+			// Activate stock alerts if requested
 			if(chckbxAlertEnabled.isSelected()){
 				article.setStockAlertEnabled(true);
 				article.setLimitStock(Integer.parseInt(alertField.getText()) * qtyFactor);
@@ -339,6 +341,7 @@ public class NewArticleDialog extends JDialog {
 				article.setStockAlertEnabled(false);
 			}
 
+			// Activate stock management if requested
 			if(chckbxStockEnabled.isSelected()){
 				article.setStockMgmt(true);
 				article.setStock(Integer.parseInt(stockField.getText()) * qtyFactor);
@@ -358,16 +361,16 @@ public class NewArticleDialog extends JDialog {
 	 * Constructor with argument for further editing
 	 * @param a article to use
 	 */
-	public NewArticleDialog(Article a){
+	public NewArticleDialog(Article a) {
 		this();
 		setArticle(a);
 	}
 
 	/**
 	 * Fills in UI components with data from the DB record
+	 * @param a existing Article to use when filling the dialog
 	 */
-	public void setArticle(Article a)
-	{
+	public void setArticle(Article a) {
 		article = a;
 
 		if(a != null){
@@ -395,9 +398,15 @@ public class NewArticleDialog extends JDialog {
 
 				price1Field.setText(String.valueOf(a.getArticlePrice(1)));
 			}	
+		} else {
+			throw new IllegalArgumentException("Article cannot be null");
 		}
 	}
 
+	/**
+	 * Getter for article
+	 * @return the Article being edited by this dialog
+	 */
 	public Article getArticle(){
 		return this.article;
 	}
@@ -405,16 +414,36 @@ public class NewArticleDialog extends JDialog {
 	/**
 	 *  Check that prices have meaningful values and are correctly filled
 	 */
-	private int validatePrices() {
+	private void validatePrices() {
+		JTextField fields[] = {price0Field, price1Field, price2Field};
+		
+		// Check order of filled prices
 		int result = 0;
-		if(!price0Field.getText().isEmpty())
-			result += 1;
-		if(!price1Field.getText().isEmpty())
-			result += 2;
-		if(!price2Field.getText().isEmpty())
-			result += 4;
-
-		return result;
+		int flag = 1;
+		for (JTextField field : fields) {
+			String text = field.getText();
+			if(text.isEmpty()) {
+				result += flag;
+			}
+			flag *= 2;
+			checkPrice(text); // Check that values are positive
+		}
+		
+		if(result != 1 && result != 3 && result != 7)
+			throw new IllegalArgumentException("Prices must be filled in order, and at least one is required.");
+	}
+	
+	/**
+	 * Simple check for validity of price
+	 * @param price string to test
+	 * @throws IllegalArgumentException if the value is negative
+	 * @throws NumberFormatException if the string is not a valid number
+	 */
+	private void checkPrice (final String price) {
+		double value = Double.valueOf(price);
+		if (value < 0) {
+			throw new IllegalArgumentException("Negative prices are not supported.");
+		}
 	}
 
 }
