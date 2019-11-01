@@ -27,14 +27,16 @@ import java.text.NumberFormat;
 public class Article implements Serializable, CSVAble {
 	
 	private static final long serialVersionUID = 1L;
-	private String name;
-	private long code; //long code
-	private Price prices []; //articles can have different prices (max 3): members of student union, non-members, visitors (for example)
+	private final String name;
+	/** long code */
+	private final long code;
+	/** articles can have different prices (max 3): members of student union, non-members, visitors (for example) */
+	private final Price prices []; 
 	private int stock; //current quantity: units or (grams or milliliters)
 	private int limitStock; //lower bound for alerts
 	private boolean hasStockMgmtEnabled; //inventory management
 	private boolean hasStockAlertEnabled; //alert when low inventory
-	private boolean isActive; //Is currently being used (ie., is available in the pub at this very moment)
+	private boolean isActive; //Is currently being used (i.e., is available in the pub at this very moment)
 	private boolean hasBeenUsed; /* Has already been used at least once and cannot be deleted permanently, 
 	(otherwise corresponding transactions cannot be reverted without errors) */
 	private boolean isCountable; /* Allows to distinguish between countable (two bottles) and uncountable (531g of sugar).
@@ -47,7 +49,7 @@ public class Article implements Serializable, CSVAble {
 	 * @param prices an array of prices
 	 * @param code the code to be used for recalling this article
 	 */
-	public Article(String name, Price[] prices, long code) {
+	public Article(final String name, final Price[] prices, final long code) {
 		this.name = name;
 		this.code = code;
 		this.prices = prices;
@@ -61,7 +63,7 @@ public class Article implements Serializable, CSVAble {
 	 * @param stock initial number of units
 	 * @param code the code to be used for recalling the article
 	 */
-	public Article(String name, Price[] prices, int stock, long code) {
+	public Article(final String name, final Price[] prices, final int stock, final long code) {
 		this(name, prices, code);
 		this.stock = stock;
 	}
@@ -73,8 +75,8 @@ public class Article implements Serializable, CSVAble {
 	 * @param code the code to be used for recalling the article
 	 * @param isCountable flag to tell this article will be uncountable
 	 */
-	public Article(String name, Price[] prices, int stock, long code, 
-			boolean isCountable) {
+	public Article(final String name, final Price[] prices, final int stock, final long code, 
+			final boolean isCountable) {
 		this(name, prices, stock, code);
 		this.isCountable = isCountable;
 	}
@@ -100,11 +102,11 @@ public class Article implements Serializable, CSVAble {
 	 * @param id price identifier. Must be 0, 1 or 2 in this implementation
 	 * @return the corresponding price, or 0 if the price does not exist
 	 */
-	public double getArticlePrice(int id) {
+	public double getArticlePrice(final int id) {
 		if(id >= 0 && id < getNumberOfPrices()) {
 			return prices[id].getPrice();
 		} else {
-			return 0;
+			throw new IndexOutOfBoundsException("Price does not exist");
 		}
 	}
 	
@@ -112,7 +114,7 @@ public class Article implements Serializable, CSVAble {
 		return stock;
 	}
 	
-	public void setStock(int newStock) {
+	public void setStock(final int newStock) {
 		stock = newStock;
 	}
 	
@@ -120,7 +122,7 @@ public class Article implements Serializable, CSVAble {
 	 * Add stock to this article, use a negative quantity to remove
 	 * @param amount the INTEGER amount to add or remove
 	 */
-	public void addStock(int amount) {
+	public void addStock(final int amount) {
 		stock += amount;
 	}
 
@@ -144,20 +146,20 @@ public class Article implements Serializable, CSVAble {
 		return hasBeenUsed;
 	}
 
-	public void setLimitStock(int limitStock) {
+	public void setLimitStock(final int limitStock) {
 		if(limitStock >= 0)
 			this.limitStock = limitStock;
 	}
 
-	public void setStockMgmt(boolean hasStockMgmtEnabled) {
+	public void setStockMgmt(final boolean hasStockMgmtEnabled) {
 		this.hasStockMgmtEnabled = hasStockMgmtEnabled;
 	}
 
-	public void setStockAlertEnabled(boolean hasStockAlertEnabled) {
+	public void setStockAlertEnabled(final boolean hasStockAlertEnabled) {
 		this.hasStockAlertEnabled = hasStockAlertEnabled;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setActive(final boolean isActive) {
 		this.isActive = isActive;
 	}
 	
@@ -167,7 +169,7 @@ public class Article implements Serializable, CSVAble {
 	 * @return the correct tooltip text
 	 */
 	public String getToolTipText(){
-		StringBuilder ttt = new StringBuilder("<html>"+ name + " ("+ String.valueOf(code) + ")");
+		final StringBuilder ttt = new StringBuilder("<html>"+ name + " ("+ String.valueOf(code) + ")");
 		for(int i = 0 ; i < getNumberOfPrices() ; i++){
 			ttt.append("<br/>Price "+String.valueOf(i)+": "+NumberFormat.getCurrencyInstance().format(getArticlePrice(i)) );
 		}
@@ -194,11 +196,12 @@ public class Article implements Serializable, CSVAble {
 	 * Generate the string for CSV serialization
 	 * TODO
 	 */
+	@Override
 	public String toCSV() {
-		StringBuilder csvline = new StringBuilder(name+";"+code+";");
+		final StringBuilder csvline = new StringBuilder(name+";"+code+";");
 		csvline.append(String.valueOf(getArticlePrice()) + ";");
 		
-		double factor = isCountable ? 1. : 1000. ; //Hide the underlying storage as integers
+		final double factor = isCountable ? 1. : 1000. ; //Hide the underlying storage as integers
 		
 		if(getNumberOfPrices() > 1)
 			csvline.append(getArticlePrice(1));
@@ -208,7 +211,7 @@ public class Article implements Serializable, CSVAble {
 		csvline.append(';');
 		if(hasStockMgmtEnabled)
 			csvline.append(stock / factor);
-		csvline.append(',');
+		csvline.append(';');
 		if(hasStockAlertEnabled)
 			csvline.append(limitStock / factor);
 		csvline.append(';');
@@ -221,6 +224,7 @@ public class Article implements Serializable, CSVAble {
 		return csvline.toString();
 	}
 	
+	@Override
 	public String csvHeader() {
 	    return "# Name;Code;Price0;Price1;Price2;Stock;Limit;Management;Alert;Active;Used;Countable";
 	}

@@ -28,9 +28,9 @@ public class User implements Serializable,CSVAble {
 	
 	private static final long serialVersionUID = 728813682202079442L;
 	
-	private String lastName;
-	private String firstName;
-	private int promo;
+	private final String lastName;
+	private final String firstName;
+	private final int promo;
 	private int balance; //! Balance in cents
 	private boolean paidDeposit; 
 	/* To prevent students from staying for too long with a negative balance (and eventually leaving university without paying...),
@@ -38,7 +38,7 @@ public class User implements Serializable,CSVAble {
 	*/
 	private String id; //! unique identifier, such as a barcode or QR code on a member card
 	
-	public User(String lastName, String firstName, int promo, int balance) {
+	public User(final String lastName, final String firstName, final int promo, final int balance) {
 		this.lastName = lastName;
 		this.firstName = firstName;
 		this.promo = promo;
@@ -47,9 +47,9 @@ public class User implements Serializable,CSVAble {
 		id = "";
 	}
 
-	public User(String lastName, String firstName, int promo, int balance,
-			boolean paidDeposit) {
-		this(lastName,firstName,promo,balance);
+	public User(final String lastName, final String firstName, final int promo, final int balance,
+			final boolean paidDeposit) {
+		this(lastName, firstName, promo, balance);
 		this.paidDeposit = paidDeposit;
 	}
 
@@ -66,7 +66,7 @@ public class User implements Serializable,CSVAble {
 	 * Adds an amount to the current balance
 	 * @param montant amount to credit
 	 */
-	public void credite(double montant) {
+	public void credite(final double montant) {
 		this.balance += (int)(montant*100);
 	}
 	
@@ -74,7 +74,7 @@ public class User implements Serializable,CSVAble {
 	 * Deduces an amount from current balance
 	 * @param montant amount to debit
 	 */
-	public void debite(double montant) {
+	public void debite(final double montant) {
 		this.balance -= (int)(montant*100);
 	}
 	
@@ -110,6 +110,10 @@ public class User implements Serializable,CSVAble {
 		return firstName;
 	}
 	
+	/**
+	 * Returns the ID
+	 * @return ID
+	 */
 	public String getID() {
 		return id;
 	}
@@ -132,7 +136,7 @@ public class User implements Serializable,CSVAble {
 		return paidDeposit;
 	}
 
-	public void setPaidCaution(boolean paidCaution) {
+	public void setPaidCaution(final boolean paidCaution) {
 		this.paidDeposit = paidCaution;
 	}
 	
@@ -142,16 +146,17 @@ public class User implements Serializable,CSVAble {
 	 * @return promo, lastName, firstName and balance, each field surrounded by <...>
 	 */
 	public String getTextForLegacyFile(){
-		String bal = String.valueOf(balance / 100.0);
-		return "<"+String.valueOf(promo)+"><"+lastName+"><"+firstName+"><"+bal+">";
+		final String bal = String.valueOf(balance / 100.0);
+		return String.format("<%s><%s><%s><%s>", String.valueOf(promo), lastName, firstName, bal);
 	}
 
 	@Override
 	public String toCSV() {
-		String bal = String.valueOf(balance / 100.0);
+		final String bal = String.valueOf(balance / 100.0);
 		return lastName+";"+firstName+";"+id+";"+promo+";"+bal+";"+paidDeposit;
 	}
 	
+	@Override
 	public String csvHeader() {
 	    return "# Last name;First name;ID;Promo;Balance;Paid deposit";
 	}

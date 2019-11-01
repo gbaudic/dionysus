@@ -52,18 +52,38 @@ public class TicketItem {
 		forcedAmount = false;
 	}
 
+	/**
+	 * Getter for the article specified by this Item
+	 * @return the article
+	 */
 	public Article getArticle() {
 		return article;
 	}
 	
+	/**
+	 * Increase the number of articles 
+	 * @param number a positive number to add
+	 */
 	public void addArticles(int number) {
-		quantity += number;
-		computeAmount();
+		if (number >= 0) {
+			quantity += number;
+			computeAmount();
+		} else {
+			throw new IllegalArgumentException("Adding a negative quantity is not allowed.");
+		}
 	}
 	
+	/**
+	 * Decrease the number of articles
+	 * @param number a positive number to remove
+	 */
 	public void removeArticles(int number) {
-		quantity -= number;
-		computeAmount();
+		if(number >= 0 && number <= quantity) {
+			quantity -= number;
+			computeAmount();
+		} else {
+			throw new IllegalArgumentException("Illegal value when removing articles.");
+		}
 	}
 	
 	public int getFee() {
