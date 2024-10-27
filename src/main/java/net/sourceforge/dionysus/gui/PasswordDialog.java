@@ -12,13 +12,16 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,33 +40,36 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
 
 import net.sourceforge.dionysus.Vendor;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
 /**
- * The initial dialog box, which is intended to protect the software from unauthorized users
- *
+ * The initial dialog box, which is intended to protect the software from
+ * unauthorized users
  */
 public class PasswordDialog extends JDialog {
 
-	private static final long serialVersionUID = 1L;
-	private static final String passFile = "passe.txt";
-	private static final String loginFile = "logins.txt";
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -3434784729931468513L;
+	private static final String passFile = Messages.getString("PasswordDialog.0"); //$NON-NLS-1$
+	private static final String loginFile = Messages.getString("PasswordDialog.1"); //$NON-NLS-1$
 	private final JPanel contentPanel;
 	private char[] correctPassword;
 	private JPasswordField passwordField;
 	private HashMap<String, Vendor> database;
 	private Vendor chosenVendor;
-	
+
 	private boolean result = false;
-	private JTextField loginField; //Login field to allow multiple users (with each one having a login/password pair)
+	/**
+	 * Login field to allow multiple users (with each one having a login/password
+	 * pair)
+	 */
+	private JTextField loginField;
 
 	/**
 	 * Create the dialog.
@@ -71,23 +77,23 @@ public class PasswordDialog extends JDialog {
 	public PasswordDialog() {
 		contentPanel = new JPanel();
 		setResizable(false);
-		setTitle("Identification required");
+		setTitle(Messages.getString("PasswordDialog.2")); //$NON-NLS-1$
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModal(true);
-		setSize(450,123);
+		setSize(450, 123);
 		setLocationRelativeTo(null);
-		//setBounds(100, 100, 450, 123);
+		// setBounds(100, 100, 450, 123);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{46, 377, 0};
-		gbl_contentPanel.rowHeights = new int[]{20, 20, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 46, 377, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 20, 20, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblLogin = new JLabel("Login");
+			JLabel lblLogin = new JLabel(Messages.getString("PasswordDialog.3")); //$NON-NLS-1$
 			lblLogin.setHorizontalAlignment(SwingConstants.RIGHT);
 			GridBagConstraints gbc_lblLogin = new GridBagConstraints();
 			gbc_lblLogin.anchor = GridBagConstraints.EAST;
@@ -98,8 +104,8 @@ public class PasswordDialog extends JDialog {
 		}
 		{
 			loginField = new JTextField();
-			//loginField.setText("default");
-			//loginField.setEnabled(false);
+			// loginField.setText("default");
+			// loginField.setEnabled(false);
 			GridBagConstraints gbc_loginField = new GridBagConstraints();
 			gbc_loginField.anchor = GridBagConstraints.NORTH;
 			gbc_loginField.fill = GridBagConstraints.HORIZONTAL;
@@ -110,7 +116,7 @@ public class PasswordDialog extends JDialog {
 			loginField.setColumns(10);
 		}
 		{
-			JLabel lblEnterLeWord = new JLabel("Password");
+			JLabel lblEnterLeWord = new JLabel(Messages.getString("PasswordDialog.4")); //$NON-NLS-1$
 			lblEnterLeWord.setHorizontalAlignment(SwingConstants.RIGHT);
 			GridBagConstraints gbc_lblEnterLeWord = new GridBagConstraints();
 			gbc_lblEnterLeWord.anchor = GridBagConstraints.EAST;
@@ -133,14 +139,14 @@ public class PasswordDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
-				JButton okButton = new JButton("OK", okIcon);
-				okButton.setActionCommand("OK");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("PasswordDialog.5"))); //$NON-NLS-1$
+				JButton okButton = new JButton(Messages.getString("PasswordDialog.6"), okIcon); //$NON-NLS-1$
+				okButton.setActionCommand(Messages.getString("PasswordDialog.7")); //$NON-NLS-1$
 				okButton.addActionListener((ActionEvent arg0) -> {
 
-					if(checkIdentification()){
-						if(checkPassword(passwordField.getPassword())) {
-							//Hide this dialog box and show the main window
+					if (checkIdentification()) {
+						if (checkPassword(passwordField.getPassword())) {
+							// Hide this dialog box and show the main window
 							result = true;
 							passwordField.setText(null);
 							setVisible(false);
@@ -148,19 +154,21 @@ public class PasswordDialog extends JDialog {
 							frame.setCurrentVendor(chosenVendor);
 							frame.setVisible(true);
 						} else {
-							JOptionPane.showMessageDialog(null, "Wrong password.\nPlease retry.", "Error", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.8"), Messages.getString("PasswordDialog.9"), //$NON-NLS-1$ //$NON-NLS-2$
+									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Login does not exist.", "Error", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.10"), Messages.getString("PasswordDialog.11"), //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.WARNING_MESSAGE);
 					}
 				});
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
-				JButton cancelButton = new JButton("Cancel", cancelIcon);
-				cancelButton.setActionCommand("Cancel");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("PasswordDialog.12"))); //$NON-NLS-1$
+				JButton cancelButton = new JButton(Messages.getString("PasswordDialog.13"), cancelIcon); //$NON-NLS-1$
+				cancelButton.setActionCommand(Messages.getString("PasswordDialog.14")); //$NON-NLS-1$
 				cancelButton.addActionListener((arg0) -> {
 					setVisible(false);
 					System.exit(0);
@@ -168,112 +176,120 @@ public class PasswordDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
-		
-		//getCorrectPassword();
+
+		// getCorrectPassword();
 		loadDatabase();
 	}
 
 	/**
-	 * Loads the password from a text file (stored in clear...)
-	 * In the original software, the file was hidden - but the data was plain text
-	 */
-	private void getCorrectPassword(){
-		//Filename: passe.txt is set here
-		File pass = new File(passFile);
-		try {
-			FileReader fr = new FileReader(pass);
-			String str = "";
-			int i = 0;
-			while((i = fr.read()) != -1)
-				str += (char)i;
-			correctPassword = str.toCharArray();
-			fr.close();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, "Password file not found.", "Error", JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Error while reading password file.", "Error", JOptionPane.ERROR_MESSAGE);
-		}	
-	}
-	
-	/**
-	 * Load the contents of the logins.txt file
-	 */
-	private void loadDatabase(){
-		database = new HashMap<String, Vendor>();
-		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(loginFile));
-			
-			Scanner s = new Scanner(reader);
-			
-			String line = s.nextLine();
-			
-			while (line != null){
-                if(!line.startsWith("#")){
-                    String [] pieces = line.split(":");
-                    if(pieces.length == 3){
-                        //Format is login:display_name:password
-                        database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]) );
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Bad line encountered while parsing login file.", "Warning", JOptionPane.WARNING_MESSAGE);
-                    }
-				}
-				
-				line = s.nextLine();
-			}
-			
-			s.close();
-		} catch (FileNotFoundException e){
-			JOptionPane.showMessageDialog(null, "Login file not found. \nIt should be logins.txt", "Error", JOptionPane.ERROR_MESSAGE);
-			System.exit(-1); //We need to exit here, because there is no way the user can login. 
-		} catch (NoSuchElementException e){
-			//do nothing, we simply have reached the end of the file
-		}
-	}
-	
-	/**
 	 * Checks the existence of the login provided, and initializes passwords
+	 *
 	 * @return true if login exists, false otherwise
 	 */
-	private boolean checkIdentification(){
+	private boolean checkIdentification() {
 		String targetLogin = loginField.getText();
-		
+
 		chosenVendor = database.get(targetLogin);
-		
-		if(chosenVendor == null){
+
+		if (chosenVendor == null) {
 			return false;
 		} else {
 			correctPassword = chosenVendor.getcPassword().toCharArray();
 			return true;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Checks the provided password
+	 *
 	 * @param input a character array
 	 * @return the result of the check
 	 */
 	private boolean checkPassword(char[] input) {
 		boolean isCorrect = false;
-		
-		if(input.length != correctPassword.length) {
+
+		if (input.length != correctPassword.length) {
 			isCorrect = false;
 		} else {
 			isCorrect = Arrays.equals(input, correctPassword);
 		}
-		
-		if(isCorrect)
+
+		if (isCorrect) {
 			Arrays.fill(correctPassword, '0');
-		
+		}
+
 		return isCorrect;
-	}	
-	
+	}
+
+	/**
+	 * Loads the password from a text file (stored in clear...) In the original
+	 * software, the file was hidden - but the data was plain text
+	 */
+	private void getCorrectPassword() {
+		// Filename: passe.txt is set here
+		File pass = new File(passFile);
+		try {
+			FileReader fr = new FileReader(pass);
+			StringBuilder str = new StringBuilder();
+			int i = 0;
+			while ((i = fr.read()) != -1) {
+				str.append((char) i);
+			}
+			correctPassword = str.toString().toCharArray();
+			fr.close();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.15"), Messages.getString("PasswordDialog.16"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.17"), Messages.getString("PasswordDialog.18"), //$NON-NLS-1$ //$NON-NLS-2$
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
 	/**
 	 * Getter for identification result
+	 *
 	 * @return true if identification succeeded, false otherwise
 	 */
 	public boolean getResult() {
 		return result;
+	}
+
+	/**
+	 * Load the contents of the logins.txt file
+	 */
+	private void loadDatabase() {
+		database = new HashMap<String, Vendor>();
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(loginFile));
+
+			Scanner s = new Scanner(reader);
+
+			String line = s.nextLine();
+
+			while (line != null) {
+				if (!line.startsWith(Messages.getString("PasswordDialog.19"))) { //$NON-NLS-1$
+					String[] pieces = line.split(Messages.getString("PasswordDialog.20")); //$NON-NLS-1$
+					if (pieces.length == 3) {
+						// Format is login:display_name:password
+						database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]));
+					} else {
+						JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.21"), Messages.getString("PasswordDialog.22"), //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.WARNING_MESSAGE);
+					}
+				}
+
+				line = s.nextLine();
+			}
+
+			s.close();
+		} catch (FileNotFoundException e) {
+			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.23"), Messages.getString("PasswordDialog.24"), //$NON-NLS-1$ //$NON-NLS-2$
+					JOptionPane.ERROR_MESSAGE);
+			System.exit(-1); // We need to exit here, because there is no way the user can login.
+		} catch (NoSuchElementException e) {
+			// do nothing, we simply have reached the end of the file
+		}
 	}
 }

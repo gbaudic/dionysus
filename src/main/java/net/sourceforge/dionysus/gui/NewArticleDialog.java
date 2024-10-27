@@ -63,7 +63,7 @@ public class NewArticleDialog extends JDialog {
 	 */
 	public NewArticleDialog() {
 		contentPanel = new JPanel();
-		setTitle("Article record");
+		setTitle(Messages.getString("NewArticleDialog.0")); //$NON-NLS-1$
 		//setBounds(100, 100, 369, 290);
 		setModal(true);
 		setSize(369,290);
@@ -78,7 +78,7 @@ public class NewArticleDialog extends JDialog {
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblNewLabel = new JLabel("Article name*:");
+			JLabel lblNewLabel = new JLabel(Messages.getString("NewArticleDialog.1")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
@@ -98,7 +98,7 @@ public class NewArticleDialog extends JDialog {
 			nomField.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_1 = new JLabel("Article code*:");
+			JLabel lblNewLabel_1 = new JLabel(Messages.getString("NewArticleDialog.2")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 			gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_1.anchor = GridBagConstraints.LINE_END;
@@ -109,7 +109,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			codeField = new JTextField();
-			codeField.setToolTipText("Unique code for this article, such as its barcode");
+			codeField.setToolTipText(Messages.getString("NewArticleDialog.3")); //$NON-NLS-1$
 			GridBagConstraints gbc_codeField = new GridBagConstraints();
 			gbc_codeField.insets = new Insets(0, 0, 5, 0);
 			gbc_codeField.fill = GridBagConstraints.HORIZONTAL;
@@ -119,7 +119,7 @@ public class NewArticleDialog extends JDialog {
 			codeField.setColumns(13); //Barcodes have a length of 13
 		}
 		{
-			chckbxStockEnabled = new JCheckBox("");
+			chckbxStockEnabled = new JCheckBox(Messages.getString("NewArticleDialog.4")); //$NON-NLS-1$
 			GridBagConstraints gbc_chckbxStockEnabled = new GridBagConstraints();
 			gbc_chckbxStockEnabled.insets = new Insets(0, 0, 5, 5);
 			gbc_chckbxStockEnabled.gridx = 0;
@@ -127,7 +127,7 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(chckbxStockEnabled, gbc_chckbxStockEnabled);
 		}
 		{
-			JLabel lblStock = new JLabel("Stock:");
+			JLabel lblStock = new JLabel(Messages.getString("NewArticleDialog.5")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblStock = new GridBagConstraints();
 			gbc_lblStock.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblStock.anchor = GridBagConstraints.EAST;
@@ -138,7 +138,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		{
 			stockField = new JTextField();
-			stockField.setToolTipText("Current quantity");
+			stockField.setToolTipText(Messages.getString("NewArticleDialog.6")); //$NON-NLS-1$
 			GridBagConstraints gbc_stockField = new GridBagConstraints();
 			gbc_stockField.insets = new Insets(0, 0, 5, 0);
 			gbc_stockField.fill = GridBagConstraints.HORIZONTAL;
@@ -148,7 +148,7 @@ public class NewArticleDialog extends JDialog {
 			stockField.setColumns(10);
 		}
 		{
-			chckbxAlertEnabled = new JCheckBox("");
+			chckbxAlertEnabled = new JCheckBox(Messages.getString("NewArticleDialog.7")); //$NON-NLS-1$
 			GridBagConstraints gbc_chckbxAlertEnabled = new GridBagConstraints();
 			gbc_chckbxAlertEnabled.insets = new Insets(0, 0, 5, 5);
 			gbc_chckbxAlertEnabled.gridx = 0;
@@ -156,7 +156,7 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(chckbxAlertEnabled, gbc_chckbxAlertEnabled);
 		}
 		{
-			JLabel lblNewLabel_2 = new JLabel("Stock alert threshold:");
+			JLabel lblNewLabel_2 = new JLabel(Messages.getString("NewArticleDialog.8")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 			gbc_lblNewLabel_2.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_2.anchor = GridBagConstraints.LINE_END;
@@ -176,7 +176,7 @@ public class NewArticleDialog extends JDialog {
 			alertField.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_3 = new JLabel("Price #0*:");
+			JLabel lblNewLabel_3 = new JLabel(Messages.getString("NewArticleDialog.9")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 			gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_3.anchor = GridBagConstraints.LINE_END;
@@ -196,7 +196,7 @@ public class NewArticleDialog extends JDialog {
 			price0Field.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_4 = new JLabel("Price #1:");
+			JLabel lblNewLabel_4 = new JLabel(Messages.getString("NewArticleDialog.10")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 			gbc_lblNewLabel_4.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
@@ -216,7 +216,7 @@ public class NewArticleDialog extends JDialog {
 			price1Field.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_5 = new JLabel("Price #2:");
+			JLabel lblNewLabel_5 = new JLabel(Messages.getString("NewArticleDialog.11")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 			gbc_lblNewLabel_5.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
@@ -236,8 +236,8 @@ public class NewArticleDialog extends JDialog {
 			price2Field.setColumns(10);
 		}
 		{
-			chckbxActive = new JCheckBox("Activate article*");
-			chckbxActive.setToolTipText("If checked, article will be displayed with a button in Cash desk view");
+			chckbxActive = new JCheckBox(Messages.getString("NewArticleDialog.12")); //$NON-NLS-1$
+			chckbxActive.setToolTipText(Messages.getString("NewArticleDialog.13")); //$NON-NLS-1$
 			GridBagConstraints gbc_chckbxActive = new GridBagConstraints();
 			gbc_chckbxActive.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxActive.anchor = GridBagConstraints.WEST;
@@ -246,8 +246,8 @@ public class NewArticleDialog extends JDialog {
 			contentPanel.add(chckbxActive, gbc_chckbxActive);
 		}
 		{
-			chckbxCountable = new JCheckBox("Countable article*");
-			chckbxCountable.setToolTipText("Check if this article is sold in units, uncheck if it is sold by weight or volume");
+			chckbxCountable = new JCheckBox(Messages.getString("NewArticleDialog.14")); //$NON-NLS-1$
+			chckbxCountable.setToolTipText(Messages.getString("NewArticleDialog.15")); //$NON-NLS-1$
 			chckbxCountable.setSelected(true);
 			//chckbxCountable.setEnabled(false); //for 0.3 release
 			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
@@ -262,9 +262,9 @@ public class NewArticleDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
-				JButton okButton = new JButton("OK", okIcon);
-				okButton.setActionCommand("OK");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("NewArticleDialog.16"))); //$NON-NLS-1$
+				JButton okButton = new JButton(Messages.getString("NewArticleDialog.17"), okIcon); //$NON-NLS-1$
+				okButton.setActionCommand(Messages.getString("NewArticleDialog.18")); //$NON-NLS-1$
 
 				okButton.addActionListener(this::okClicked);
 
@@ -272,9 +272,9 @@ public class NewArticleDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
-				JButton cancelButton = new JButton("Cancel", cancelIcon);
-				cancelButton.setActionCommand("Cancel");
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("NewArticleDialog.19"))); //$NON-NLS-1$
+				JButton cancelButton = new JButton(Messages.getString("NewArticleDialog.20"), cancelIcon); //$NON-NLS-1$
+				cancelButton.setActionCommand(Messages.getString("NewArticleDialog.21")); //$NON-NLS-1$
 
 				cancelButton.addActionListener((ActionEvent arg0) -> {
 					article = null;
@@ -289,14 +289,14 @@ public class NewArticleDialog extends JDialog {
 	private void okClicked(ActionEvent arg0) {
 		try {
 			if(nomField.getText().isEmpty()){
-				throw new IllegalArgumentException("Name cannot be empty.");
+				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.22")); //$NON-NLS-1$
 			}
 			if(codeField.getText().isEmpty()){
-				throw new IllegalArgumentException("Code cannot be empty.");
+				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.23")); //$NON-NLS-1$
 				//TODO: check that code is numeric only
 			} else {
-				if(!codeField.getText().matches("^\\d+$")) {
-					throw new IllegalArgumentException("Code must be numeric.");
+				if(!codeField.getText().matches(Messages.getString("NewArticleDialog.24"))) { //$NON-NLS-1$
+					throw new IllegalArgumentException(Messages.getString("NewArticleDialog.25")); //$NON-NLS-1$
 				}
 			}
 
@@ -351,9 +351,9 @@ public class NewArticleDialog extends JDialog {
 
 			setVisible(false);
 		} catch (NumberFormatException e){
-			JOptionPane.showMessageDialog(null,"Invalid input!", "Error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,Messages.getString("NewArticleDialog.26"), Messages.getString("NewArticleDialog.27"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(null,"Wrong parameter: \n"+e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,Messages.getString("NewArticleDialog.28")+e.getMessage(), Messages.getString("NewArticleDialog.29"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -399,7 +399,7 @@ public class NewArticleDialog extends JDialog {
 				price1Field.setText(String.valueOf(a.getArticlePrice(1)));
 			}	
 		} else {
-			throw new IllegalArgumentException("Article cannot be null");
+			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.30")); //$NON-NLS-1$
 		}
 	}
 
@@ -430,7 +430,7 @@ public class NewArticleDialog extends JDialog {
 		}
 		
 		if(result != 1 && result != 3 && result != 7)
-			throw new IllegalArgumentException("Prices must be filled in order, and at least one is required.");
+			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.31")); //$NON-NLS-1$
 	}
 	
 	/**
@@ -442,7 +442,7 @@ public class NewArticleDialog extends JDialog {
 	private void checkPrice (final String price) {
 		double value = Double.valueOf(price);
 		if (value < 0) {
-			throw new IllegalArgumentException("Negative prices are not supported.");
+			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.32")); //$NON-NLS-1$
 		}
 	}
 

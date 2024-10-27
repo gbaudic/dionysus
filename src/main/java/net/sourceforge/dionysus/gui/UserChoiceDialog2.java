@@ -12,43 +12,37 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-*/
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-
-import java.awt.GridBagConstraints;
-
-import javax.swing.JTextField;
-
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import javax.swing.JTable;
 import javax.swing.table.TableRowSorter;
-import javax.swing.event.*;
 
-import net.sourceforge.dionysus.*;
+import net.sourceforge.dionysus.User;
 import net.sourceforge.dionysus.db.UserDB;
 import net.sourceforge.dionysus.gui.models.UserTableModel;
-
-import java.util.regex.*;
 
 public class UserChoiceDialog2 extends JDialog {
 
@@ -58,32 +52,31 @@ public class UserChoiceDialog2 extends JDialog {
 	private JTable table;
 	private JLabel lblNewLabel;
 	private TableRowSorter<UserTableModel> sorter;
-	
+
 	private User chosenUser;
 	private UserDB theDB;
 	private Object[][] foodForTable;
-
 
 	/**
 	 * Create the dialog.
 	 */
 	public UserChoiceDialog2(UserDB udb) {
 		setModal(true);
-		setTitle("User selection");
-		//setBounds(100, 100, 450, 300);
+		setTitle(Messages.getString("UserChoiceDialog2.0")); //$NON-NLS-1$
+		// setBounds(100, 100, 450, 300);
 		setSize(450, 300);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{0, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			lblNewLabel = new JLabel("Search: ");
+			lblNewLabel = new JLabel(Messages.getString("UserChoiceDialog2.1")); //$NON-NLS-1$
 			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
@@ -100,42 +93,46 @@ public class UserChoiceDialog2 extends JDialog {
 			gbc_textField.gridx = 1;
 			gbc_textField.gridy = 0;
 			textField.setColumns(10);
-			
-			textField.getDocument().addDocumentListener(
-	                new DocumentListener() {
-	                    public void changedUpdate(DocumentEvent e) {
-	                        newFilter();
-	                    }
-	                    public void insertUpdate(DocumentEvent e) {
-	                        newFilter();
-	                    }
-	                    public void removeUpdate(DocumentEvent e) {
-	                        newFilter();
-	                    }
-	                });
+
+			textField.getDocument().addDocumentListener(new DocumentListener() {
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					newFilter();
+				}
+
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					newFilter();
+				}
+
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					newFilter();
+				}
+			});
 			contentPanel.add(textField, gbc_textField);
 		}
 		{
-			if(udb != null){
+			if (udb != null) {
 				theDB = udb;
 				foodForTable = theDB.getArrayForTables();
 			} else {
 				foodForTable = new Object[][] {};
 			}
-			
+
 			table = new JTable();
-				
+
 			UserTableModel tModel = new UserTableModel(foodForTable);
-			
+
 			table.setModel(tModel);
 			sorter = new TableRowSorter<UserTableModel>(tModel);
 			table.setRowSorter(sorter);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setFillsViewportHeight(true);
-			//table.setAutoCreateRowSorter(true);
-			
+			// table.setAutoCreateRowSorter(true);
+
 			JScrollPane tableSP = new JScrollPane(table);
-			
+
 			GridBagConstraints gbc_table = new GridBagConstraints();
 			gbc_table.gridwidth = 2;
 			gbc_table.insets = new Insets(0, 0, 0, 5);
@@ -149,15 +146,15 @@ public class UserChoiceDialog2 extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon(getClass().getResource("/gtk-apply.png"));
-				JButton okButton = new JButton("OK", okIcon);
-				okButton.setActionCommand("OK");
+				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("UserChoiceDialog2.2"))); //$NON-NLS-1$
+				JButton okButton = new JButton(Messages.getString("UserChoiceDialog2.3"), okIcon); //$NON-NLS-1$
+				okButton.setActionCommand(Messages.getString("UserChoiceDialog2.4")); //$NON-NLS-1$
 				okButton.addActionListener((ActionEvent arg0) -> {
-					//Choice of the user from the user which was selected in the table
+					// Choice of the user from the user which was selected in the table
 					int row = table.getSelectedRow();
-					if(row >= 0){
+					if (row >= 0) {
 						int realRow = table.convertRowIndexToModel(table.getSelectedRow());
-						chosenUser = (User)theDB.getArray()[realRow];
+						chosenUser = theDB.getArray()[realRow];
 					}
 					setVisible(false);
 				});
@@ -165,30 +162,30 @@ public class UserChoiceDialog2 extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
-				JButton cancelButton = new JButton("Cancel", cancelIcon);
-				cancelButton.setActionCommand("Cancel");
-				cancelButton.addActionListener((arg0) -> setVisible(false) );
-				
+				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("UserChoiceDialog2.5"))); //$NON-NLS-1$
+				JButton cancelButton = new JButton(Messages.getString("UserChoiceDialog2.6"), cancelIcon); //$NON-NLS-1$
+				cancelButton.setActionCommand(Messages.getString("UserChoiceDialog2.7")); //$NON-NLS-1$
+				cancelButton.addActionListener((arg0) -> setVisible(false));
+
 				buttonPane.add(cancelButton);
 			}
 		}
 	}
-	
-	public User getUser(){
+
+	public User getUser() {
 		return chosenUser;
 	}
-	
+
 	private void newFilter() {
-        RowFilter<UserTableModel, Object> rf = null;
-        //If current expression doesn't parse, don't update.
-        try {
-        	rf = RowFilter.regexFilter("(?i)(?u)" + textField.getText());         
-        } catch (PatternSyntaxException e) {
-        	return;
-        } catch (NullPointerException e) {
-        	return;
-        }
-        sorter.setRowFilter(rf);
-    }
+		RowFilter<UserTableModel, Object> rf = null;
+		// If current expression doesn't parse, don't update.
+		try {
+			rf = RowFilter.regexFilter(Messages.getString("UserChoiceDialog2.8") + textField.getText()); //$NON-NLS-1$
+		} catch (PatternSyntaxException e) {
+			return;
+		} catch (NullPointerException e) {
+			return;
+		}
+		sorter.setRowFilter(rf);
+	}
 }
