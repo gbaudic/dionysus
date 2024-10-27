@@ -26,8 +26,8 @@ dependencies {
 }
 
 jar {
-    baseName = 'dionysus'
-    version = '0.3.0'
+    archiveBaseName = 'dionysus'
+    archiveVersion = '0.3.0'
     manifest {
         attributes 'Main-Class': 'net.sourceforge.dionysus.gui.MainGUI2'
     }
