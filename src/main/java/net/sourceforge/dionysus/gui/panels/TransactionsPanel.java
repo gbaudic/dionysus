@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus.gui.panels;
@@ -20,8 +20,6 @@ package net.sourceforge.dionysus.gui.panels;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
@@ -53,23 +51,23 @@ public class TransactionsPanel extends JPanel {
 	private TransactionTableModel ttModel;
 	private JTextField transactionRechercheField;
 	private JTable transactionTable;
-	
+
 	private TransactionDB journal;
-	
+
 	private Transaction currentTransaction;
 
-	public TransactionsPanel(TransactionDB transactions){
+	public TransactionsPanel(TransactionDB transactions) {
 		super();
-		
+
 		this.journal = transactions;
-		
+
 		GridBagLayout gbl_transactionsP = new GridBagLayout();
-		gbl_transactionsP.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_transactionsP.rowHeights = new int[]{0, 0, 0};
-		gbl_transactionsP.columnWeights = new double[]{1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_transactionsP.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_transactionsP.columnWidths = new int[] { 0, 0, 0, 0 };
+		gbl_transactionsP.rowHeights = new int[] { 0, 0, 0 };
+		gbl_transactionsP.columnWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_transactionsP.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		setLayout(gbl_transactionsP);
-		
+
 		JLabel lblNewLabel_2 = new JLabel("Search: ");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
@@ -77,66 +75,71 @@ public class TransactionsPanel extends JPanel {
 		gbc_lblNewLabel_2.gridx = 0;
 		gbc_lblNewLabel_2.gridy = 0;
 		add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
+
 		transactionRechercheField = new JTextField();
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_1.gridx = 1;
 		gbc_textField_1.gridy = 0;
-		transactionRechercheField.getDocument().addDocumentListener(
-                new DocumentListener() {
-                    public void changedUpdate(DocumentEvent e) {
-                        newTransactionFilter();
-                    }
-                    public void insertUpdate(DocumentEvent e) {
-                        newTransactionFilter();
-                    }
-                    public void removeUpdate(DocumentEvent e) {
-                        newTransactionFilter();
-                    }
-                });
+		transactionRechercheField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				newTransactionFilter();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				newTransactionFilter();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				newTransactionFilter();
+			}
+		});
 		add(transactionRechercheField, gbc_textField_1);
 		transactionRechercheField.setColumns(10);
-		
+
 		ImageIcon cancel = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
-		//TODO: this is done at least 4 times in the code: factor!
-		
+		// TODO: this is done at least 4 times in the code: factor!
+
 		JButton btnNewButton_6 = new JButton("Cancel", cancel);
 		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_6.gridx = 2;
 		gbc_btnNewButton_6.gridy = 0;
-		btnNewButton_6.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int row = transactionTable.getSelectedRow();
-				int realRow = -1;
-				if(row >= 0){
-					realRow = transactionTable.convertRowIndexToModel(transactionTable.getSelectedRow());
-					currentTransaction = (Transaction)journal.getArray()[realRow];
+		btnNewButton_6.addActionListener(arg0 -> {
+			int row = transactionTable.getSelectedRow();
+			int realRow = -1;
+			if (row >= 0) {
+				realRow = transactionTable.convertRowIndexToModel(transactionTable.getSelectedRow());
+				currentTransaction = journal.getArray()[realRow];
 
-					if(currentTransaction != null){
-						int choice = JOptionPane.showConfirmDialog(null,"Are you sure to delete this transaction?","",JOptionPane.YES_NO_OPTION);
-						if(choice == JOptionPane.YES_OPTION){
-							journal.add(new Transaction(currentTransaction));
-							//TODO : complete cancellation of effects (restore balances, stocks...) if asked
+				if (currentTransaction != null) {
+					int choice = JOptionPane.showConfirmDialog(null, "Are you sure to delete this transaction?", "",
+							JOptionPane.YES_NO_OPTION);
+					if (choice == JOptionPane.YES_OPTION) {
+						journal.add(new Transaction(currentTransaction));
+						// TODO : complete cancellation of effects (restore balances, stocks...) if
+						// asked
 
-							choice = JOptionPane.showConfirmDialog(null,"Do you also want to revert its consequences?","",JOptionPane.YES_NO_OPTION);
-							if(choice == JOptionPane.YES_OPTION)
-								currentTransaction.revert();
-							
-							refreshTable();	
+						choice = JOptionPane.showConfirmDialog(null, "Do you also want to revert its consequences?",
+								"", JOptionPane.YES_NO_OPTION);
+						if (choice == JOptionPane.YES_OPTION) {
+							currentTransaction.revert();
 						}
+
+						refreshTable();
 					}
-				} else {
-					JOptionPane.showMessageDialog(null, "No transaction selected!", "Error", JOptionPane.WARNING_MESSAGE);
 				}
+			} else {
+				JOptionPane.showMessageDialog(null, "No transaction selected!", "Error",
+						JOptionPane.WARNING_MESSAGE);
 			}
 		});
 		add(btnNewButton_6, gbc_btnNewButton_6);
-		
+
 		transactionTable = new JTable();
 		TransactionTableModel ttModel = new TransactionTableModel(journal.getArrayForTables());
 		transactionTable.setModel(ttModel);
@@ -144,34 +147,34 @@ public class TransactionsPanel extends JPanel {
 		transactionTable.setRowSorter(transactionSorter);
 		transactionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		transactionTable.setFillsViewportHeight(true);
-		//transactionTable.setAutoCreateRowSorter(true);
-		
+		// transactionTable.setAutoCreateRowSorter(true);
+
 		JScrollPane t2SP = new JScrollPane(transactionTable);
-		
+
 		GridBagConstraints gbc_transactionTable = new GridBagConstraints();
 		gbc_transactionTable.gridwidth = 6;
 		gbc_transactionTable.fill = GridBagConstraints.BOTH;
 		gbc_transactionTable.gridx = 0;
 		gbc_transactionTable.gridy = 1;
 		add(t2SP, gbc_transactionTable);
-			
+
 	}
-	
+
 	private void newTransactionFilter() {
-        RowFilter<TransactionTableModel, Object> rf = null;
-        //If current expression doesn't parse, don't update.
-        try {
-        	rf = RowFilter.regexFilter("(?i)(?u)" + transactionRechercheField.getText());         
-        } catch (PatternSyntaxException e) {
-        	return;
-        } catch (NullPointerException e) {
-        	return;
-        }
-        transactionSorter.setRowFilter(rf);
-    }
-	
-	public void refreshTable(){
-		ttModel.refreshData(journal.getArrayForTables() );
+		RowFilter<TransactionTableModel, Object> rf = null;
+		// If current expression doesn't parse, don't update.
+		try {
+			rf = RowFilter.regexFilter("(?i)(?u)" + transactionRechercheField.getText());
+		} catch (PatternSyntaxException e) {
+			return;
+		} catch (NullPointerException e) {
+			return;
+		}
+		transactionSorter.setRowFilter(rf);
+	}
+
+	public void refreshTable() {
+		ttModel.refreshData(journal.getArrayForTables());
 		ttModel.fireTableDataChanged();
 	}
 }

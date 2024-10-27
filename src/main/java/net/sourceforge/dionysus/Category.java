@@ -12,63 +12,114 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-*/
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package net.sourceforge.dionysus;
 
-import java.util.HashSet;
-import java.io.Serializable;
 import java.awt.Color;
+import java.io.Serializable;
+import java.util.HashSet;
 
 /**
  * A category to sort articles
- * An article can belong to several categories at the same time (useful for discounts)
+ *
+ * An article can belong to several categories at the same time (useful for
+ * discounts)
  */
 public class Category implements Serializable {
 
+	/** UID for serialization */
 	private static final long serialVersionUID = -4335349707097715750L;
-	
-	private String name; //Name of the category
-	private String imagePath; //Absolute path to an image
+
+	/** Name of the category */
+	private String name;
+
+	/** Absolute path to an image */
+	private String imagePath;
+
+	/** List of articles belonging to this category */
 	private HashSet<Article> articlesList;
-	private Color color; //Background color of button for this category
-	
+
+	/** Background color of button for this category */
+	private Color color;
+
 	/**
-	 * @param name name of the category
-	 * @param imagePath 
-	 * @param articlesList
-	 * @param color
+	 * Constructor
+	 *
+	 * @param name      name of the category
+	 * @param imagePath full path to the image to be used
 	 */
-	public Category(String name, String imagePath, HashSet<Article> articlesList, Color color) {
-		this(name, imagePath, articlesList);
-		this.color = color;
+	public Category(String name, String imagePath) {
+		this(name, imagePath, new HashSet<Article>());
 	}
-	
+
 	/**
-	 * @param name name of the category
-	 * @param imagePath 
-	 * @param articlesList
+	 * Constructor
+	 *
+	 * @param name         name of the category
+	 * @param imagePath    full path to the image to be used
+	 * @param articlesList list of articles to include
 	 */
 	public Category(String name, String imagePath, HashSet<Article> articlesList) {
+		this(name, imagePath, articlesList, null);
+	}
+
+	/**
+	 * Constructor
+	 *
+	 * @param name         name of the category
+	 * @param imagePath    full path to the image to be used
+	 * @param articlesList list of articles to include
+	 * @param color        color to use
+	 */
+	public Category(String name, String imagePath, HashSet<Article> articlesList, Color color) {
 		this.name = name;
 		this.imagePath = imagePath;
 		this.articlesList = articlesList;
-		this.color = null;
-	}
-	
-	
-	/**
-	 * @param name
-	 * @param imagePath
-	 */
-	public Category(String name, String imagePath) {
-		this.name = name;
-		this.imagePath = imagePath;
-		articlesList = new HashSet<Article>();
-		this.color = null;
+		this.color = color;
 	}
 
+	/**
+	 * Adder method
+	 *
+	 * @param a article to add to this category
+	 */
+	public void addArticle(Article a) {
+		if (a != null) {
+			articlesList.add(a);
+		}
+	}
+
+	/**
+	 * Remove all articles from this category
+	 *
+	 * Useful for deletion
+	 */
+	public void clear() {
+		articlesList.clear();
+	}
+
+	/**
+	 * @return the articlesList
+	 */
+	public HashSet<Article> getArticlesList() {
+		return articlesList;
+	}
+
+	/**
+	 * @return the background color for buttons
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * @return the imagePath
+	 */
+	public String getImagePath() {
+		return imagePath;
+	}
 
 	/**
 	 * @return the name
@@ -76,74 +127,36 @@ public class Category implements Serializable {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
-	 * @param name the name to set
+	 * Remove an article from the category
+	 *
+	 * @param a article to remove
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void removeArticle(Article a) {
+		articlesList.remove(a);
 	}
-	
-	/**
-	 * @return the imagePath
-	 */
-	public String getImagePath() {
-		return imagePath;
-	}
-	
-	/**
-	 * @param imagePath the imagePath to set
-	 */
-	public void setImagePath(String imagePath) {
-		if(imagePath != null && !imagePath.isEmpty()){
-			this.imagePath = imagePath;
-		}		
-	}
-	
-	/**
-	 * @return the background color for buttons
-	 */
-	public Color getColor() {
-		return color;
-	}
-	
+
 	/**
 	 * @param color the color to set
 	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
+
 	/**
-	 * @return the articlesList
+	 * @param imagePath the imagePath to set
 	 */
-	public HashSet<Article> getArticlesList() {
-		return articlesList;
+	public void setImagePath(String imagePath) {
+		if (imagePath != null && !imagePath.isEmpty()) {
+			this.imagePath = imagePath;
+		}
 	}
-	
+
 	/**
-	 * 
-	 * @param a article to add to this category
+	 * @param name the name to set
 	 */
-	public void addArticle(Article a){
-		if(a != null){
-			articlesList.add(a);
-		}		
-	}
-	
-	/**
-	 * Remove an article from the category
-	 * @param a
-	 */
-	public void removeArticle(Article a) {
-		articlesList.remove(a);
-	}
-	
-	/**
-	 * Remove all articles from this category
-	 * Useful for deletion
-	 */
-	public void clear() {
-		articlesList.clear();
+	public void setName(String name) {
+		this.name = name;
 	}
 }

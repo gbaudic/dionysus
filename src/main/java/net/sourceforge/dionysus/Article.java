@@ -12,56 +12,70 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
-*/
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.StringJoiner;
 
 /**
- * Class to represent a specific article in the shop (for example "1 bottle of Budweiser beer" or "Florida oranges")
- *
+ * Class to represent a specific article in the shop (for example "1 bottle of
+ * Budweiser beer" or "Florida oranges")
  */
 public class Article implements Serializable, CSVAble {
-	
-	private static final long serialVersionUID = 1L;
+
+	/**
+	 * UID for serialization
+	 */
+	private static final long serialVersionUID = 4726480832864870735L;
+	public static final int QUANTITY_DECIMALS = 3;
+	/** Article name */
 	private final String name;
 	/** long code */
 	private final long code;
-	/** articles can have different prices (max 3): members of student union, non-members, visitors (for example) */
-	private final Price prices []; 
-	private int stock; //current quantity: units or (grams or milliliters)
-	private int limitStock; //lower bound for alerts
-	private boolean hasStockMgmtEnabled; //inventory management
-	private boolean hasStockAlertEnabled; //alert when low inventory
-	private boolean isActive; //Is currently being used (i.e., is available in the pub at this very moment)
-	private boolean hasBeenUsed; /* Has already been used at least once and cannot be deleted permanently, 
-	(otherwise corresponding transactions cannot be reverted without errors) */
-	private boolean isCountable; /* Allows to distinguish between countable (two bottles) and uncountable (531g of sugar).
-	Useless in the case of a student pub, but useful for other shops */
-	public static final int QUANTITY_DECIMALS = 3;
-	
 	/**
-	 * Simple constructor when no stock management is used
-	 * @param name article name
-	 * @param prices an array of prices
-	 * @param code the code to be used for recalling this article
+	 * articles can have different prices (max 3): members of student union,
+	 * non-members, visitors (for example)
 	 */
-	public Article(final String name, final Price[] prices, final long code) {
-		this.name = name;
-		this.code = code;
-		this.prices = prices;
-		isCountable = true;
-	}
-	
+	private final Price prices[];
+
+	/** current quantity: units or (grams or milliliters) */
+	private int stock;
+
+	/** lower bound for alerts */
+	private int limitStock;
+	/** inventory management */
+	private boolean hasStockMgmtEnabled;
+	/** alert when low inventory */
+	private boolean hasStockAlertEnabled;
+
 	/**
-	 * 
-	 * @param name article name
+	 * Is currently being used (i.e., is available in the pub at this very moment)
+	 */
+	private boolean isActive;
+
+	/**
+	 * Has already been used at least once and cannot be deleted permanently
+	 * (otherwise corresponding transactions cannot be reverted without errors)
+	 */
+	private boolean hasBeenUsed;
+
+	/**
+	 * Allows to distinguish between countable (two bottles) and uncountable (531g
+	 * of sugar). Useless in the case of a student pub, but useful for other shops
+	 */
+	private boolean isCountable;
+
+	/**
+	 * Constructor
+	 *
+	 * @param name   article name
 	 * @param prices an array of prices
-	 * @param stock initial number of units
-	 * @param code the code to be used for recalling the article
+	 * @param stock  initial number of units
+	 * @param code   the code to be used for recalling the article
 	 */
 	public Article(final String name, final Price[] prices, final int stock, final long code) {
 		this(name, prices, code);
@@ -69,114 +83,122 @@ public class Article implements Serializable, CSVAble {
 	}
 
 	/**
-	 * @param name article name
-	 * @param prices an array of prices
-	 * @param stock initial number of units
-	 * @param code the code to be used for recalling the article
+	 * Constructor
+	 *
+	 * @param name        article name
+	 * @param prices      an array of prices
+	 * @param stock       initial number of units
+	 * @param code        the code to be used for recalling the article
 	 * @param isCountable flag to tell this article will be uncountable
 	 */
-	public Article(final String name, final Price[] prices, final int stock, final long code, 
+	public Article(final String name, final Price[] prices, final int stock, final long code,
 			final boolean isCountable) {
 		this(name, prices, stock, code);
 		this.isCountable = isCountable;
 	}
 
-	public int getNumberOfPrices() {
-		return prices.length;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public long getCode() {
-		return code;
-	}
-	
-	public double getArticlePrice() {
-		return prices[0].getPrice();
-	}
-	
 	/**
-	 * 
-	 * @param id price identifier. Must be 0, 1 or 2 in this implementation
-	 * @return the corresponding price, or 0 if the price does not exist
+	 * Simple constructor when no stock management is used
+	 *
+	 * @param name   article name
+	 * @param prices an array of prices
+	 * @param code   the code to be used for recalling this article
 	 */
-	public double getArticlePrice(final int id) {
-		if(id >= 0 && id < getNumberOfPrices()) {
-			return prices[id].getPrice();
-		} else {
-			throw new IndexOutOfBoundsException("Price does not exist");
-		}
+	public Article(final String name, final Price[] prices, final long code) {
+		this.name = name;
+		this.code = code;
+		this.prices = prices;
+		isCountable = true;
 	}
-	
-	public int getStock() {
-		return stock;
-	}
-	
-	public void setStock(final int newStock) {
-		stock = newStock;
-	}
-	
+
 	/**
 	 * Add stock to this article, use a negative quantity to remove
+	 *
 	 * @param amount the INTEGER amount to add or remove
 	 */
 	public void addStock(final int amount) {
 		stock += amount;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public String csvHeader() {
+		return "# Name;Code;Price0;Price1;Price2;Stock;Limit;Management;Alert;Active;Used;Countable";
+	}
+
+	public double getArticlePrice() {
+		return prices[0].getPrice();
+	}
+
+	/**
+	 *
+	 * @param id price identifier. Must be 0, 1 or 2 in this implementation
+	 * @return the corresponding price, or 0 if the price does not exist
+	 */
+	public double getArticlePrice(final int id) {
+		if (id >= 0 && id < getNumberOfPrices()) {
+			return prices[id].getPrice();
+		} else {
+			throw new IndexOutOfBoundsException("Price does not exist");
+		}
+	}
+
+	/**
+	 * @return the code
+	 */
+	public long getCode() {
+		return code;
+	}
+
 	public int getLimitStock() {
 		return limitStock;
 	}
 
-	public boolean hasStockMgmtEnabled() {
-		return hasStockMgmtEnabled;
+	public String getName() {
+		return name;
 	}
 
-	public boolean hasStockAlertEnabled() {
-		return hasStockAlertEnabled;
+	public int getNumberOfPrices() {
+		return prices.length;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public int getStock() {
+		return stock;
+	}
+
+	/**
+	 * Produces the tooltip text for the Cash desk view
+	 *
+	 * Use of HTML is a trick to achieve multiline tooltips
+	 *
+	 * @return the correct tooltip text
+	 */
+	public String getToolTipText() {
+		final StringJoiner ttt = new StringJoiner("", "<html>", "</html>");
+		ttt.add(name + " (" + String.valueOf(code) + ")");
+		for (int i = 0; i < getNumberOfPrices(); i++) {
+			ttt.add("Price " + String.valueOf(i) + ": "
+					+ NumberFormat.getCurrencyInstance().format(getArticlePrice(i)));
+		}
+		return ttt.toString();
 	}
 
 	public boolean hasBeenUsed() {
 		return hasBeenUsed;
 	}
 
-	public void setLimitStock(final int limitStock) {
-		if(limitStock >= 0)
-			this.limitStock = limitStock;
+	public boolean hasStockAlertEnabled() {
+		return hasStockAlertEnabled;
 	}
 
-	public void setStockMgmt(final boolean hasStockMgmtEnabled) {
-		this.hasStockMgmtEnabled = hasStockMgmtEnabled;
+	public boolean hasStockMgmtEnabled() {
+		return hasStockMgmtEnabled;
 	}
 
-	public void setStockAlertEnabled(final boolean hasStockAlertEnabled) {
-		this.hasStockAlertEnabled = hasStockAlertEnabled;
+	public boolean isActive() {
+		return isActive;
 	}
 
-	public void setActive(final boolean isActive) {
-		this.isActive = isActive;
-	}
-	
-	/**
-	 * Produces the tooltip text for the Cash desk view
-	 * Use of HTML is a trick to achieve multiline tooltips
-	 * @return the correct tooltip text
-	 */
-	public String getToolTipText(){
-		final StringBuilder ttt = new StringBuilder("<html>"+ name + " ("+ String.valueOf(code) + ")");
-		for(int i = 0 ; i < getNumberOfPrices() ; i++){
-			ttt.append("<br/>Price "+String.valueOf(i)+": "+NumberFormat.getCurrencyInstance().format(getArticlePrice(i)) );
-		}
-		ttt.append("</html>");
-		return ttt.toString();
-	}
-	
 	/**
 	 * @return true if article is countable (1, 2...), false otherwise (0.731)
 	 */
@@ -184,49 +206,68 @@ public class Article implements Serializable, CSVAble {
 		return isCountable;
 	}
 
+	public void setActive(final boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public void setLimitStock(final int limitStock) {
+		if (limitStock >= 0) {
+			this.limitStock = limitStock;
+		}
+	}
+
+	public void setStock(final int newStock) {
+		stock = newStock;
+	}
+
+	public void setStockAlertEnabled(final boolean hasStockAlertEnabled) {
+		this.hasStockAlertEnabled = hasStockAlertEnabled;
+	}
+
+	public void setStockMgmt(final boolean hasStockMgmtEnabled) {
+		this.hasStockMgmtEnabled = hasStockMgmtEnabled;
+	}
+
+	/**
+	 * Generate the string for CSV serialization TODO
+	 */
+	@Override
+	public String toCSV() {
+		final StringJoiner csvline = new StringJoiner(";");
+		csvline.add(name);
+		csvline.add(String.valueOf(code));
+		csvline.add(String.valueOf(getArticlePrice()));
+
+		final double factor = isCountable ? 1. : 1000.; // Hide the underlying storage as integers
+
+		if (getNumberOfPrices() > 1) {
+			csvline.add(String.valueOf(getArticlePrice(1)));
+		}
+		if (getNumberOfPrices() > 2) {
+			csvline.add(String.valueOf(getArticlePrice(2)));
+		}
+		if (hasStockMgmtEnabled) {
+			csvline.add(String.valueOf(stock / factor));
+		}
+		if (hasStockAlertEnabled) {
+			csvline.add(String.valueOf(limitStock / factor));
+		}
+		csvline.add(String.valueOf(hasStockMgmtEnabled));
+		csvline.add(String.valueOf(hasStockAlertEnabled));
+		csvline.add(String.valueOf(isActive));
+		csvline.add(String.valueOf(hasBeenUsed));
+		csvline.add(String.valueOf(isCountable));
+
+		return csvline.toString();
+	}
+
 	/**
 	 * Declare this article as having been used (read: sold) at least once
 	 */
 	public void use() {
-		if(!hasBeenUsed)
+		if (!hasBeenUsed) {
 			this.hasBeenUsed = true;
-	}
-
-	/**
-	 * Generate the string for CSV serialization
-	 * TODO
-	 */
-	@Override
-	public String toCSV() {
-		final StringBuilder csvline = new StringBuilder(name+";"+code+";");
-		csvline.append(String.valueOf(getArticlePrice()) + ";");
-		
-		final double factor = isCountable ? 1. : 1000. ; //Hide the underlying storage as integers
-		
-		if(getNumberOfPrices() > 1)
-			csvline.append(getArticlePrice(1));
-		csvline.append(';');
-		if(getNumberOfPrices() > 2)
-			csvline.append(getArticlePrice(2));
-		csvline.append(';');
-		if(hasStockMgmtEnabled)
-			csvline.append(stock / factor);
-		csvline.append(';');
-		if(hasStockAlertEnabled)
-			csvline.append(limitStock / factor);
-		csvline.append(';');
-		csvline.append(String.valueOf(hasStockMgmtEnabled) + ";");
-		csvline.append(String.valueOf(hasStockAlertEnabled) + ";");
-		csvline.append(String.valueOf(isActive) + ";");
-		csvline.append(String.valueOf(hasBeenUsed) + ";");
-		csvline.append(String.valueOf(isCountable) + ";");
-		
-		return csvline.toString();
-	}
-	
-	@Override
-	public String csvHeader() {
-	    return "# Name;Code;Price0;Price1;Price2;Stock;Limit;Management;Alert;Active;Used;Countable";
+		}
 	}
 
 }

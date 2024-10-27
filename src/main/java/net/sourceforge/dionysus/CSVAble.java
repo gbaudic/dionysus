@@ -12,25 +12,30 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus;
 
 /**
- * Interface for all objects which may get exported with their database as CSV
+ * Interface for all objects which may get exported with their database as
+ * CSV<br/>
+ *
  * CSV export is mainly here for interoperability
  */
 public interface CSVAble {
-	/**
-	 * Getter
-	 * @return serialized representation of the object for CSV
-	 */
-	public String toCSV();
-	
+
 	/**
 	 * Produce a header describing contents of each field
+	 *
 	 * @return the header line for the CSV file
 	 */
 	public String csvHeader();
+
+	/**
+	 * Getter
+	 *
+	 * @return serialized representation of the object for CSV
+	 */
+	public String toCSV();
 }
