@@ -34,8 +34,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 /**
- * A dialog box to edit the categories This dialog does not manage articles for
- * the categories
+ * A dialog box to edit the categories
+ *
+ * This dialog does not manage articles for the categories
  */
 public class NewCategoryDialog extends JDialog {
 
@@ -143,7 +144,8 @@ public class NewCategoryDialog extends JDialog {
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					} catch (IllegalArgumentException e) {
-						JOptionPane.showMessageDialog(null, Messages.getString("NewCategoryDialog.8") + e.getMessage(), Messages.getString("NewCategoryDialog.9"), //$NON-NLS-1$ //$NON-NLS-2$
+						JOptionPane.showMessageDialog(null, Messages.getString("NewCategoryDialog.8") + e.getMessage(), //$NON-NLS-1$
+								Messages.getString("NewCategoryDialog.9"), //$NON-NLS-1$
 								JOptionPane.WARNING_MESSAGE);
 					}
 				});
@@ -152,7 +154,8 @@ public class NewCategoryDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("NewCategoryDialog.10"))); //$NON-NLS-1$
+				ImageIcon cancelIcon = new ImageIcon(
+						getClass().getResource(Messages.getString("NewCategoryDialog.10"))); //$NON-NLS-1$
 				JButton cancelButton = new JButton(Messages.getString("NewCategoryDialog.11"), cancelIcon); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("NewCategoryDialog.12")); //$NON-NLS-1$
 

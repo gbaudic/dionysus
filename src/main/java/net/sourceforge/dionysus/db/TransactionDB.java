@@ -12,77 +12,83 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus.db;
 
-import java.util.ArrayList;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
-import net.sourceforge.dionysus.*;
+import net.sourceforge.dionysus.Transaction;
 
 public class TransactionDB extends Database<Transaction> {
-	
-	//Not necessarily in a text file
-	
-	public TransactionDB(){
+
+	// Not necessarily in a text file
+
+	public TransactionDB() {
 		data = new ArrayList<Transaction>(20);
 		numberOfRecords = 0;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public Transaction[] getArray() {
+		return data.toArray(new Transaction[numberOfRecords]);
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public void makeArrayForTables() {
 		foodForTable = new Object[numberOfRecords][8];
-		
-		for(int i = 0 ; i < numberOfRecords ; i++){
+
+		for (int i = 0; i < numberOfRecords; i++) {
 			foodForTable[i][0] = data.get(i).getDate();
 			foodForTable[i][1] = data.get(i).getArticle().getName();
-			foodForTable[i][2] = new Integer(data.get(i).getNumberOfItems());
-			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getAmount().getPrice()); //do not try to understand...
-			
-			if(data.get(i).getSourceUser() != null){
+			foodForTable[i][2] = data.get(i).getNumberOfItems();
+			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getAmount().getPrice()); // do
+																												// not
+																												// try
+																												// to
+																												// understand...
+
+			if (data.get(i).getSourceUser() != null) {
 				foodForTable[i][4] = data.get(i).getSourceUser().getNameWithPromo();
 			} else {
 				foodForTable[i][4] = "none";
 			}
-			
-			if(data.get(i).getDestUser() != null){
+
+			if (data.get(i).getDestUser() != null) {
 				foodForTable[i][5] = data.get(i).getDestUser().getNameWithPromo();
 			} else {
 				foodForTable[i][5] = "none";
 			}
-			
-			if(data.get(i).getPaymentMethod() != null){
+
+			if (data.get(i).getPaymentMethod() != null) {
 				foodForTable[i][6] = data.get(i).getPaymentMethod().getName();
 			} else {
 				foodForTable[i][6] = "Account";
 			}
-			
-			if(data.get(i).getVendor() != null){
+
+			if (data.get(i).getVendor() != null) {
 				foodForTable[i][7] = data.get(i).getVendor().getName();
 			} else {
 				foodForTable[i][7] = "null";
 			}
-			
-		}	
+
+		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void modify(Transaction t, int index) {
 		// Transactions cannot be modified
-		
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void remove(Transaction t) {
 		// Transactions cannot be removed, only reverted
-		
 	}
 
-	@Override
-	public Transaction[] getArray() {
-		return (Transaction []) data.toArray(new Transaction[numberOfRecords]);
-	}
-
-	
 }

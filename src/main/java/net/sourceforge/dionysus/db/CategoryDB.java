@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus.db;
@@ -21,28 +21,32 @@ import net.sourceforge.dionysus.Category;
 
 public class CategoryDB extends Database<Category> {
 
+	/** {@inheritDoc} */
+	@Override
+	public Category[] getArray() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/** {@inheritDoc} */
 	@Override
 	public void makeArrayForTables() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void modify(Category t, int index) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void remove(Category t) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public Category[] getArray() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

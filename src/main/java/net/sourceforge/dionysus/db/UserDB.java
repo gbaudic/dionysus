@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package net.sourceforge.dionysus.db;
@@ -25,73 +25,80 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import net.sourceforge.dionysus.*;
+import net.sourceforge.dionysus.User;
 
 public class UserDB extends Database<User> {
 
+	/**
+	 * Constructor
+	 */
 	public UserDB() {
 		data = new ArrayList<User>(20);
 		numberOfRecords = 0;
 	}
 
 	/**
-	 * Initializes user database from a text file originating from the "original" software
-	 * 
+	 * Initializes user database from a text file originating from the "original"
+	 * software
+	 *
 	 * @param filename the path to the database text file
 	 */
-	public void createFromLegacyTextFile(String filename){
-			
+	public void createFromLegacyTextFile(String filename) {
 		targetF = new File(filename);
-		if(!targetF.exists()){
-			JOptionPane.showMessageDialog(null, "Error when trying to access database!", "Error", JOptionPane.ERROR_MESSAGE);
+		if (!targetF.exists()) {
+			JOptionPane.showMessageDialog(null, "Error when trying to access database!", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		
-		//File exists, go on!
+
+		// File exists, go on!
 		try {
 			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(targetF)));
 			String s;
-			
-			while((s = lnr.readLine()) != null){
-				String [] values = s.split("><|<|>");
+
+			while ((s = lnr.readLine()) != null) {
+				String[] values = s.split("><|<|>");
 				int promo = Integer.parseInt(values[1]);
-				int balance = Math.round(Float.parseFloat(values[4]) * 100F); //Float because Double led to rounding issues
-				
+				int balance = Math.round(Float.parseFloat(values[4]) * 100F); // Float because Double led to rounding
+																				// issues
+
 				data.add(new User(values[2], values[3], promo, balance));
 				numberOfRecords++;
 			}
-			
+
 			lnr.close();
-			
+
 			makeArrayForTables();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Illegal numeric value encountered while loading legacy user database.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Illegal numeric value encountered while loading legacy user database.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
-	 * Saves the user database to a text format compliant with the "original" software
-	 * This should not be used for normal operation
-	 * @param filename
+	 * Saves the user database to a text format compliant with the "original"
+	 * software This should not be used for normal operation
+	 *
+	 * @param filename full path to destination file
 	 */
-	public void exportToLegacyTextFile(String filename){
+	public void exportToLegacyTextFile(String filename) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new PrintWriter(filename));
-			
-			for(User user : data){
-				//if(data[i] != null) //Do not exclude nulls for coherence
-					bw.write(user.getTextForLegacyFile()+"\r\n");
+
+			for (User user : data) {
+				// if(data[i] != null) //Do not exclude nulls for coherence
+				bw.write(user.getTextForLegacyFile() + "\r\n");
 			}
 			bw.close();
 		} catch (FileNotFoundException e) {
@@ -103,18 +110,56 @@ public class UserDB extends Database<User> {
 		}
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public User[] getArray() {
+		return data.toArray(new User[numberOfRecords]);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Object[][] getArrayForTables() {
+		return foodForTable;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void makeArrayForTables() {
+		foodForTable = new Object[numberOfRecords][6];
+		for (int i = 0; i < numberOfRecords; i++) {
+			foodForTable[i][0] = data.get(i).getLastName();
+			foodForTable[i][1] = data.get(i).getFirstName();
+			foodForTable[i][2] = data.get(i).getID();
+			foodForTable[i][3] = data.get(i).getPromo();
+			foodForTable[i][4] = NumberFormat.getCurrencyInstance().format(data.get(i).getBalance());
+			foodForTable[i][5] = data.get(i).hasPaidCaution();
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void modify(User u, int index) {
+		if (u != null && index >= 0 && index < numberOfRecords) {
+			// No reason to pass a null argument, there is a function for cleaning up...
+			data.set(index, u);
+
+			saveToTextFile();
+			makeArrayForTables();// TODO: optimize !
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public void remove(User u) {
 		if (u != null) {
 			if (u.getBalance() != 0) {
-				int choice = JOptionPane
-						.showConfirmDialog(
-								null,
-								"This user has a nonzero balance.\nAre you sure to delete him/her?",
-								"Confirmation", JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE);
+				int choice = JOptionPane.showConfirmDialog(null,
+						"This user has a nonzero balance.\nAre you sure to delete him/her?", "Confirmation",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-				if (choice != JOptionPane.YES_OPTION)
+				if (choice != JOptionPane.YES_OPTION) {
 					return;
+				}
 			}
 
 			if (data.remove(u)) {
@@ -125,39 +170,6 @@ public class UserDB extends Database<User> {
 			}
 
 		}
-	}
-
-	public void modify(User u, int indice) {
-		if (u != null && indice >= 0 && indice < numberOfRecords) { 
-			// No reason to pass a null argument, there is a function for cleaning up...
-			data.set(indice, u);
-
-			saveToTextFile();
-			makeArrayForTables();// TODO: optimize !
-		}
-	}
-
-	@Override
-	public void makeArrayForTables() {
-		foodForTable = new Object[numberOfRecords][6];
-		for (int i = 0; i < numberOfRecords; i++) {
-			foodForTable[i][0] = data.get(i).getLastName();
-			foodForTable[i][1] = data.get(i).getFirstName();
-			foodForTable[i][2] = data.get(i).getID();
-			foodForTable[i][3] = new Integer(data.get(i).getPromo());
-			foodForTable[i][4] = NumberFormat.getCurrencyInstance().format(data.get(i).getBalance());
-			foodForTable[i][5] = new Boolean(data.get(i).hasPaidCaution());
-		}
-	}
-
-	@Override
-	public Object[][] getArrayForTables() {
-		return foodForTable;
-	}
-
-	@Override
-	public User[] getArray() {
-		return (User[]) data.toArray(new User[numberOfRecords]);
 	}
 
 }

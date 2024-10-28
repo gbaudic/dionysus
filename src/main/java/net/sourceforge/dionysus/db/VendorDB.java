@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus.db;
@@ -21,10 +21,24 @@ import net.sourceforge.dionysus.Vendor;
 
 public class VendorDB extends Database<Vendor> {
 
+	/** {@inheritDoc} */
+	@Override
+	public Vendor[] getArray() {
+		return data.toArray(new Vendor[numberOfRecords]);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void makeArrayForTables() {
+		// No vendor tables for the moment
+
+	}
+
+	/** {@inheritDoc} */
 	@Override
 	public void modify(Vendor t, int index) {
 
-		if(t != null && index >= 0 && index < numberOfRecords){ 
+		if (t != null && index >= 0 && index < numberOfRecords) {
 			data.set(index, t);
 
 			saveToTextFile();
@@ -33,39 +47,30 @@ public class VendorDB extends Database<Vendor> {
 
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void remove(Vendor t) {
 		// Do nothing for the moment
-		
-	}
 
-	@Override
-	public void makeArrayForTables() {
-		// No vendor tables for the moment
-		
-	}
-
-	@Override
-	public Vendor[] getArray() {
-		return (Vendor []) data.toArray(new Vendor[numberOfRecords]);
 	}
 
 	/**
 	 * Checks if a given login and password match a user in the database
-	 * @param login
-	 * @param password
+	 *
+	 * @param login    user login
+	 * @param password user password
 	 * @return true if the login/password pair matches, false otherwise
 	 */
 	public boolean validateIdentification(String login, String password) {
-		
-		if(login != null && password != null && !login.isEmpty()){ //yes, password can be empty...
-			//Check that the login exists
 
-			//If it does, verify the corresponding password
+		if (login != null && password != null && !login.isEmpty()) { // yes, password can be empty...
+			// Check that the login exists
+
+			// If it does, verify the corresponding password
 		} else {
 			return false;
 		}
 		return false;
 	}
-	
+
 }
