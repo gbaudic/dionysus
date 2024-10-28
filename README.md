@@ -1,7 +1,7 @@
-# Dionysus  [![Build Status](https://travis-ci.org/gbaudic/dionysus.svg?branch=master)](https://travis-ci.org/gbaudic/dionysus)
+# Dionysus  [![Build Status](https://github.com/gbaudic/dionysus/actions/workflows/gradle.yml/badge.svg)](https://github.com/gbaudic/dionysus/actions)
 A student pub management software in Java
 
-This is a Java software I started writing during the summer of 2011, and which received minor bugfixes and improvements since then. 
+This is a Java software I started writing during the summer of 2011, and which received minor bugfixes and improvements since then. As such, the overall code quality reflects what I was producing at this time and should not be used as a way to assess my coding skills in a professional setting. 
 It was originally hosted on Sourceforge, now I only use Sourceforge for the binary releases. 
 The initial aim was to produce a management software to make the daily operation of the student pub more convenient. 
 
