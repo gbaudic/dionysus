@@ -31,6 +31,7 @@ public class Article implements Serializable, CSVAble {
 	 * UID for serialization
 	 */
 	private static final long serialVersionUID = 4726480832864870735L;
+	/** Maximum precision */
 	public static final int QUANTITY_DECIMALS = 3;
 	/** Article name */
 	private final String name;

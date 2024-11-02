@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus;
@@ -21,63 +21,195 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import net.sourceforge.dionysus.db.*;
+import net.sourceforge.dionysus.db.TransactionDB;
 
 /**
- * Class representing a ticket, structure to represent purchase of different products at various prices at a single time
+ * Class representing a ticket, structure to represent purchase of different
+ * products at various prices at a single time
  */
 public class Ticket {
 
-	private ArrayList<TicketItem> items;
-	private User customer; /**customer buying, null if not a registered user*/
+	/** Ticket contents */
+	private List<TicketItem> items;
+	/** customer buying, null if not a registered user */
+	private User customer;
+	/** Ticket amount */
 	private double amount;
-	private PaymentMethod pMethod; //Only one payment method per ticket
+	/** Payment method. Only one payment method per ticket */
+	private PaymentMethod pMethod;
+	/** Shop assistant editing the ticket */
 	private Vendor vendor;
+	/** Formatter to display localized prices */
 	private NumberFormat amountFormatter;
-	
+
 	/**
 	 * Constructor
-	 * @param u user making the purchase. Can be null. 
+	 *
+	 * @param u user making the purchase. Can be null.
 	 */
 	public Ticket(User u) {
 		items = new ArrayList<TicketItem>();
 		customer = u;
 		amountFormatter = NumberFormat.getCurrencyInstance();
 	}
-	
+
 	/**
 	 * Add an article to the ticket
+	 *
 	 * @param newItem item to add
 	 */
 	public void addArticle(TicketItem newItem) {
-		if(newItem != null && newItem.getQuantity() != 0) {
+		if (newItem != null && newItem.getQuantity() != 0) {
 			items.add(newItem);
-		
+
 			updateAmount();
-		}		
+		}
 	}
-	
+
+	/**
+	 *
+	 * @return the ticket grand total
+	 */
+	public double getAmount() {
+		return amount;
+	}
+
+	/**
+	 * Generates an array compliant with a display in a JTable component
+	 *
+	 * @return an Object array
+	 */
+	public Object[][] getArrayForTables() {
+		Object[][] result = new Object[items.size()][3];
+
+		for (int i = 0; i < items.size(); i++) {
+			TicketItem ti = items.get(i);
+			if (ti != null) {
+				result[i][0] = ti.getArticle().getName();
+				DecimalFormat df = new DecimalFormat("###,###.###");
+				if (ti.getArticle().isCountable()) {
+					result[i][1] = df.format(ti.getQuantity());
+				} else {
+					result[i][1] = df.format(ti.getQuantity() / 1000.0);
+				}
+
+				result[i][2] = NumberFormat.getCurrencyInstance().format(ti.getAmount());
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Get the new balance of the user once this Ticket is processed
+	 *
+	 * @return the future balance
+	 */
+	public double getBalanceAfterTicket() {
+		return customer != null ? customer.getBalance() - amount : 0.00;
+	}
+
+	/**
+	 * Get the contents of the ticket
+	 *
+	 * @return the contents of the ticket as an unmodifiable list of items
+	 */
+	public List<TicketItem> getItems() {
+		return Collections.unmodifiableList(items);
+	}
+
+	/**
+	 * Get the number of items in the ticket
+	 *
+	 * @return the number of items
+	 */
+	public int getNumberOfItems() {
+		return items.size();
+	}
+
+	/**
+	 * Getter for the payment method
+	 *
+	 * @return the payment method used
+	 */
+	public PaymentMethod getPaymentMethod() {
+		return pMethod;
+	}
+
+	/**
+	 * Setter for the payment method
+	 *
+	 * @param method the payment method used
+	 */
+	public void pay(PaymentMethod method) {
+		pMethod = method;
+	}
+
+	/**
+	 * Exports the ticket to a string The submit() method needs to have been called
+	 * previously to set the vendor TODO: this may need to be rewritten.
+	 */
+	public StringBuilder printTicketToText(String date) {
+		StringBuilder accu = new StringBuilder();
+
+		// Ticket date
+		if (date != null) {
+			accu.append(date + "\r\n");
+		} else {
+			accu.append(
+					DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(new Date()) + "\r\n");
+		}
+
+		// Users involved
+		accu.append(String.format("From {}\r\n", customer.getNameWithPromo()));
+		accu.append(String.format("Sold by {}\r\n", vendor.getName()));
+
+		// Purchased items
+		for (TicketItem ti : items) {
+			if (ti != null) {
+				accu.append("\t" + ti.toString() + "\r\n");
+			}
+		}
+
+		// Grand total
+		accu.append(String.format("Total: {}\r\nPaid by ", amountFormatter.format(amount)));
+
+		// Payment method
+		if (pMethod != null) {
+			accu.append(pMethod.getName());
+		} else {
+			accu.append("user account");
+		}
+
+		// Goodbye message
+		accu.append("\r\nThanks for your purchase, welcome back");
+
+		return accu.append("\r\n\r\n");
+	}
+
 	/**
 	 * Removes an article at a given price in a given quantity
+	 *
 	 * @param a the corresponding TicketItem
 	 */
 	public void removeArticle(TicketItem a) {
-		//Check that article exists
-		for(TicketItem ti : items) {
-			if(ti != null) {
-				if(ti.getArticle().getName().equals(a.getArticle().getName()) && ti.getFee() == a.getFee()){
+		// Check that article exists
+		for (TicketItem ti : items) {
+			if (ti != null) {
+				if (ti.getArticle().getName().equals(a.getArticle().getName()) && ti.getFee() == a.getFee()) {
 					int remainder = ti.getQuantity() - a.getQuantity();
-					if(remainder == 0) {
-						//If quantity drops to zero, delete article
+					if (remainder == 0) {
+						// If quantity drops to zero, delete article
 						items.remove(ti);
 					} else {
-						if(remainder > 0) {
+						if (remainder > 0) {
 							ti.removeArticles(a.getQuantity());
 						} else {
 							throw new IllegalArgumentException("You cannot remove more articles than already present");
@@ -86,175 +218,72 @@ public class Ticket {
 					return;
 				}
 			}
-		}	
-		
+		}
+
 		updateAmount();
 	}
-	
+
 	/**
-	 * Recompute the total for the ticket
+	 * Convenience method to output ticket contents as a text file
 	 */
-	public void updateAmount() {
-		amount = items.stream()
-				.filter(item -> item != null)
-				.mapToDouble(item -> item.getAmount())
-				.sum();
-	}
-	
-	/**
-	 * 
-	 * @return the ticket grand total
-	 */
-	public double getAmount() {
-		return amount;
-	}
-	
-	public double getBalanceAfterTicket() {
-		return customer != null ? customer.getBalance() - amount : 0.00;
-	}
-	
-	public List<TicketItem> getItems() {
-	    return new ArrayList<TicketItem>(items);
-	    //TODO: find a better way, to ensure ticket cannot be modified from outside
-	}
-	
-	
-	/**
-	 * Exports the ticket to a string
-	 * The submit() method needs to have been called previously to set the vendor
-	 * TODO: this may need to be rewritten.
-	 */
-	public StringBuilder printTicketToText(String date){
-		StringBuilder accu = new StringBuilder();
-		
-		// Ticket date
-		if(date != null) {
-			accu.append( date + "\r\n");
-		} else {
-			accu.append(DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date()) + "\r\n");
-		}
-		
-		// Users involved
-		accu.append(String.format("From {}\r\n", customer.getNameWithPromo()));
-		accu.append(String.format("Sold by {}\r\n", vendor.getName()));
-		
-		// Purchased items
-		for(TicketItem ti : items) {
-			if(ti != null) {
-				accu.append("\t" + ti.toString() + "\r\n");
-			}
-		}
-		
-		// Grand total
-		accu.append(String.format("Total: {}\r\nPaid by ", amountFormatter.format(amount)));
-		
-		// Payment method
-		if(pMethod != null) {
-			accu.append(pMethod.getName());
-		} else {
-			accu.append("user account");
-		}
-		
-		// Goodbye message
-		accu.append("\r\nThanks for your purchase, welcome back");
-		
-		return accu.append("\r\n\r\n");
-	}
-	
 	public void saveTicketToText() {
-		//Output the date and time of the ticket in a human readable localized form
-		String date = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM).format(new Date());
-		
-		File f = new File("tickets/"+date+".txt");
-		
+		// Output the date and time of the ticket in a human readable localized form
+		String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(new Date());
+
+		File f = new File("tickets/" + date + ".txt");
+
 		try (FileWriter fw = new FileWriter(f)) {
 			fw.append(printTicketToText(date));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	/**
-	 * Setter for the payment method
-	 * @param method the payment method used
-	 */
-	public void pay(PaymentMethod method){
-		pMethod = method;
-	}
-	
-	public PaymentMethod getPaymentMethod(){
-		return pMethod;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public int getNumberOfItems(){
-		return items.size();
-	}
-	
-	/**
-	 * 
-	 * @param newUser
+	 * Set the user for which this Ticket is edited
+	 *
+	 * @param newUser user
 	 */
 	public void setUser(User newUser) {
-		customer = newUser; //no check on null because it has a meaning
+		customer = newUser; // no check on null because it has a meaning
 	}
-	
+
 	/**
-	 * Converts a ticket with its TicketItem to transactions for saving,
-	 * and saves the transactions file
-	 * The Ticket object will then be able to be deleted
-	 * 
+	 * Converts a ticket with its TicketItem to transactions for saving, and saves
+	 * the transactions file The Ticket object will then be able to be deleted
+	 *
 	 */
 	public void submit(User destUser, TransactionDB tdb, Vendor v) {
 		vendor = v;
-		for(TicketItem item : items){
-			if(item != null){
-				Transaction t = new Transaction((int)(item.getAmount())*100, customer, destUser, item.getArticle(), item.getQuantity(), pMethod,v);
+		for (TicketItem item : items) {
+			if (item != null) {
+				Transaction t = new Transaction((int) (item.getAmount()) * 100, customer, destUser, item.getArticle(),
+						item.getQuantity(), pMethod, v);
 				tdb.add(t);
 				Article solde = item.getArticle();
-				if(solde.hasStockMgmtEnabled())
+				if (solde.hasStockMgmtEnabled()) {
 					solde.setStock(solde.getStock() - item.getQuantity());
-				
-				solde.use();			
+				}
+
+				solde.use();
 			}
 		}
-		
-		//Debit customer account (sourceUser) and
-		if(customer != null && pMethod == null){
+
+		// Debit customer account (sourceUser) and
+		if (customer != null && pMethod == null) {
 			customer.debite(amount);
 		}
-		//Credit customer account (destUser) ??
-		if(destUser != null && pMethod == null){
+		// Credit customer account (destUser) ??
+		if (destUser != null && pMethod == null) {
 			destUser.credite(amount);
 		}
 	}
-	
+
 	/**
-	 * Generates an array compliant with a display in a JTable component
-	 * @return an Object array
+	 * Recompute the total for the ticket
 	 */
-	public Object [][] getArrayForTables(){
-		Object [][] result = new Object[items.size()][3];
-		
-		for(int i = 0 ; i < items.size() ; i++){
-			TicketItem ti = items.get(i);
-			if(ti != null) {
-				result[i][0] = ti.getArticle().getName();
-				DecimalFormat df = new DecimalFormat("###,###.###");
-				if(ti.getArticle().isCountable()){
-					result[i][1] = df.format(ti.getQuantity());
-				} else {
-					result[i][1] = df.format(ti.getQuantity()/1000.0);
-				}
-				
-				result[i][2] = NumberFormat.getCurrencyInstance().format(ti.getAmount());
-			}
-		}
-		
-		return result;
+	public void updateAmount() {
+		amount = items.stream().filter(item -> item != null).mapToDouble(item -> item.getAmount()).sum();
 	}
-	
+
 }
