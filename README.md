@@ -1,4 +1,4 @@
-# Dionysus  [![Build Status](https://github.com/gbaudic/dionysus/actions/workflows/gradle.yml/badge.svg)](https://github.com/gbaudic/dionysus/actions)
+# Dionysus  [![Build Status](https://github.com/gbaudic/dionysus/actions/workflows/gradle.yml/badge.svg)](https://github.com/gbaudic/dionysus/actions) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=gbaudic_dionysus&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=gbaudic_dionysus)
 A student pub management software in Java
 
 This is a Java software I started writing during the summer of 2011, and which received minor bugfixes and improvements since then. As such, the overall code quality reflects what I was producing at this time and should not be used as a way to assess my coding skills in a professional setting. 
