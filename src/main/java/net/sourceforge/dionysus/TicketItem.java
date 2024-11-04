@@ -29,7 +29,8 @@ public class TicketItem {
 	private Article article;
 	/** the price id (not the price itself) */
 	private int fee;
-	private int quantity; // in units or in grams/milliliters depending on Article type
+	/** in units or in grams/milliliters depending on Article type */
+	private int quantity; //
 	private double amount; // TODO: fix this to stay in cents here too
 	/** flag to indicate amount should not be recomputed */
 	private boolean forcedAmount;
@@ -184,6 +185,6 @@ public class TicketItem {
 	public String toString() {
 		String name = article != null ? article.getName() : "null";
 
-		return String.format(" {} x {}  {}", quantity, name, NumberFormat.getCurrencyInstance().format(getAmount()));
+		return String.format(" %d x %s  %s", quantity, name, NumberFormat.getCurrencyInstance().format(getAmount()));
 	}
 }

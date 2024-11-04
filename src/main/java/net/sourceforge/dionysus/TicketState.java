@@ -12,20 +12,31 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus;
 
 /**
- * State enumeration to denote the current status of the software in Cash desk view
+ * State enumeration to denote the current status of the software in Cash desk
+ * view
  */
 public enum TicketState {
-    IDLE,           //! No user selected, no ticket
-    TICKET_IDLE,    //! Ticket being opened, waiting for new article or payment
-    PAYMENT,        //! Ticket finished and being paid
-    EDIT_ITEM,      //! Modification of a previously entered ticket item
-    QUANTITY,       //! Article selected
-    PRICE;          //! Article and quantity selected
-}
+	/** No user selected, no ticket */
+	IDLE,
 
+	/** Ticket being opened, waiting for new article or payment */
+	TICKET_IDLE,
+
+	/** Ticket finished and being paid */
+	PAYMENT,
+
+	/** Modification of a previously entered ticket item */
+	EDIT_ITEM,
+
+	/** Article selected */
+	QUANTITY,
+
+	/** Article and quantity selected */
+	PRICE;
+}

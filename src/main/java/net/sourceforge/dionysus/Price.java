@@ -31,7 +31,7 @@ public class Price implements Serializable {
 	private static final long serialVersionUID = 492682353831884654L;
 
 	/** Price stored as an integer. 12.45 would be 1245 */
-	private int price;
+	private int value;
 
 	/**
 	 * Constructor for amounts set as double
@@ -39,7 +39,7 @@ public class Price implements Serializable {
 	 * @param price price as a double
 	 */
 	public Price(double price) {
-		this.price = (int) (price * 100);
+		this.value = (int) (price * 100);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class Price implements Serializable {
 	 * @param price integer price
 	 */
 	public Price(int price) {
-		this.price = price;
+		this.value = price;
 	}
 
 	/**
@@ -57,12 +57,12 @@ public class Price implements Serializable {
 	 * @return price, expressed in the usual human way ($12.45)
 	 */
 	public double getPrice() {
-		return price / 100.;
+		return value / 100.;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String toString() {
-		return NumberFormat.getCurrencyInstance().format(price / 100.);
+		return NumberFormat.getCurrencyInstance().format(value / 100.);
 	}
 }
