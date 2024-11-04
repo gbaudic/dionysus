@@ -243,24 +243,10 @@ public class Article implements Serializable, CSVAble {
 		stock = newStock;
 	}
 
-	/**
-	 * Setter for stock alert
-	 *
-	 * @param hasStockAlertEnabled true to enable alerts if stock is below a given
-	 *                             threshold
-	 * @see Article#setLimitStock(int)
-	 */
 	public void setStockAlertEnabled(final boolean hasStockAlertEnabled) {
 		this.hasStockAlertEnabled = hasStockAlertEnabled;
 	}
 
-	/**
-	 * Setter for stock management
-	 *
-	 * @param hasStockMgmtEnabled true if stock should be managed through the
-	 *                            application
-	 * @see Article#setStock(int)
-	 */
 	public void setStockMgmt(final boolean hasStockMgmtEnabled) {
 		this.hasStockMgmtEnabled = hasStockMgmtEnabled;
 	}
@@ -277,23 +263,15 @@ public class Article implements Serializable, CSVAble {
 
 		if (getNumberOfPrices() > 1) {
 			csvline.add(String.valueOf(getArticlePrice(1)));
-		} else {
-			csvline.add("");
 		}
 		if (getNumberOfPrices() > 2) {
 			csvline.add(String.valueOf(getArticlePrice(2)));
-		} else {
-			csvline.add("");
 		}
 		if (hasStockMgmtEnabled) {
 			csvline.add(String.valueOf(stock / factor));
-		} else {
-			csvline.add("");
 		}
 		if (hasStockAlertEnabled) {
 			csvline.add(String.valueOf(limitStock / factor));
-		} else {
-			csvline.add("");
 		}
 		csvline.add(String.valueOf(hasStockMgmtEnabled));
 		csvline.add(String.valueOf(hasStockAlertEnabled));
