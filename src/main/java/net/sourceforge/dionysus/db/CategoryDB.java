@@ -19,6 +19,9 @@ package net.sourceforge.dionysus.db;
 
 import net.sourceforge.dionysus.Category;
 
+/**
+ * Database implementation for categories
+ */
 public class CategoryDB extends Database<Category> {
 
 	/** {@inheritDoc} */

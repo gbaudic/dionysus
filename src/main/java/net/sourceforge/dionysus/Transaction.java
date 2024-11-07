@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus;
@@ -20,18 +20,20 @@ package net.sourceforge.dionysus;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.StringJoiner;
 
 /**
- * The base class for transactions, which is the process of buying a single article
- * Consequently, there will be several transactions for one ticket, even if there is only
- * one payment operation.
- * Transactions are immutable. 
+ * The base class for transactions, which is the process of buying a single
+ * article Consequently, there will be several transactions for one ticket, even
+ * if there is only one payment operation. Transactions are immutable.
  */
-public class Transaction implements Serializable,CSVAble {
+public class Transaction implements Serializable, CSVAble {
 
-	private static final long serialVersionUID = 1L;
-	
+	/**
+	 * The version UID
+	 */
+	private static final long serialVersionUID = -2690513207608604236L;
 	private Date date;
 	private Price amount;
 	private User sourceUser;
@@ -40,9 +42,19 @@ public class Transaction implements Serializable,CSVAble {
 	private int numberOfItems;
 	private PaymentMethod pMethod;
 	private Vendor vendor;
-	
-	public Transaction(int amount, User sourceUser, User destUser,
-			Article article, int numberOfItems, PaymentMethod pMethod) {
+
+	/**
+	 * Constructor
+	 *
+	 * @param amount
+	 * @param sourceUser
+	 * @param destUser
+	 * @param article
+	 * @param numberOfItems
+	 * @param pMethod
+	 */
+	public Transaction(int amount, User sourceUser, User destUser, Article article, int numberOfItems,
+			PaymentMethod pMethod) {
 		this.amount = new Price(amount);
 		this.sourceUser = sourceUser;
 		this.destUser = destUser;
@@ -51,54 +63,55 @@ public class Transaction implements Serializable,CSVAble {
 		this.date = new Date();
 		this.pMethod = pMethod;
 	}
-	
-	public Transaction(int amount, User sourceUser, User destUser,
-			Article article, int numberOfItems, PaymentMethod pMethod, Vendor v) {
-		this(amount,sourceUser,destUser,article,numberOfItems,pMethod);
+
+	public Transaction(int amount, User sourceUser, User destUser, Article article, int numberOfItems,
+			PaymentMethod pMethod, Vendor v) {
+		this(amount, sourceUser, destUser, article, numberOfItems, pMethod);
 		this.vendor = v;
 	}
-	
+
+	/**
+	 * Constructor for cancellation
+	 *
+	 * @param cancelledTransaction transaction to revert
+	 */
 	public Transaction(Transaction cancelledTransaction) {
-		this.amount = new Price(cancelledTransaction.getAmount().getPrice());
-		this.sourceUser = cancelledTransaction.getDestUser();
-		this.destUser = cancelledTransaction.getSourceUser();
-		this.article = cancelledTransaction.getArticle();
-		this.numberOfItems = cancelledTransaction.getNumberOfItems();
-		this.date = new Date();
-		this.pMethod = cancelledTransaction.getPaymentMethod();
+		this((int) (cancelledTransaction.getAmount().getPrice() * 100), cancelledTransaction.getDestUser(),
+				cancelledTransaction.getSourceUser(), cancelledTransaction.getArticle(),
+				cancelledTransaction.getNumberOfItems(), cancelledTransaction.getPaymentMethod());
 	}
-	
-	public Transaction(Transaction cancelledTransaction, Vendor v){
+
+	/**
+	 * Constructor for cancellation
+	 *
+	 * @param cancelledTransaction transaction to revert
+	 * @param v                    vendor
+	 */
+	public Transaction(Transaction cancelledTransaction, Vendor v) {
 		this(cancelledTransaction);
 		this.vendor = v;
 	}
-	
-	/**
-	 * 
-	 * @return a nice String representing this Transaction
-	 */
-	public String print() {
-		return "On "+DateFormat.getDateInstance().format(date)+", "+String.valueOf(numberOfItems)+" "+article.getName()+" ("+amount.toString()+")";
+
+	/** {@inheritDoc} */
+	@Override
+	public String csvHeader() {
+		return "# Date;Amount;Source user;Destination user;Article;Number;Payment;Vendor";
 	}
 
 	public Price getAmount() {
 		return amount;
 	}
 
-	public User getSourceUser() {
-		return sourceUser;
+	public Article getArticle() {
+		return article;
+	}
+
+	public Date getDate() {
+		return date;
 	}
 
 	public User getDestUser() {
 		return destUser;
-	}
-
-	public Article getArticle() {
-		return article;
-	}
-	
-	public Vendor getVendor() {
-		return vendor;
 	}
 
 	public int getNumberOfItems() {
@@ -109,44 +122,59 @@ public class Transaction implements Serializable,CSVAble {
 		return pMethod;
 	}
 
-	public Date getDate() {
-		return date;
+	public User getSourceUser() {
+		return sourceUser;
 	}
-	
+
+	public Vendor getVendor() {
+		return vendor;
+	}
+
+	/**
+	 *
+	 * @return a nice String representing this Transaction
+	 */
+	public String print() {
+		return "On " + DateFormat.getDateInstance().format(date) + ", " + String.valueOf(numberOfItems) + " "
+				+ article.getName() + " (" + amount.toString() + ")";
+	}
+
 	/**
 	 * Reverts all changes that were made by this transaction
 	 */
 	public void revert() {
 		article.addStock(numberOfItems);
-		if(sourceUser != null)
+		if (sourceUser != null) {
 			sourceUser.credite(amount.getPrice());
-		
-		if(destUser != null)
+		}
+
+		if (destUser != null) {
 			destUser.debite(amount.getPrice());
+		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toCSV() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(DateFormat.getDateTimeInstance().format(date) + ";");
-		sb.append(NumberFormat.getCurrencyInstance().format(amount.getPrice()) + ";");
-		if(sourceUser != null)
-			sb.append(sourceUser.getName());
-		sb.append(';');
-		if(destUser != null)
-			sb.append(destUser.getName());
-		sb.append(';');
-		sb.append(article.getName() + ";");
+		StringJoiner sb = new StringJoiner(";");
+		sb.add(DateFormat.getDateTimeInstance().format(date));
+		sb.add(NumberFormat.getCurrencyInstance().format(amount.getPrice()));
+		if (sourceUser != null) {
+			sb.add(sourceUser.getName());
+		} else {
+			sb.add("");
+		}
+		if (destUser != null) {
+			sb.add(destUser.getName());
+		} else {
+			sb.add("");
+		}
+		sb.add(article.getName());
 		double factor = article.isCountable() ? 1 : 1000;
-		sb.append(String.valueOf(numberOfItems/factor) + ";");
+		sb.add(String.valueOf(numberOfItems / factor));
 		String paymentName = pMethod == null ? "account" : pMethod.getName();
-		sb.append(paymentName + ";");
-		sb.append(vendor.getName());
+		sb.add(paymentName);
+		sb.add(vendor.getName());
 		return sb.toString();
-	}
-	
-	@Override
-	public String csvHeader() {
-	    return "# Date;Amount;Source user;Destination user;Article;Number;Payment;Vendor";
 	}
 }

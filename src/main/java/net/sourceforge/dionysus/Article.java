@@ -41,7 +41,7 @@ public class Article implements Serializable, CSVAble {
 	 * articles can have different prices (max 3): members of student union,
 	 * non-members, visitors (for example)
 	 */
-	private final Price prices[];
+	private final Price[] prices;
 
 	/** current quantity: units or (grams or milliliters) */
 	private int stock;
@@ -127,11 +127,17 @@ public class Article implements Serializable, CSVAble {
 		return "# Name;Code;Price0;Price1;Price2;Stock;Limit;Management;Alert;Active;Used;Countable";
 	}
 
+	/**
+	 * Convenience getter for first price
+	 *
+	 * @return the first price
+	 */
 	public double getArticlePrice() {
-		return prices[0].getPrice();
+		return getArticlePrice(0);
 	}
 
 	/**
+	 * Getter for the price
 	 *
 	 * @param id price identifier. Must be 0, 1 or 2 in this implementation
 	 * @return the corresponding price, or 0 if the price does not exist
@@ -176,14 +182,18 @@ public class Article implements Serializable, CSVAble {
 	 */
 	public String getToolTipText() {
 		final StringJoiner ttt = new StringJoiner("", "<html>", "</html>");
-		ttt.add(name + " (" + String.valueOf(code) + ")");
+		ttt.add(name + " (" + code + ")");
 		for (int i = 0; i < getNumberOfPrices(); i++) {
-			ttt.add("Price " + String.valueOf(i) + ": "
-					+ NumberFormat.getCurrencyInstance().format(getArticlePrice(i)));
+			ttt.add(String.format("Price %d: %s", i, NumberFormat.getCurrencyInstance().format(getArticlePrice(i))));
 		}
 		return ttt.toString();
 	}
 
+	/**
+	 * Getter for the usage flag
+	 *
+	 * @return the usage flag
+	 */
 	public boolean hasBeenUsed() {
 		return hasBeenUsed;
 	}
@@ -211,12 +221,24 @@ public class Article implements Serializable, CSVAble {
 		this.isActive = isActive;
 	}
 
+	/**
+	 * Setter for alert threshold
+	 *
+	 * @param limitStock the new positive threshold
+	 */
 	public void setLimitStock(final int limitStock) {
 		if (limitStock >= 0) {
 			this.limitStock = limitStock;
+		} else {
+			throw new IllegalArgumentException("The limit stock cannot be negative. ");
 		}
 	}
 
+	/**
+	 * Setter for stock
+	 *
+	 * @param newStock new value to use
+	 */
 	public void setStock(final int newStock) {
 		stock = newStock;
 	}
@@ -229,9 +251,7 @@ public class Article implements Serializable, CSVAble {
 		this.hasStockMgmtEnabled = hasStockMgmtEnabled;
 	}
 
-	/**
-	 * Generate the string for CSV serialization TODO
-	 */
+	/** {@inheritDoc} */
 	@Override
 	public String toCSV() {
 		final StringJoiner csvline = new StringJoiner(";");

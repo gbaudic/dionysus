@@ -72,7 +72,8 @@ public class ArticleDB extends Database<Article> {
 			foodForTable[i][2] = data.get(i).isActive();
 			foodForTable[i][3] = NumberFormat.getCurrencyInstance().format(data.get(i).getArticlePrice());
 
-			double price1, price2;
+			double price1;
+			double price2;
 
 			if (data.get(i).getNumberOfPrices() >= 1) {
 				price1 = data.get(i).getArticlePrice(1);

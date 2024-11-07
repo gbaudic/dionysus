@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus;
@@ -20,82 +20,97 @@ package net.sourceforge.dionysus;
 import java.io.Serializable;
 
 /**
- * Structure representing a user
- * It has roughly the same functionalities as the one in the 'original software'
+ * Structure representing a user It has roughly the same functionalities as the
+ * one in the 'original software'
  */
 
-public class User implements Serializable,CSVAble {
-	
+public class User implements Serializable, CSVAble {
+
 	private static final long serialVersionUID = 728813682202079442L;
-	
+
 	private final String lastName;
 	private final String firstName;
 	private final int promo;
-	private int balance; //! Balance in cents
-	private boolean paidDeposit; 
-	/* To prevent students from staying for too long with a negative balance (and eventually leaving university without paying...),
-	 * they had to give an amount of money that would be only used if they get in such a situation. This flag tells if they have paid it or not.
-	*/
-	private String id; //! unique identifier, such as a barcode or QR code on a member card
-	
+	/** Balance in cents */
+	private int balance;
+	/**
+	 * To prevent students from staying for too long with a negative balance (and
+	 * eventually leaving university without paying...), they had to give an amount
+	 * of money that would be only used if they get in such a situation. This flag
+	 * tells if they have paid it or not.
+	 */
+	private boolean paidDeposit;
+	/** unique identifier, such as a barcode or QR code on a member card */
+	private String id;
+
 	public User(final String lastName, final String firstName, final int promo, final int balance) {
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.promo = promo;
-		this.balance = balance;
-		paidDeposit = false;
-		id = "";
+		this(lastName, firstName, promo, balance, false);
 	}
 
 	public User(final String lastName, final String firstName, final int promo, final int balance,
 			final boolean paidDeposit) {
-		this(lastName, firstName, promo, balance);
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.promo = promo;
+		this.balance = balance;
 		this.paidDeposit = paidDeposit;
-	}
-
-	/**
-	 * Returns the balance
-	 * @return the balance
-	 * TODO: check the result of the division when balance is negative
-	 */
-	public double getBalance() {
-		return balance/100.;
+		id = "";
 	}
 
 	/**
 	 * Adds an amount to the current balance
+	 *
 	 * @param montant amount to credit
 	 */
 	public void credite(final double montant) {
-		this.balance += (int)(montant*100);
+		this.balance += (int) (montant * 100);
 	}
-	
+
+	@Override
+	public String csvHeader() {
+		return "# Last name;First name;ID;Promo;Balance;Paid deposit";
+	}
+
 	/**
 	 * Deduces an amount from current balance
+	 *
 	 * @param montant amount to debit
 	 */
 	public void debite(final double montant) {
-		this.balance -= (int)(montant*100);
+		this.balance -= (int) (montant * 100);
 	}
-	
+
 	/**
-	 * Returns the whole name
-	 * @return the whole name
+	 * Returns the balance
+	 *
+	 * @return the balance TODO: check the result of the division when balance is
+	 *         negative
 	 */
-	public String getName() {
-		return lastName+" "+firstName;
+	public double getBalance() {
+		return balance / 100.;
 	}
-	
+
 	/**
-	 * Returns the full name with the year
-	 * @return full name (year)
+	 * Returns the first name (for editing)
+	 *
+	 * @return the first name
 	 */
-	public String getNameWithPromo() {
-		return this.getName()+" ("+String.valueOf(promo)+")";
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * Returns the ID
+	 *
+	 * @return ID
+	 */
+	public String getID() {
+		return id;
 	}
 
 	/**
 	 * Returns the last name (for editing)
+	 *
 	 * @return the last name
 	 */
 	public String getLastName() {
@@ -103,62 +118,62 @@ public class User implements Serializable,CSVAble {
 	}
 
 	/**
-	 * Returns the first name (for editing)
-	 * @return the first name
+	 * Returns the whole name
+	 *
+	 * @return the whole name
 	 */
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return lastName + " " + firstName;
 	}
-	
+
 	/**
-	 * Returns the ID
-	 * @return ID
+	 * Returns the full name with the year
+	 *
+	 * @return full name (year)
 	 */
-	public String getID() {
-		return id;
-	}
-	
-	public void setID(final String id) {
-		if(id != null && !id.isEmpty() && id != " "){
-			this.id = id;
-		}
+	public String getNameWithPromo() {
+		return this.getName() + " (" + promo + ")";
 	}
 
 	/**
 	 * Returns the "promo" (for display)
+	 *
 	 * @return the "promo" number
 	 */
 	public int getPromo() {
 		return promo;
 	}
-	
+
+	/**
+	 * Returns a string for the database file The format used is the one for the
+	 * so-called 'original software' for backwards compatibility
+	 *
+	 * @return promo, lastName, firstName and balance, each field surrounded by
+	 *         <...>
+	 */
+	public String getTextForLegacyFile() {
+		final String bal = String.valueOf(balance / 100.0);
+		return String.format("<%s><%s><%s><%s>", String.valueOf(promo), lastName, firstName, bal);
+	}
+
 	public boolean hasPaidCaution() {
 		return paidDeposit;
+	}
+
+	public void setID(final String id) {
+		if (id != null && !id.matches("^\\s*$")) {
+			this.id = id;
+		}
 	}
 
 	public void setPaidCaution(final boolean paidCaution) {
 		this.paidDeposit = paidCaution;
 	}
-	
-	/**
-	 * Returns a string for the database file
-	 * The format used is the one for the so-called 'original software' for backwards compatibility
-	 * @return promo, lastName, firstName and balance, each field surrounded by <...>
-	 */
-	public String getTextForLegacyFile(){
-		final String bal = String.valueOf(balance / 100.0);
-		return String.format("<%s><%s><%s><%s>", String.valueOf(promo), lastName, firstName, bal);
-	}
 
 	@Override
 	public String toCSV() {
 		final String bal = String.valueOf(balance / 100.0);
-		return lastName+";"+firstName+";"+id+";"+promo+";"+bal+";"+paidDeposit;
+		return lastName + ";" + firstName + ";" + id + ";" + promo + ";" + bal + ";" + paidDeposit;
 	}
-	
-	@Override
-	public String csvHeader() {
-	    return "# Last name;First name;ID;Promo;Balance;Paid deposit";
-	}
-	
+
 }

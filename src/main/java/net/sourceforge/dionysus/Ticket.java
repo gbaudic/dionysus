@@ -161,25 +161,24 @@ public class Ticket {
 
 		// Ticket date
 		if (date != null) {
-			accu.append(date + "\r\n");
+			accu.append(date + "%n");
 		} else {
-			accu.append(
-					DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(new Date()) + "\r\n");
+			accu.append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(new Date()) + "%n");
 		}
 
 		// Users involved
-		accu.append(String.format("From {}\r\n", customer.getNameWithPromo()));
-		accu.append(String.format("Sold by {}\r\n", vendor.getName()));
+		accu.append(String.format("From %s%n", customer.getNameWithPromo()));
+		accu.append(String.format("Sold by %s%n", vendor.getName()));
 
 		// Purchased items
 		for (TicketItem ti : items) {
 			if (ti != null) {
-				accu.append("\t" + ti.toString() + "\r\n");
+				accu.append("\t" + ti.toString() + "%n");
 			}
 		}
 
 		// Grand total
-		accu.append(String.format("Total: {}\r\nPaid by ", amountFormatter.format(amount)));
+		accu.append(String.format("Total: %s%nPaid by ", amountFormatter.format(amount)));
 
 		// Payment method
 		if (pMethod != null) {
@@ -189,9 +188,10 @@ public class Ticket {
 		}
 
 		// Goodbye message
-		accu.append("\r\nThanks for your purchase, welcome back");
+		// TODO make this configurable
+		accu.append("%nThanks for your purchase, welcome back");
 
-		return accu.append("\r\n\r\n");
+		return accu.append("%n%n");
 	}
 
 	/**
@@ -202,21 +202,19 @@ public class Ticket {
 	public void removeArticle(TicketItem a) {
 		// Check that article exists
 		for (TicketItem ti : items) {
-			if (ti != null) {
-				if (ti.getArticle().getName().equals(a.getArticle().getName()) && ti.getFee() == a.getFee()) {
-					int remainder = ti.getQuantity() - a.getQuantity();
-					if (remainder == 0) {
-						// If quantity drops to zero, delete article
-						items.remove(ti);
+			if (ti != null && ti.getArticle().getName().equals(a.getArticle().getName()) && ti.getFee() == a.getFee()) {
+				int remainder = ti.getQuantity() - a.getQuantity();
+				if (remainder == 0) {
+					// If quantity drops to zero, delete article
+					items.remove(ti);
+				} else {
+					if (remainder > 0) {
+						ti.removeArticles(a.getQuantity());
 					} else {
-						if (remainder > 0) {
-							ti.removeArticles(a.getQuantity());
-						} else {
-							throw new IllegalArgumentException("You cannot remove more articles than already present");
-						}
+						throw new IllegalArgumentException("You cannot remove more articles than already present");
 					}
-					return;
 				}
+				return;
 			}
 		}
 

@@ -20,6 +20,7 @@ package net.sourceforge.dionysus;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A category to sort articles
@@ -39,7 +40,7 @@ public class Category implements Serializable {
 	private String imagePath;
 
 	/** List of articles belonging to this category */
-	private HashSet<Article> articlesList;
+	private Set<Article> articlesList;
 
 	/** Background color of button for this category */
 	private Color color;
@@ -61,7 +62,7 @@ public class Category implements Serializable {
 	 * @param imagePath    full path to the image to be used
 	 * @param articlesList list of articles to include
 	 */
-	public Category(String name, String imagePath, HashSet<Article> articlesList) {
+	public Category(String name, String imagePath, Set<Article> articlesList) {
 		this(name, imagePath, articlesList, null);
 	}
 
@@ -73,7 +74,7 @@ public class Category implements Serializable {
 	 * @param articlesList list of articles to include
 	 * @param color        color to use
 	 */
-	public Category(String name, String imagePath, HashSet<Article> articlesList, Color color) {
+	public Category(String name, String imagePath, Set<Article> articlesList, Color color) {
 		this.name = name;
 		this.imagePath = imagePath;
 		this.articlesList = articlesList;
@@ -103,7 +104,7 @@ public class Category implements Serializable {
 	/**
 	 * @return the articlesList
 	 */
-	public HashSet<Article> getArticlesList() {
+	public Set<Article> getArticlesList() {
 		return articlesList;
 	}
 
