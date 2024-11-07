@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus;
@@ -20,23 +20,26 @@ package net.sourceforge.dionysus;
 import java.io.Serializable;
 
 /**
- * Structure representing a vendor, a person who is part of the team running the shop and has therefore
- * the right to use the software
- * It will help tracking which transactions have been made under the supervision of a given person.
- * Useful for a student pub which may be run by different teams at different days, or a shop with several vendors
+ * Structure representing a vendor, a person who is part of the team running the
+ * shop and has therefore the right to use the software It will help tracking
+ * which transactions have been made under the supervision of a given person.
+ * Useful for a student pub which may be run by different teams at different
+ * days, or a shop with several vendors
  */
 public class Vendor implements Serializable {
 
 	private static final long serialVersionUID = 7579644578907922526L;
 
-	/** Name appearing on the screen and on tickets*/
-	private String name; 
+	/** Name appearing on the screen and on tickets */
+	private String name;
 	/** Login for the identification process - may be different from name */
-	private String login; 
+	private String login;
 	/** There is also a password */
 	private String cPassword;
-	
+
 	/**
+	 * Constructor
+	 *
 	 * @param name
 	 * @param login
 	 * @param cPassword
@@ -55,6 +58,13 @@ public class Vendor implements Serializable {
 	}
 
 	/**
+	 * @return the login
+	 */
+	public String getLogin() {
+		return login;
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName() {
@@ -62,10 +72,10 @@ public class Vendor implements Serializable {
 	}
 
 	/**
-	 * @return the login
+	 * @param login the login to set
 	 */
-	public String getLogin() {
-		return login;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	/**
@@ -74,12 +84,5 @@ public class Vendor implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	/**
-	 * @param login the login to set
-	 */
-	public void setLogin(String login) {
-		this.login = login;
-	}
-	
+
 }
