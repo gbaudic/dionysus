@@ -1,8 +1,7 @@
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'application'
-
 plugins {
+  id "java"
+  id "eclipse"
+  id "application"
   id "org.sonarqube" version "5.1.0.4882"
 }
 
