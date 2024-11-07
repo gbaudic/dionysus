@@ -44,9 +44,9 @@ import net.sourceforge.dionysus.User;
  * This class contains both the GUI code and the software logic
  *
  */
-public class NewUserDialog2 extends JDialog {
+public class NewUserDialog extends JDialog {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6444446674902515180L;
 	private final JPanel contentPanel = new JPanel();
 	private User user;
 	private JTextField nomField;
@@ -60,7 +60,7 @@ public class NewUserDialog2 extends JDialog {
 	 * Create the dialog. The dialog is intended for creation, so all fields will be
 	 * empty
 	 */
-	public NewUserDialog2() {
+	public NewUserDialog() {
 		setTitle(Messages.getString("NewUserDialog2.0")); //$NON-NLS-1$
 		setModal(true);
 		// setBounds(100, 100, 451, 190);
@@ -202,7 +202,8 @@ public class NewUserDialog2 extends JDialog {
 						try {
 							menton = Double.parseDouble(soldeField.getText());
 						} catch (NumberFormatException e) {
-							JOptionPane.showMessageDialog(null, Messages.getString("NewUserDialog2.11"), Messages.getString("NewUserDialog2.12"), //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, Messages.getString("NewUserDialog2.11"), //$NON-NLS-1$
+									Messages.getString("NewUserDialog2.12"), //$NON-NLS-1$
 									JOptionPane.WARNING_MESSAGE);
 							return; // do not create the user!
 						}
@@ -212,7 +213,8 @@ public class NewUserDialog2 extends JDialog {
 						user.setID(idField.getText());
 						setVisible(false);
 					} else {
-						JOptionPane.showMessageDialog(null, Messages.getString("NewUserDialog2.13"), Messages.getString("NewUserDialog2.14"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						JOptionPane.showMessageDialog(null, Messages.getString("NewUserDialog2.13"), //$NON-NLS-1$
+								Messages.getString("NewUserDialog2.14"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
 					}
 				});
 
@@ -239,7 +241,7 @@ public class NewUserDialog2 extends JDialog {
 	 *
 	 * @param u the user to be edited
 	 */
-	public NewUserDialog2(User u) {
+	public NewUserDialog(User u) {
 		this();
 		setUser(u);
 	}

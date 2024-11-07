@@ -44,7 +44,7 @@ import net.sourceforge.dionysus.User;
 import net.sourceforge.dionysus.db.UserDB;
 import net.sourceforge.dionysus.gui.models.UserTableModel;
 
-public class UserChoiceDialog2 extends JDialog {
+public class UserChoiceDialog extends JDialog {
 
 	private static final long serialVersionUID = 3404606793383794213L;
 	private final JPanel contentPanel = new JPanel();
@@ -60,7 +60,7 @@ public class UserChoiceDialog2 extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public UserChoiceDialog2(UserDB udb) {
+	public UserChoiceDialog(UserDB udb) {
 		setModal(true);
 		setTitle(Messages.getString("UserChoiceDialog2.0")); //$NON-NLS-1$
 		// setBounds(100, 100, 450, 300);
