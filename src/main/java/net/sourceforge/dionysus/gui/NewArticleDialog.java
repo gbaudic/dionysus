@@ -12,34 +12,30 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.GridBagLayout;
-
-import javax.swing.JLabel;
-
 import java.awt.GridBagConstraints;
-
-import javax.swing.JTextField;
-
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
 
-import net.sourceforge.dionysus.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import net.sourceforge.dionysus.Article;
+import net.sourceforge.dionysus.Price;
 
 /**
  * Dialog box to add or edit articles
@@ -47,35 +43,40 @@ import net.sourceforge.dionysus.*;
  */
 public class NewArticleDialog extends JDialog {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3336738625857841805L;
 	private final JPanel contentPanel;
-	private JTextField nomField, codeField, stockField, alertField;
+	private JTextField nomField;
+	private JTextField codeField;
+	private JTextField stockField;
+	private JTextField alertField;
 	private JTextField price0Field;
 	private JTextField price1Field;
 	private JTextField price2Field;
-	private JCheckBox chckbxActive, chckbxStockEnabled, chckbxAlertEnabled, chckbxCountable;
+	private JCheckBox chckbxActive;
+	private JCheckBox chckbxStockEnabled;
+	private JCheckBox chckbxAlertEnabled;
+	private JCheckBox chckbxCountable;
 
 	private Article article;
 
 	/**
-	 * Create the dialog.
-	 * Default constructor without argument for new articles
+	 * Create the dialog. Default constructor without argument for new articles
 	 */
 	public NewArticleDialog() {
 		contentPanel = new JPanel();
 		setTitle(Messages.getString("NewArticleDialog.0")); //$NON-NLS-1$
-		//setBounds(100, 100, 369, 290);
+		// setBounds(100, 100, 369, 290);
 		setModal(true);
-		setSize(369,290);
+		setSize(369, 290);
 		setLocationRelativeTo(null);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{0, 142, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 0, 142, 0, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			JLabel lblNewLabel = new JLabel(Messages.getString("NewArticleDialog.1")); //$NON-NLS-1$
@@ -116,7 +117,7 @@ public class NewArticleDialog extends JDialog {
 			gbc_codeField.gridx = 2;
 			gbc_codeField.gridy = 1;
 			contentPanel.add(codeField, gbc_codeField);
-			codeField.setColumns(13); //Barcodes have a length of 13
+			codeField.setColumns(13); // Barcodes have a length of 13
 		}
 		{
 			chckbxStockEnabled = new JCheckBox(Messages.getString("NewArticleDialog.4")); //$NON-NLS-1$
@@ -249,7 +250,7 @@ public class NewArticleDialog extends JDialog {
 			chckbxCountable = new JCheckBox(Messages.getString("NewArticleDialog.14")); //$NON-NLS-1$
 			chckbxCountable.setToolTipText(Messages.getString("NewArticleDialog.15")); //$NON-NLS-1$
 			chckbxCountable.setSelected(true);
-			//chckbxCountable.setEnabled(false); //for 0.3 release
+			// chckbxCountable.setEnabled(false); //for 0.3 release
 			GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
 			gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
 			gbc_chckbxCountable.anchor = GridBagConstraints.WEST;
@@ -286,79 +287,9 @@ public class NewArticleDialog extends JDialog {
 		}
 	}
 
-	private void okClicked(ActionEvent arg0) {
-		try {
-			if(nomField.getText().isEmpty()){
-				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.22")); //$NON-NLS-1$
-			}
-			if(codeField.getText().isEmpty()){
-				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.23")); //$NON-NLS-1$
-				//TODO: check that code is numeric only
-			} else {
-				if(!codeField.getText().matches(Messages.getString("NewArticleDialog.24"))) { //$NON-NLS-1$
-					throw new IllegalArgumentException(Messages.getString("NewArticleDialog.25")); //$NON-NLS-1$
-				}
-			}
-
-			validatePrices(); 
-
-			Price p0 = new Price(Double.parseDouble(price0Field.getText()));
-			Price p1 = null;
-			if( !price1Field.getText().isEmpty() ){
-				p1 = new Price(Double.parseDouble(price1Field.getText()));
-			}
-			Price p2 = null;
-			if( !price2Field.getText().isEmpty() ){
-				p2 = new Price(Double.parseDouble(price2Field.getText()));
-			}
-			Price[] prices;
-			if(p2 == null){
-				if(p1 == null){
-					prices = new Price[1];
-					prices[0] = p0;
-				} else {
-					prices = new Price[2];
-					prices[0] = p0; prices[1] = p1;
-				}
-			} else {
-				prices = new Price[3];
-				prices[0] = p0; prices[1] = p1; prices[2] = p2;
-			}
-
-			//Checking for code duplicates will be done afterwards
-
-			article = new Article(nomField.getText(), prices, 0, Long.parseLong(codeField.getText()), chckbxCountable.isSelected());
-
-			article.setActive(chckbxActive.isSelected());
-
-			int qtyFactor = article.isCountable() ? 1 : 1000; //Multiplicative factor for uncountable articles
-
-			// Activate stock alerts if requested
-			if(chckbxAlertEnabled.isSelected()){
-				article.setStockAlertEnabled(true);
-				article.setLimitStock(Integer.parseInt(alertField.getText()) * qtyFactor);
-			} else {
-				article.setStockAlertEnabled(false);
-			}
-
-			// Activate stock management if requested
-			if(chckbxStockEnabled.isSelected()){
-				article.setStockMgmt(true);
-				article.setStock(Integer.parseInt(stockField.getText()) * qtyFactor);
-			} else {
-				article.setStockMgmt(false);
-			}	
-
-			setVisible(false);
-		} catch (NumberFormatException e){
-			JOptionPane.showMessageDialog(null,Messages.getString("NewArticleDialog.26"), Messages.getString("NewArticleDialog.27"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (IllegalArgumentException e) {
-			JOptionPane.showMessageDialog(null,Messages.getString("NewArticleDialog.28")+e.getMessage(), Messages.getString("NewArticleDialog.29"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
-
 	/**
 	 * Constructor with argument for further editing
+	 *
 	 * @param a article to use
 	 */
 	public NewArticleDialog(Article a) {
@@ -367,14 +298,115 @@ public class NewArticleDialog extends JDialog {
 	}
 
 	/**
+	 * Simple check for validity of price
+	 *
+	 * @param price string to test
+	 * @throws IllegalArgumentException if the value is negative
+	 * @throws NumberFormatException    if the string is not a valid number
+	 */
+	private void checkPrice(final String price) {
+		double value = Double.valueOf(price);
+		if (value < 0) {
+			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.32")); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Getter for article
+	 *
+	 * @return the Article being edited by this dialog
+	 */
+	public Article getArticle() {
+		return this.article;
+	}
+
+	private void okClicked(ActionEvent arg0) {
+		try {
+			if (nomField.getText().isEmpty()) {
+				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.22")); //$NON-NLS-1$
+			}
+			if (codeField.getText().isEmpty()) {
+				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.23")); //$NON-NLS-1$
+				// TODO: check that code is numeric only
+			} else {
+				if (!codeField.getText().matches(Messages.getString("NewArticleDialog.24"))) { //$NON-NLS-1$
+					throw new IllegalArgumentException(Messages.getString("NewArticleDialog.25")); //$NON-NLS-1$
+				}
+			}
+
+			validatePrices();
+
+			Price p0 = new Price(Double.parseDouble(price0Field.getText()));
+			Price p1 = null;
+			if (!price1Field.getText().isEmpty()) {
+				p1 = new Price(Double.parseDouble(price1Field.getText()));
+			}
+			Price p2 = null;
+			if (!price2Field.getText().isEmpty()) {
+				p2 = new Price(Double.parseDouble(price2Field.getText()));
+			}
+			Price[] prices;
+			if (p2 == null) {
+				if (p1 == null) {
+					prices = new Price[1];
+					prices[0] = p0;
+				} else {
+					prices = new Price[2];
+					prices[0] = p0;
+					prices[1] = p1;
+				}
+			} else {
+				prices = new Price[3];
+				prices[0] = p0;
+				prices[1] = p1;
+				prices[2] = p2;
+			}
+
+			// Checking for code duplicates will be done afterwards
+
+			article = new Article(nomField.getText(), prices, 0, Long.parseLong(codeField.getText()),
+					chckbxCountable.isSelected());
+
+			article.setActive(chckbxActive.isSelected());
+
+			int qtyFactor = article.isCountable() ? 1 : 1000; // Multiplicative factor for uncountable articles
+
+			// Activate stock alerts if requested
+			if (chckbxAlertEnabled.isSelected()) {
+				article.setStockAlertEnabled(true);
+				article.setLimitStock(Integer.parseInt(alertField.getText()) * qtyFactor);
+			} else {
+				article.setStockAlertEnabled(false);
+			}
+
+			// Activate stock management if requested
+			if (chckbxStockEnabled.isSelected()) {
+				article.setStockMgmt(true);
+				article.setStock(Integer.parseInt(stockField.getText()) * qtyFactor);
+			} else {
+				article.setStockMgmt(false);
+			}
+
+			setVisible(false);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, Messages.getString("NewArticleDialog.26"), //$NON-NLS-1$
+					Messages.getString("NewArticleDialog.27"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+		} catch (IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(null, Messages.getString("NewArticleDialog.28") + e.getMessage(), //$NON-NLS-1$
+					Messages.getString("NewArticleDialog.29"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+		}
+	}
+
+	/**
 	 * Fills in UI components with data from the DB record
+	 *
 	 * @param a existing Article to use when filling the dialog
 	 */
 	public void setArticle(Article a) {
 		article = a;
 
-		if(a != null){
-			double qtyFactor  = a.isCountable() ? 1. : 1000.;
+		if (a != null) {
+			double qtyFactor = a.isCountable() ? 1. : 1000.;
 
 			nomField.setText(a.getName());
 			codeField.setText(String.valueOf(a.getCode()));
@@ -383,7 +415,7 @@ public class NewArticleDialog extends JDialog {
 
 			chckbxActive.setSelected(a.isActive());
 
-			chckbxCountable.setSelected(a.isCountable()); 
+			chckbxCountable.setSelected(a.isCountable());
 
 			chckbxStockEnabled.setSelected(a.hasStockMgmtEnabled());
 
@@ -391,58 +423,38 @@ public class NewArticleDialog extends JDialog {
 
 			price0Field.setText(String.valueOf(a.getArticlePrice()));
 			int n = a.getNumberOfPrices();
-			if(n > 1){
-				if(n > 2){
+			if (n > 1) {
+				if (n > 2) {
 					price2Field.setText(String.valueOf(a.getArticlePrice(2)));
 				}
 
 				price1Field.setText(String.valueOf(a.getArticlePrice(1)));
-			}	
+			}
 		} else {
 			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.30")); //$NON-NLS-1$
 		}
 	}
 
 	/**
-	 * Getter for article
-	 * @return the Article being edited by this dialog
-	 */
-	public Article getArticle(){
-		return this.article;
-	}
-
-	/**
-	 *  Check that prices have meaningful values and are correctly filled
+	 * Check that prices have meaningful values and are correctly filled
 	 */
 	private void validatePrices() {
-		JTextField fields[] = {price0Field, price1Field, price2Field};
-		
+		JTextField fields[] = { price0Field, price1Field, price2Field };
+
 		// Check order of filled prices
 		int result = 0;
 		int flag = 1;
 		for (JTextField field : fields) {
 			String text = field.getText();
-			if(text.isEmpty()) {
+			if (text.isEmpty()) {
 				result += flag;
 			}
 			flag *= 2;
 			checkPrice(text); // Check that values are positive
 		}
-		
-		if(result != 1 && result != 3 && result != 7)
+
+		if (result != 1 && result != 3 && result != 7) {
 			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.31")); //$NON-NLS-1$
-	}
-	
-	/**
-	 * Simple check for validity of price
-	 * @param price string to test
-	 * @throws IllegalArgumentException if the value is negative
-	 * @throws NumberFormatException if the string is not a valid number
-	 */
-	private void checkPrice (final String price) {
-		double value = Double.valueOf(price);
-		if (value < 0) {
-			throw new IllegalArgumentException(Messages.getString("NewArticleDialog.32")); //$NON-NLS-1$
 		}
 	}
 

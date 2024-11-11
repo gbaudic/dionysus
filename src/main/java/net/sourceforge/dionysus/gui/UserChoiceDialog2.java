@@ -46,7 +46,7 @@ import net.sourceforge.dionysus.gui.models.UserTableModel;
 
 public class UserChoiceDialog2 extends JDialog {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3404606793383794213L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JTable table;

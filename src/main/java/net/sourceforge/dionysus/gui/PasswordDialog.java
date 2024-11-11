@@ -22,12 +22,9 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -56,7 +53,6 @@ public class PasswordDialog extends JDialog {
 	 *
 	 */
 	private static final long serialVersionUID = -3434784729931468513L;
-	private static final String passFile = Messages.getString("PasswordDialog.0"); //$NON-NLS-1$
 	private static final String loginFile = Messages.getString("PasswordDialog.1"); //$NON-NLS-1$
 	private final JPanel contentPanel;
 	private char[] correctPassword;
@@ -142,7 +138,7 @@ public class PasswordDialog extends JDialog {
 				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("PasswordDialog.5"))); //$NON-NLS-1$
 				JButton okButton = new JButton(Messages.getString("PasswordDialog.6"), okIcon); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("PasswordDialog.7")); //$NON-NLS-1$
-				okButton.addActionListener((ActionEvent arg0) -> {
+				okButton.addActionListener(arg0 -> {
 
 					if (checkIdentification()) {
 						if (checkPassword(passwordField.getPassword())) {
@@ -154,11 +150,13 @@ public class PasswordDialog extends JDialog {
 							frame.setCurrentVendor(chosenVendor);
 							frame.setVisible(true);
 						} else {
-							JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.8"), Messages.getString("PasswordDialog.9"), //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.8"), //$NON-NLS-1$
+									Messages.getString("PasswordDialog.9"), //$NON-NLS-1$
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.10"), Messages.getString("PasswordDialog.11"), //$NON-NLS-1$ //$NON-NLS-2$
+						JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.10"), //$NON-NLS-1$
+								Messages.getString("PasswordDialog.11"), //$NON-NLS-1$
 								JOptionPane.WARNING_MESSAGE);
 					}
 				});
@@ -169,7 +167,7 @@ public class PasswordDialog extends JDialog {
 				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("PasswordDialog.12"))); //$NON-NLS-1$
 				JButton cancelButton = new JButton(Messages.getString("PasswordDialog.13"), cancelIcon); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("PasswordDialog.14")); //$NON-NLS-1$
-				cancelButton.addActionListener((arg0) -> {
+				cancelButton.addActionListener(arg0 -> {
 					setVisible(false);
 					System.exit(0);
 				});
@@ -223,30 +221,6 @@ public class PasswordDialog extends JDialog {
 	}
 
 	/**
-	 * Loads the password from a text file (stored in clear...) In the original
-	 * software, the file was hidden - but the data was plain text
-	 */
-	private void getCorrectPassword() {
-		// Filename: passe.txt is set here
-		File pass = new File(passFile);
-		try {
-			FileReader fr = new FileReader(pass);
-			StringBuilder str = new StringBuilder();
-			int i = 0;
-			while ((i = fr.read()) != -1) {
-				str.append((char) i);
-			}
-			correctPassword = str.toString().toCharArray();
-			fr.close();
-		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.15"), Messages.getString("PasswordDialog.16"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.17"), Messages.getString("PasswordDialog.18"), //$NON-NLS-1$ //$NON-NLS-2$
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	/**
 	 * Getter for identification result
 	 *
 	 * @return true if identification succeeded, false otherwise
@@ -275,7 +249,8 @@ public class PasswordDialog extends JDialog {
 						// Format is login:display_name:password
 						database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]));
 					} else {
-						JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.21"), Messages.getString("PasswordDialog.22"), //$NON-NLS-1$ //$NON-NLS-2$
+						JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.21"), //$NON-NLS-1$
+								Messages.getString("PasswordDialog.22"), //$NON-NLS-1$
 								JOptionPane.WARNING_MESSAGE);
 					}
 				}
@@ -285,7 +260,8 @@ public class PasswordDialog extends JDialog {
 
 			s.close();
 		} catch (FileNotFoundException e) {
-			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.23"), Messages.getString("PasswordDialog.24"), //$NON-NLS-1$ //$NON-NLS-2$
+			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.23"), //$NON-NLS-1$
+					Messages.getString("PasswordDialog.24"), //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);
 			System.exit(-1); // We need to exit here, because there is no way the user can login.
 		} catch (NoSuchElementException e) {
