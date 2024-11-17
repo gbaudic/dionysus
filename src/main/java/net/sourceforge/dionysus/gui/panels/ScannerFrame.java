@@ -20,12 +20,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.function.Consumer;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -48,10 +50,14 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 
 	private Executor executor = Executors.newSingleThreadExecutor(this);
 
-	private Webcam webcam = null;
-	private WebcamPanel panel = null;
+	private Webcam webcam;
+	private WebcamPanel panel;
+	/** Result of last scan, to avoid unwanted multiple scans of the same product */
 	private String lastParsedText;
+	/** Date of last scan, to avoid unwanted multiple scans of the same product */
 	private Instant lastScan;
+	/** Observers for parsed barcodes */
+	private List<Consumer<String>> observers;
 
 	/**
 	 * Constructor
@@ -60,11 +66,12 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 		super();
 
 		setLayout(new FlowLayout());
-		setTitle("Read QR / Bar Code With Webcam");
+		setTitle("Scan preview");
 
-		Dimension size = WebcamResolution.QVGA.getSize();
+		Dimension size = WebcamResolution.VGA.getSize();
 
 		webcam = Webcam.getWebcams().get(0);
+		// TODO gracefully manage case of no webcam or multiple ones
 		webcam.setViewSize(size);
 
 		panel = new WebcamPanel(webcam);
@@ -75,10 +82,28 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 
 		pack();
 		setVisible(true);
-		
+
 		lastScan = Instant.now();
+		observers = new ArrayList<>();
 
 		executor.execute(this);
+	}
+
+	/**
+	 * Add an observer for scanned barcodes
+	 *
+	 * @param observer the observer to add
+	 */
+	public void addObserver(Consumer<String> observer) {
+		observers.add(observer);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Thread newThread(Runnable r) {
+		Thread t = new Thread(r, "scanner");
+		t.setDaemon(true);
+		return t;
 	}
 
 	/** {@inheritDoc} */
@@ -114,20 +139,19 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 			if (result != null) {
 				String contents = result.getText();
 				Instant now = Instant.now();
-				
+
+				// Secure against multiple reads of the same article
 				if (!contents.equals(lastParsedText) || now.isAfter(lastScan.plusMillis(INTERVAL_BETWEEN_SCANS_MS))) {
 					lastParsedText = contents;
+					lastScan = now;
+
+					// Submit data to consumers
+					for (Consumer<String> c : observers) {
+						c.accept(lastParsedText);
+					}
 				}
 			}
 
 		} while (true);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Thread newThread(Runnable r) {
-		Thread t = new Thread(r, "scanner");
-		t.setDaemon(true);
-		return t;
 	}
 }
