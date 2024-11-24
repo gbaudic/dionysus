@@ -52,7 +52,7 @@ public class Category implements Serializable {
 	 * @param imagePath full path to the image to be used
 	 */
 	public Category(String name, String imagePath) {
-		this(name, imagePath, new HashSet<Article>());
+		this(name, imagePath, new HashSet<>());
 	}
 
 	/**

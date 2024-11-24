@@ -135,8 +135,8 @@ public class Transaction implements Serializable, CSVAble {
 	 * @return a nice String representing this Transaction
 	 */
 	public String print() {
-		return "On " + DateFormat.getDateInstance().format(date) + ", " + String.valueOf(numberOfItems) + " "
-				+ article.getName() + " (" + amount.toString() + ")";
+		return String.format("On %s, %d %s (%s)", DateFormat.getDateInstance().format(date), numberOfItems,
+				article.getName(), amount.toString());
 	}
 
 	/**

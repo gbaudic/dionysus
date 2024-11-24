@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import net.sourceforge.dionysus.db.TransactionDB;
 
@@ -55,7 +56,7 @@ public class Ticket {
 	 * @param u user making the purchase. Can be null.
 	 */
 	public Ticket(User u) {
-		items = new ArrayList<TicketItem>();
+		items = new ArrayList<>();
 		customer = u;
 		amountFormatter = NumberFormat.getCurrencyInstance();
 	}
@@ -279,9 +280,11 @@ public class Ticket {
 
 	/**
 	 * Recompute the total for the ticket
+	 *
+	 * This method operates via side-effect
 	 */
 	public void updateAmount() {
-		amount = items.stream().filter(item -> item != null).mapToDouble(item -> item.getAmount()).sum();
+		amount = items.stream().filter(Objects::nonNull).mapToDouble(TicketItem::getAmount).sum();
 	}
 
 }
