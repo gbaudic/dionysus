@@ -40,8 +40,13 @@ import net.sourceforge.dionysus.CSVAble;
  */
 public abstract class Database<T> {
 
+	public static final String ERROR = "Error";
+
+	/** Actual data */
 	protected ArrayList<T> data;
+	/** The same data, but in a form suitable for JTable widgets */
 	protected Object[][] foodForTable;
+	/** The file backing the data for persistence */
 	protected File targetF;
 	/** Size of the database */
 	protected int numberOfRecords;
@@ -72,7 +77,7 @@ public abstract class Database<T> {
 		targetF = new File(filename);
 		if (!targetF.exists()) {
 			JOptionPane.showMessageDialog(null,
-					String.format("Error when trying to access database file: %s", filename), "Error",
+					String.format("Error when trying to access database file: %s", filename), ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -93,7 +98,7 @@ public abstract class Database<T> {
 		} catch (IOException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null,
 					"Error when trying to save database file: " + targetF.getName() + "\n" + e.getLocalizedMessage(),
-					"Error", JOptionPane.ERROR_MESSAGE);
+					ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -173,7 +178,8 @@ public abstract class Database<T> {
 	public void saveToTextFile() {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetF)))) {
 
-			oos.writeInt(numberOfRecords); // Writing the number of users
+			// Writing the number of records
+			oos.writeInt(numberOfRecords);
 			for (int i = 0; i < numberOfRecords; i++) {
 				oos.writeObject(data.get(i));
 			}
@@ -181,7 +187,7 @@ public abstract class Database<T> {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,
 					"Error when trying to access database file: " + targetF.getName() + "\n" + e.getLocalizedMessage(),
-					"Error", JOptionPane.ERROR_MESSAGE);
+					ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
