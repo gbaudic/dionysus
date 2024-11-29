@@ -20,13 +20,13 @@ package net.sourceforge.dionysus.db;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
@@ -38,7 +38,7 @@ public class UserDB extends Database<User> {
 	 * Constructor
 	 */
 	public UserDB() {
-		data = new ArrayList<User>(20);
+		data = new ArrayList<>(20);
 		numberOfRecords = 0;
 	}
 
@@ -51,14 +51,13 @@ public class UserDB extends Database<User> {
 	public void createFromLegacyTextFile(String filename) {
 		targetF = new File(filename);
 		if (!targetF.exists()) {
-			JOptionPane.showMessageDialog(null, "Error when trying to access database!", "Error",
+			JOptionPane.showMessageDialog(null, "Error when trying to access database!", Database.ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		// File exists, go on!
-		try {
-			LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(targetF)));
+		try (LineNumberReader lnr = new LineNumberReader(new BufferedReader(new FileReader(targetF)))) {
 			String s;
 
 			while ((s = lnr.readLine()) != null) {
@@ -71,17 +70,16 @@ public class UserDB extends Database<User> {
 				numberOfRecords++;
 			}
 
-			lnr.close();
-
 			makeArrayForTables();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+					String.format("Error with the file backing the User database: %s.", e.getLocalizedMessage()),
+					Database.ERROR, JOptionPane.ERROR_MESSAGE);
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Illegal numeric value encountered while loading legacy user database.",
-					"Error", JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null,
+					String.format("Illegal numeric value encountered while loading legacy user database: %s.",
+							e.getLocalizedMessage()),
+					Database.ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 
 	}
@@ -93,20 +91,18 @@ public class UserDB extends Database<User> {
 	 * @param filename full path to destination file
 	 */
 	public void exportToLegacyTextFile(String filename) {
-		try {
-			BufferedWriter bw = new BufferedWriter(new PrintWriter(filename));
-
-			for (User user : data) {
-				// if(data[i] != null) //Do not exclude nulls for coherence
-				bw.write(user.getTextForLegacyFile() + "\r\n");
+		try (BufferedWriter bw = new BufferedWriter(new PrintWriter(filename))) {
+			for (final User user : data) {
+				if (Objects.nonNull(user)) {
+					bw.write(user.getTextForLegacyFile() + "\r\n");
+				} else {
+					bw.write("null\r\n");
+				}
 			}
-			bw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, String
+					.format("Error when exporting the User database to legacy format: %s.", e.getLocalizedMessage()),
+					Database.ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -154,7 +150,7 @@ public class UserDB extends Database<User> {
 		if (u != null) {
 			if (u.getBalance() != 0) {
 				int choice = JOptionPane.showConfirmDialog(null,
-						"This user has a nonzero balance.\nAre you sure to delete him/her?", "Confirmation",
+						"This user has a nonzero balance.\nAre you sure to delete them?", "Confirmation",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				if (choice != JOptionPane.YES_OPTION) {

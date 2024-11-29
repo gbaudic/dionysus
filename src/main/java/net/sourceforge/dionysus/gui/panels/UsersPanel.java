@@ -39,7 +39,7 @@ import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.dionysus.User;
 import net.sourceforge.dionysus.db.UserDB;
-import net.sourceforge.dionysus.gui.NewUserDialog2;
+import net.sourceforge.dionysus.gui.NewUserDialog;
 import net.sourceforge.dionysus.gui.models.UserTableModel;
 
 /**
@@ -185,7 +185,7 @@ public class UsersPanel extends JPanel {
 	 * ActionListener for add action
 	 */
 	private void addUser(ActionEvent e) {
-		NewUserDialog2 newUser = new NewUserDialog2();
+		NewUserDialog newUser = new NewUserDialog();
 		newUser.setVisible(true);
 		User nu = newUser.getUser();
 		users.add(nu);
@@ -229,7 +229,7 @@ public class UsersPanel extends JPanel {
 			currentUser = users.getArray()[realRow];
 
 			if (currentUser != null) {
-				NewUserDialog2 mud = new NewUserDialog2(currentUser);
+				NewUserDialog mud = new NewUserDialog(currentUser);
 				mud.setVisible(true);
 				currentUser = mud.getUser();
 				users.modify(currentUser, realRow);

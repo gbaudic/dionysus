@@ -40,12 +40,16 @@ import net.sourceforge.dionysus.CSVAble;
  */
 public abstract class Database<T> {
 
+	public static final String ERROR = "Error";
+
+	/** Actual data */
 	protected ArrayList<T> data;
+	/** The same data, but in a form suitable for JTable widgets */
 	protected Object[][] foodForTable;
+	/** The file backing the data for persistence */
 	protected File targetF;
+	/** Size of the database */
 	protected int numberOfRecords;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
 
 	/**
 	 * Adds an entry to the database
@@ -72,14 +76,14 @@ public abstract class Database<T> {
 
 		targetF = new File(filename);
 		if (!targetF.exists()) {
-			JOptionPane.showMessageDialog(null, "Error when trying to access database file: " + filename, "Error",
+			JOptionPane.showMessageDialog(null,
+					String.format("Error when trying to access database file: %s", filename), ERROR,
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		// File exists, go on!
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(targetF)));
+		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(targetF)))) {
 
 			// Read the total number of saved users
 			int size = ois.readInt();
@@ -90,13 +94,11 @@ public abstract class Database<T> {
 				data.add((T) ois.readObject());
 			}
 
-			ois.close();
-
 			makeArrayForTables();
 		} catch (IOException | ClassNotFoundException e) {
 			JOptionPane.showMessageDialog(null,
 					"Error when trying to save database file: " + targetF.getName() + "\n" + e.getLocalizedMessage(),
-					"Error", JOptionPane.ERROR_MESSAGE);
+					ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -109,7 +111,7 @@ public abstract class Database<T> {
 		if (file != null) {
 			try (BufferedWriter bw = new BufferedWriter(new PrintWriter(file))) {
 				// Write header
-				if (data.size() > 0) {
+				if (!data.isEmpty()) {
 					bw.write(((CSVAble) data.get(0)).csvHeader() + "\r\n");
 				}
 				// Write data
@@ -174,19 +176,18 @@ public abstract class Database<T> {
 	 * Saves the database content to a binary (and not text, despite the name) file
 	 */
 	public void saveToTextFile() {
-		try {
-			oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetF)));
+		try (ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(targetF)))) {
 
-			oos.writeInt(numberOfRecords); // Writing the number of users
+			// Writing the number of records
+			oos.writeInt(numberOfRecords);
 			for (int i = 0; i < numberOfRecords; i++) {
-				// if(data[i] != null) //Do not exclude nulls for coherence
 				oos.writeObject(data.get(i));
 			}
-			oos.close();
+
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null,
 					"Error when trying to access database file: " + targetF.getName() + "\n" + e.getLocalizedMessage(),
-					"Error", JOptionPane.ERROR_MESSAGE);
+					ERROR, JOptionPane.ERROR_MESSAGE);
 		}
 	}
 }
