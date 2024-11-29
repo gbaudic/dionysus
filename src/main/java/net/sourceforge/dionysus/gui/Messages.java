@@ -19,11 +19,22 @@ package net.sourceforge.dionysus.gui;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * Convenience class for messages i18n
+ */
 public class Messages {
-	private static final String BUNDLE_NAME = "net.sourceforge.dionysus.gui.messages"; //$NON-NLS-1$
+	/** Name of the file containing translations */
+	private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
 
+	/** Bundle */
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
+	/**
+	 * Getter to use the bundle
+	 *
+	 * @param key message name
+	 * @return message text
+	 */
 	public static String getString(String key) {
 		try {
 			return RESOURCE_BUNDLE.getString(key);
