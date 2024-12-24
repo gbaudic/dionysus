@@ -63,8 +63,12 @@ import net.sourceforge.dionysus.*;
 import net.sourceforge.dionysus.db.*;
 import net.sourceforge.dionysus.gui.panels.*;
 
+/**
+ * The main UI window
+ */
 public class MainGUI2 extends JFrame {
 
+	/** Generated version UID */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private UsersPanel comptesP;
@@ -81,10 +85,12 @@ public class MainGUI2 extends JFrame {
 	private JLabel lblTotalTicket;
 	private JLabel lblSoldeApres;
 	private JFileChooser fileChooser;
+	/** Preview frame to scan articles using webcam */
+	private ScannerFrame scannerFrame;
 	
-	public static String SOFTWARE_NAME = "Dionysus";
-	public static String SOFTWARE_VERSION = "0.4";
-	public static String SOFTWARE_VERSION_NICK = "\"Riesling\"";
+	public static final String SOFTWARE_NAME = "Dionysus";
+	public static final String SOFTWARE_VERSION = "0.4";
+	public static final String SOFTWARE_VERSION_NICK = "\"Riesling\"";
 	
 	public Locale locale;
 	public Currency currency;
@@ -96,7 +102,7 @@ public class MainGUI2 extends JFrame {
 	private Vendor currentVendor;
 	private TicketState currentState;
 	
-	//Databases
+	// Databases
 	private UserDB users;
 	private ArticleDB catalogue;
 	private TransactionDB journal;
@@ -144,6 +150,9 @@ public class MainGUI2 extends JFrame {
 		setLocationRelativeTo(null); //center on screen
 		fileChooser = new JFileChooser();
 		
+		scannerFrame = new ScannerFrame();
+		scannerFrame.addObserver(this::inputLogic);
+		
 		//*********************************************
 		//****************** MENU *********************
 		//*********************************************
@@ -184,8 +193,8 @@ public class MainGUI2 extends JFrame {
 		
 		JMenuItem mntmQuit = new JMenuItem("Quit", new ImageIcon(getClass().getResource("/application-exit.png")));
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_MASK));
-		mntmQuit.addActionListener((ActionEvent arg0) -> {
-			if(currentTicket != null){
+		mntmQuit.addActionListener(arg0 -> {
+			if (currentTicket != null){
 				int choice = JOptionPane.showConfirmDialog(null,
 						"There is a ticket currently being processed.\nAre you sure you want to quit?",
 						"Confirmation", JOptionPane.YES_NO_OPTION,
@@ -205,7 +214,7 @@ public class MainGUI2 extends JFrame {
 		ImageIcon convertIcon = new ImageIcon(getClass().getResource("/gtk-convert.png"));
 		
 		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
-		mntmExportUsersLegacy.addActionListener((ActionEvent e) -> {
+		mntmExportUsersLegacy.addActionListener(e -> {
 			int result = fileChooser.showSaveDialog(null);
 			if(result == JFileChooser.APPROVE_OPTION){
 				File output = fileChooser.getSelectedFile();
@@ -217,22 +226,22 @@ public class MainGUI2 extends JFrame {
 		mnExport.add(mntmExportUsersLegacy);
 		
 		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV", convertIcon);
-		mntmExportUsersCSV.addActionListener((e) -> exportCSV(users) );
+		mntmExportUsersCSV.addActionListener(e -> exportCSV(users) );
 		mnExport.add(mntmExportUsersCSV);
 		
 		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV", convertIcon);
-		mntmExportArticlesCSV.addActionListener((e) -> exportCSV(catalogue) );
+		mntmExportArticlesCSV.addActionListener(e -> exportCSV(catalogue) );
 		mnExport.add(mntmExportArticlesCSV);
 		
 		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV", convertIcon);
-		mntmExportTransCSV.addActionListener((e) -> exportCSV(journal) );
+		mntmExportTransCSV.addActionListener(e -> exportCSV(journal) );
 		mnExport.add(mntmExportTransCSV);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem("About", new ImageIcon(getClass().getResource("/dialog-information.png")));
-		mntmAbout.addActionListener((e) -> {
+		mntmAbout.addActionListener(e -> {
 			AboutDialog dlg = new AboutDialog();
 			dlg.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 			dlg.setVisible(true);
@@ -309,20 +318,17 @@ public class MainGUI2 extends JFrame {
 		gbc_chooser.insets = new Insets(0, 0, 5, 5);
 		gbc_chooser.gridx = 2;
 		gbc_chooser.gridy = 0;
-		chooser.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
+		chooser.addActionListener(arg0 -> {
 				UserChoiceDialog2 choices = new UserChoiceDialog2(users);
 				choices.setVisible(true);
 				User nextCUser = choices.getUser();
 				currentUserAtDesk = nextCUser;
 				
-				if(currentUserAtDesk != null){
+				if (currentUserAtDesk != null){
 					nomLabel.setText(currentUserAtDesk.getNameWithPromo());
 					soldeLabel.setText(NumberFormat.getCurrencyInstance().format(currentUserAtDesk.getBalance()));
 					
-					if(currentTicket == null){
+					if (currentTicket == null){
 						currentTicket = new Ticket(currentUserAtDesk);
 						ticketTextArea.setText(null);
 					} else {
@@ -332,7 +338,7 @@ public class MainGUI2 extends JFrame {
 					currentState = TicketState.TICKET_IDLE;
 				}	
 			}
-		});
+		);
 		panel.add(chooser, gbc_chooser);
 		
 		JButton btnX = new JButton("Default");
@@ -414,8 +420,8 @@ public class MainGUI2 extends JFrame {
 		saisieField = new JTextField();
 		saisieField.setHorizontalAlignment(SwingConstants.RIGHT);
 		saisieField.setFont(new Font("Tahoma", Font.BOLD, 20));
-		saisieField.addActionListener((ActionEvent e) -> {
-			inputLogic();
+		saisieField.addActionListener(e -> {
+			inputLogic(saisieField.getText());
 			saisieField.setText(null);
 		});
 		saisieField.getDocument().addDocumentListener(
@@ -424,8 +430,8 @@ public class MainGUI2 extends JFrame {
                     //insertUpdate(e);
                 }
                 public void insertUpdate(DocumentEvent e) {
-                    if(saisieField.getText().length() == 13) //barcode length
-                        inputLogic();
+                    if (saisieField.getText().length() == 13) //barcode length
+                        inputLogic(saisieField.getText());
 					//TODO: clear document after validation of input
                 }
                 public void removeUpdate(DocumentEvent e) {
@@ -504,19 +510,19 @@ public class MainGUI2 extends JFrame {
 			String nbAsText = String.valueOf(i % 10);
 			JButton btn = new JButton(nbAsText);
 			btn.setMnemonic(nbAsText.charAt(0));
-			btn.addActionListener((arg0) ->
+			btn.addActionListener(arg0 ->
 				saisieField.setText(saisieField.getText()+nbAsText) );
 			panel_pavenum.add(btn);
 		}
 		
 		JButton btnMetre = new JButton("Dozen");
 		btnMetre.setToolTipText("12 units");
-		btnMetre.addActionListener((ActionEvent arg0) -> saisieField.setText(String.valueOf(12)) );
+		btnMetre.addActionListener(arg0 -> saisieField.setText(String.valueOf(12)) );
 		panel_pavenum.add(btnMetre);
 		
 		JButton btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Clear any input (not the ticket!)");
-		btnClear.addActionListener((ActionEvent arg0) -> saisieField.setText(null));
+		btnClear.addActionListener(arg0 -> saisieField.setText(null));
 		panel_pavenum.add(btnClear);
 		
 		JPanel panel_3 = new JPanel();
@@ -756,9 +762,14 @@ public class MainGUI2 extends JFrame {
 		}
 	}
 	
+	/**
+	 * Export a "database" to CSV format
+	 *
+	 * @param db the database object to export
+	 */
 	private void exportCSV(Database db){
 		int result = fileChooser.showSaveDialog(null);
-		if(result == JFileChooser.APPROVE_OPTION){
+		if (result == JFileChooser.APPROVE_OPTION){
 			File output = fileChooser.getSelectedFile();
 			if(output != null && db != null){
 				db.export(output);
@@ -768,10 +779,12 @@ public class MainGUI2 extends JFrame {
 	
 	/**
 	 * Contains the logic for input field validation
+	 *
+	 * @param input text typed or scanned
 	 */
-	private void inputLogic() {
+	private void inputLogic(String input) {
 	    try {
-			if(saisieField.getText().length() > 0){
+			if(input.length() > 0){
 				//Validate the content in the TextField
 				//TODO: change this so we can accommodate non-integer numbers in a locale-independent way
 				switch(currentState){

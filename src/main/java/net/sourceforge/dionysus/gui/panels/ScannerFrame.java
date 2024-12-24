@@ -43,14 +43,18 @@ import com.google.zxing.common.HybridBinarizer;
 /**
  * The scanner frame, to use the webcam as a barcode scanner
  */
-public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
+public final class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 
+	/** Generated version UID */ 
 	private static final long serialVersionUID = 6441489157408381878L;
+	/** Time interval between scans to avoid duplicates */
 	private static final long INTERVAL_BETWEEN_SCANS_MS = 1000;
 
 	private Executor executor = Executors.newSingleThreadExecutor(this);
 
+	/** Abstraction of the webcam */
 	private Webcam webcam;
+	/** Preview widget */
 	private WebcamPanel panel;
 	/** Result of last scan, to avoid unwanted multiple scans of the same product */
 	private String lastParsedText;
@@ -58,6 +62,8 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 	private Instant lastScan;
 	/** Observers for parsed barcodes */
 	private List<Consumer<String>> observers;
+	/** Barcode reader */
+	private MultiFormatReader reader;
 
 	/**
 	 * Constructor
@@ -85,6 +91,8 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 
 		lastScan = Instant.now();
 		observers = new ArrayList<>();
+		
+		reader = new MultiFormatReader();
 
 		executor.execute(this);
 	}
@@ -130,15 +138,15 @@ public class ScannerFrame extends JFrame implements Runnable, ThreadFactory {
 				BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 
 				try {
-					result = new MultiFormatReader().decode(bitmap);
+					result = reader.decode(bitmap);
 				} catch (NotFoundException e) {
 					// fall thru, it means there is no QR code in image
 				}
 			}
 
 			if (result != null) {
-				String contents = result.getText();
-				Instant now = Instant.now();
+				final String contents = result.getText();
+				final Instant now = Instant.now();
 
 				// Secure against multiple reads of the same article
 				if (!contents.equals(lastParsedText) || now.isAfter(lastScan.plusMillis(INTERVAL_BETWEEN_SCANS_MS))) {
