@@ -71,9 +71,6 @@ import net.sourceforge.dionysus.gui.panels.UsersPanel;
 public class MainGUI2 extends JFrame {
 
 	private static final long serialVersionUID = -2332809325411708152L;
-	public static final String SOFTWARE_NAME = "Dionysus";
-	public static final String SOFTWARE_VERSION = "0.4";
-	public static final String SOFTWARE_VERSION_NICK = "\"Riesling\"";
 
 	/**
 	 * Launch the application.
@@ -81,9 +78,6 @@ public class MainGUI2 extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-//					MainGUI2 frame = new MainGUI2();
-//					frame.setVisible(true);
-
 				// First window is the login window, not the main one
 				PasswordDialog pdiag = new PasswordDialog();
 				pdiag.setVisible(true);
@@ -98,21 +92,21 @@ public class MainGUI2 extends JFrame {
 	private UsersPanel comptesP;
 	private TransactionsPanel transactionsP;
 	private ArticlesPanel articlesP;
-	private JTextField saisieField;
 	/** THE textfield for everything */
-	private JLabel nomLabel;
+	private JTextField saisieField;
 	/** user name */
-	private JLabel soldeLabel;
+	private JLabel nomLabel;
 	/** user balance */
-	private JLabel lblVendorName;
+	private JLabel soldeLabel;
 	/** name of cash assistant on duty */
-	private JTextArea ticketTextArea;
+	private JLabel lblVendorName;
 	/** text of the ticket */
+	private JTextArea ticketTextArea;
 	private JLabel taskToDoLabel;
 	private JLabel enCours;
 
-	private JTextArea alertTextArea;
 	/** Stock alerts */
+	private JTextArea alertTextArea;
 	private JLabel lblTotalTicket;
 	private JLabel lblSoldeApres;
 
@@ -146,7 +140,7 @@ public class MainGUI2 extends JFrame {
 
 		// GUI
 		setResizable(false);
-		setTitle(SOFTWARE_NAME + " v" + SOFTWARE_VERSION + " " + SOFTWARE_VERSION_NICK);
+		setTitle(Constants.SOFTWARE_NAME + " v" + Constants.SOFTWARE_VERSION + " " + Constants.SOFTWARE_VERSION_NICK);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// setBounds(100, 100, 1024, 768);
 		setSize(1024, 740); // TODO: adjust to screen resolution

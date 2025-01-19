@@ -19,6 +19,7 @@ package net.sourceforge.dionysus.db;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
@@ -112,13 +113,12 @@ public class ArticleDB extends Database<Article> {
 	 */
 	@Override
 	public void modify(Article a, int index) {
-		if (a != null) { // No reason to pass a null, there is a function for cleaning up...
-			if (index >= 0 && index < numberOfRecords) {
-				data.set(index, a);
+		// No reason to pass a null, there is a function for cleaning up...
+		if (Objects.nonNull(a) && index >= 0 && index < numberOfRecords) {
+			data.set(index, a);
 
-				saveToTextFile();
-				makeArrayForTables(); // TODO : optimize!
-			}
+			saveToTextFile();
+			makeArrayForTables(); // TODO : optimize!
 		}
 	}
 

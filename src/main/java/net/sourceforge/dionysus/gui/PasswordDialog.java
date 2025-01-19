@@ -23,8 +23,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -235,10 +235,7 @@ public class PasswordDialog extends JDialog {
 	private void loadDatabase() {
 		database = new HashMap<String, Vendor>();
 
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(loginFile));
-
-			Scanner s = new Scanner(reader);
+		try (BufferedReader reader = new BufferedReader(new FileReader(loginFile)); Scanner s = new Scanner(reader)) {
 
 			String line = s.nextLine();
 
@@ -259,7 +256,7 @@ public class PasswordDialog extends JDialog {
 			}
 
 			s.close();
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.23"), //$NON-NLS-1$
 					Messages.getString("PasswordDialog.24"), //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);

@@ -22,7 +22,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -76,8 +75,8 @@ public class AboutDialog extends JDialog {
 		gbc_lblLogo.gridy = 0;
 		panel.add(lblLogo, gbc_lblLogo);
 
-		JLabel lblSoftwareName = new JLabel(MainGUI2.SOFTWARE_NAME + Messages.getString("AboutDialog.2") //$NON-NLS-1$
-				+ MainGUI2.SOFTWARE_VERSION + Messages.getString("AboutDialog.3") + MainGUI2.SOFTWARE_VERSION_NICK); //$NON-NLS-1$
+		JLabel lblSoftwareName = new JLabel(Constants.SOFTWARE_NAME + Messages.getString("AboutDialog.2") //$NON-NLS-1$
+				+ Constants.SOFTWARE_VERSION + Messages.getString("AboutDialog.3") + Constants.SOFTWARE_VERSION_NICK); //$NON-NLS-1$
 		lblSoftwareName.setHorizontalAlignment(SwingConstants.LEFT);
 		lblSoftwareName.setFont(new Font(Messages.getString("AboutDialog.4"), Font.BOLD, 20)); //$NON-NLS-1$
 		GridBagConstraints gbc_lblSoftwareName = new GridBagConstraints();
@@ -135,7 +134,7 @@ public class AboutDialog extends JDialog {
 		gbc_btnOK.anchor = GridBagConstraints.NORTH;
 		gbc_btnOK.gridx = 0;
 		gbc_btnOK.gridy = 1;
-		btnOK.addActionListener((ActionEvent arg0) -> setVisible(false));
+		btnOK.addActionListener(arg0 -> setVisible(false));
 		getContentPane().add(btnOK, gbc_btnOK);
 	}
 
