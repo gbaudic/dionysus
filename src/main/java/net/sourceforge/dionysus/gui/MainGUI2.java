@@ -23,13 +23,13 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -89,29 +89,28 @@ public class MainGUI2 extends JFrame {
 	}
 
 	private JPanel contentPane;
-	private UsersPanel comptesP;
+	private UsersPanel accountsP;
 	private TransactionsPanel transactionsP;
 	private ArticlesPanel articlesP;
 	/** THE textfield for everything */
 	private JTextField saisieField;
 	/** user name */
-	private JLabel nomLabel;
+	private JLabel lblName;
 	/** user balance */
-	private JLabel soldeLabel;
+	private JLabel lblBalance;
 	/** name of cash assistant on duty */
 	private JLabel lblVendorName;
 	/** text of the ticket */
 	private JTextArea ticketTextArea;
 	private JLabel taskToDoLabel;
-	private JLabel enCours;
+	private JLabel lblInProgress;
 
 	/** Stock alerts */
 	private JTextArea alertTextArea;
 	private JLabel lblTotalTicket;
-	private JLabel lblSoldeApres;
+	private JLabel lblBalanceAfter;
 
 	private JFileChooser fileChooser;
-	public Locale locale;
 
 	public Currency currency;
 	private Ticket currentTicket;
@@ -132,8 +131,8 @@ public class MainGUI2 extends JFrame {
 	 */
 	public MainGUI2() {
 		// Localization
-		locale = Locale.getDefault();
-		currency = Currency.getInstance(locale);
+		setLocale(Locale.getDefault());
+		currency = Currency.getInstance(getLocale());
 
 		// Database filling
 		fillTheDB();
@@ -219,15 +218,15 @@ public class MainGUI2 extends JFrame {
 		mnExport.add(mntmExportUsersLegacy);
 
 		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV", convertIcon);
-		mntmExportUsersCSV.addActionListener((e) -> exportCSV(users));
+		mntmExportUsersCSV.addActionListener(e -> exportCSV(users));
 		mnExport.add(mntmExportUsersCSV);
 
 		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV", convertIcon);
-		mntmExportArticlesCSV.addActionListener((e) -> exportCSV(catalogue));
+		mntmExportArticlesCSV.addActionListener(e -> exportCSV(catalogue));
 		mnExport.add(mntmExportArticlesCSV);
 
 		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV", convertIcon);
-		mntmExportTransCSV.addActionListener((e) -> exportCSV(journal));
+		mntmExportTransCSV.addActionListener(e -> exportCSV(journal));
 		mnExport.add(mntmExportTransCSV);
 
 		JMenu mnHelp = new JMenu("Help");
@@ -297,13 +296,13 @@ public class MainGUI2 extends JFrame {
 		gbc_lblN.gridy = 0;
 		panel.add(lblN, gbc_lblN);
 
-		nomLabel = new JLabel("no user selected");
-		nomLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblName = new JLabel("no user selected");
+		lblName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GridBagConstraints gbc_nomLabel = new GridBagConstraints();
 		gbc_nomLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_nomLabel.gridx = 1;
 		gbc_nomLabel.gridy = 0;
-		panel.add(nomLabel, gbc_nomLabel);
+		panel.add(lblName, gbc_nomLabel);
 
 		JButton chooser = new JButton("Select");
 		chooser.setToolTipText("Select user");
@@ -319,8 +318,8 @@ public class MainGUI2 extends JFrame {
 			currentUserAtDesk = nextCUser;
 
 			if (currentUserAtDesk != null) {
-				nomLabel.setText(currentUserAtDesk.getNameWithPromo());
-				soldeLabel.setText(NumberFormat.getCurrencyInstance().format(currentUserAtDesk.getBalance()));
+				lblName.setText(currentUserAtDesk.getNameWithPromo());
+				lblBalance.setText(NumberFormat.getCurrencyInstance().format(currentUserAtDesk.getBalance()));
 
 				if (currentTicket == null) {
 					currentTicket = new Ticket(currentUserAtDesk);
@@ -344,8 +343,8 @@ public class MainGUI2 extends JFrame {
 		btnX.addActionListener(arg0 -> {
 			currentUserAtDesk = null;
 
-			nomLabel.setText("default (00)");
-			soldeLabel.setText(NumberFormat.getCurrencyInstance().format(0.00));
+			lblName.setText("default (00)");
+			lblBalance.setText(NumberFormat.getCurrencyInstance().format(0.00));
 
 			if (currentTicket == null) {
 				currentTicket = new Ticket(currentUserAtDesk);
@@ -366,13 +365,13 @@ public class MainGUI2 extends JFrame {
 		gbc_lblSolde.gridy = 1;
 		panel.add(lblSolde, gbc_lblSolde);
 
-		soldeLabel = new JLabel("--");
-		soldeLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblBalance = new JLabel("--");
+		lblBalance.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GridBagConstraints gbc_soldeLabel = new GridBagConstraints();
 		gbc_soldeLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_soldeLabel.gridx = 1;
 		gbc_soldeLabel.gridy = 1;
-		panel.add(soldeLabel, gbc_soldeLabel);
+		panel.add(lblBalance, gbc_soldeLabel);
 
 		JLabel lblVendor = new JLabel("Vendor:");
 		GridBagConstraints gbc_lblVendor = new GridBagConstraints();
@@ -405,14 +404,14 @@ public class MainGUI2 extends JFrame {
 		taskToDoLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_2.add(taskToDoLabel);
 
-		enCours = new JLabel("");
-		enCours.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_2.add(enCours);
+		lblInProgress = new JLabel("");
+		lblInProgress.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_2.add(lblInProgress);
 
 		saisieField = new JTextField();
 		saisieField.setHorizontalAlignment(SwingConstants.RIGHT);
 		saisieField.setFont(new Font("Tahoma", Font.BOLD, 20));
-		saisieField.addActionListener((ActionEvent e) -> {
+		saisieField.addActionListener(e -> {
 			inputLogic();
 			saisieField.setText(null);
 		});
@@ -458,7 +457,7 @@ public class MainGUI2 extends JFrame {
 						if (currentState == TicketState.TICKET_IDLE) {
 							currentArticleAtDesk = c;
 							currentItemAtDesk = new TicketItem(c);
-							enCours.setText("? x " + c.getName());
+							lblInProgress.setText("? x " + c.getName());
 
 							if (c.getNumberOfPrices() > 1) {
 								taskToDoLabel.setText("Select fee");
@@ -467,7 +466,7 @@ public class MainGUI2 extends JFrame {
 								// Only 1 price id, quantity to set
 								taskToDoLabel.setText("Select quantity");
 								currentState = TicketState.QUANTITY;
-								enCours.setText("? x " + currentArticleAtDesk.getName());
+								lblInProgress.setText("? x " + currentArticleAtDesk.getName());
 							} else {
 								// Only 1 price id, no quantity to set: add item to ticket
 								currentItemAtDesk.computeAmount();
@@ -507,18 +506,18 @@ public class MainGUI2 extends JFrame {
 			String nbAsText = String.valueOf(i % 10);
 			JButton btn = new JButton(nbAsText);
 			btn.setMnemonic(nbAsText.charAt(0));
-			btn.addActionListener((arg0) -> saisieField.setText(saisieField.getText() + nbAsText));
+			btn.addActionListener(arg0 -> saisieField.setText(saisieField.getText() + nbAsText));
 			panel_pavenum.add(btn);
 		}
 
 		JButton btnMetre = new JButton("Dozen");
 		btnMetre.setToolTipText("12 units");
-		btnMetre.addActionListener((ActionEvent arg0) -> saisieField.setText(String.valueOf(12)));
+		btnMetre.addActionListener(arg0 -> saisieField.setText(String.valueOf(12)));
 		panel_pavenum.add(btnMetre);
 
 		JButton btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Clear any input (not the ticket!)");
-		btnClear.addActionListener((ActionEvent arg0) -> saisieField.setText(null));
+		btnClear.addActionListener(arg0 -> saisieField.setText(null));
 		panel_pavenum.add(btnClear);
 
 		JPanel panel_3 = new JPanel();
@@ -558,13 +557,13 @@ public class MainGUI2 extends JFrame {
 		gbc_lblSoldeApresText.gridy = 1;
 		panel_3.add(lblSoldeApresText, gbc_lblSoldeApresText);
 
-		lblSoldeApres = new JLabel();
+		lblBalanceAfter = new JLabel();
 		GridBagConstraints gbc_lblSoldeApres = new GridBagConstraints();
 		gbc_lblSoldeApres.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSoldeApres.fill = GridBagConstraints.BOTH;
 		gbc_lblSoldeApres.gridx = 1;
 		gbc_lblSoldeApres.gridy = 1;
-		panel_3.add(lblSoldeApres, gbc_lblSoldeApres);
+		panel_3.add(lblBalanceAfter, gbc_lblSoldeApres);
 
 		JPanel panel_PaymentMethods = new JPanel();
 		panel_PaymentMethods.setBorder(
@@ -611,8 +610,8 @@ public class MainGUI2 extends JFrame {
 		// ********************************************************************************************
 		// ********************************************************************************************
 		// ********************************************************************************************
-		comptesP = new UsersPanel(users);
-		tabbedPane.addTab("Accounts", null, comptesP, "Accounts management");
+		accountsP = new UsersPanel(users);
+		tabbedPane.addTab("Accounts", null, accountsP, "Accounts management");
 
 		// ********************************************************************************************
 		// ********************************************************************************************
@@ -686,20 +685,20 @@ public class MainGUI2 extends JFrame {
 		// Clear GUI
 		currentTicket = null;
 		taskToDoLabel.setText("Choose user");
-		enCours.setText(null);
+		lblInProgress.setText(null);
 		ticketTextArea.setText(null);
 		lblTotalTicket.setText(null);
-		lblSoldeApres.setText(null);
+		lblBalanceAfter.setText(null);
 		currentUserAtDesk = null;
 		currentItemAtDesk = null;
-		nomLabel.setText("no user selected");
-		soldeLabel.setText("--");
+		lblName.setText("no user selected");
+		lblBalance.setText("--");
 
 		// Change current state
 		currentState = TicketState.IDLE;
 
 		// Refresh JTables
-		comptesP.refreshTable();
+		accountsP.refreshTable();
 		transactionsP.refreshTable();
 		articlesP.refreshTable();
 	}
@@ -709,7 +708,7 @@ public class MainGUI2 extends JFrame {
 	 */
 	private void finalizeTicketItem() {
 		currentTicket.addArticle(currentItemAtDesk);
-		enCours.setText(String.valueOf(currentItemAtDesk.getQuantity()) + " x " + currentArticleAtDesk.getName());
+		lblInProgress.setText(String.valueOf(currentItemAtDesk.getQuantity()) + " x " + currentArticleAtDesk.getName());
 		currentItemAtDesk = null;
 		currentArticleAtDesk = null;
 		printTicketToScreen(currentTicket);
@@ -737,12 +736,12 @@ public class MainGUI2 extends JFrame {
 							// More than 1 price id
 							taskToDoLabel.setText("Select fee");
 							currentState = TicketState.PRICE;
-							enCours.setText("? x " + currentArticleAtDesk.getName());
+							lblInProgress.setText("? x " + currentArticleAtDesk.getName());
 						} else if (!currentArticleAtDesk.isCountable()) {
 							// Only 1 price id, quantity to set
 							taskToDoLabel.setText("Select quantity");
 							currentState = TicketState.QUANTITY;
-							enCours.setText("? x " + currentArticleAtDesk.getName());
+							lblInProgress.setText("? x " + currentArticleAtDesk.getName());
 						} else {
 							// Only 1 price id, no quantity to set: add item to ticket
 							currentItemAtDesk.computeAmount();
@@ -815,7 +814,7 @@ public class MainGUI2 extends JFrame {
 			}
 		} catch (NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(null, "Invalid input! Cannot parse a number.", "Error",
-					JOptionPane.WARNING_MESSAGE);
+					JOptionPane.ERROR_MESSAGE);
 			nfe.printStackTrace();
 		}
 	}
@@ -840,9 +839,9 @@ public class MainGUI2 extends JFrame {
 
 			// Same for balance after purchase
 			if (currentUserAtDesk != null) {
-				lblSoldeApres.setText(NumberFormat.getCurrencyInstance().format(t.getBalanceAfterTicket()));
+				lblBalanceAfter.setText(NumberFormat.getCurrencyInstance().format(t.getBalanceAfterTicket()));
 			} else {
-				lblSoldeApres.setText("--");
+				lblBalanceAfter.setText("--");
 			}
 		}
 	}
@@ -856,27 +855,28 @@ public class MainGUI2 extends JFrame {
 	}
 
 	/**
-	 * Refreshes the component containing the stock alerts TODO: partly rewrite for
-	 * optimization
+	 * Refreshes the component containing the stock alerts
 	 */
 	public void updateStockAlerts() {
 		alertTextArea.setText(null); // Clean UI component
-		if (catalogue != null) {
+		StringBuilder bob = new StringBuilder();
+
+		if (Objects.nonNull(catalogue)) {
 			for (Article a : catalogue.getArray()) {
 				if (a != null && a.hasStockMgmtEnabled() && a.hasStockAlertEnabled()) {
 					int stock = a.getStock();
 					if (stock <= a.getLimitStock()) {
-						alertTextArea.setText(alertTextArea.getText() + "\nThere are only "
-								+ String.valueOf(a.getStock()) + " " + a.getName() + " left! Consider refilling");
+						bob.append(
+								String.format("\nThere are only %d %s left! Consider refilling", stock, a.getName()));
 						if (stock < 0) {
-							alertTextArea.setText(
-									alertTextArea.getText() + " or disabling inventory management for this article.");
+							bob.append(" or disabling inventory management for this article.");
 						} else {
-							alertTextArea.setText(alertTextArea.getText() + "! ");
+							bob.append("!");
 						}
 					}
 				}
 			}
+			alertTextArea.setText(bob.toString());
 		}
 	}
 
