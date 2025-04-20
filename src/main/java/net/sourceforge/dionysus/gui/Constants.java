@@ -28,4 +28,11 @@ public final class Constants {
 	/** Version nickname */
 	public static final String SOFTWARE_VERSION_NICK = "\"Riesling\"";
 
+	/**
+	 * Private constructor
+	 */
+	private Constants() {
+		super();
+	}
+
 }

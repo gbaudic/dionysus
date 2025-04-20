@@ -22,7 +22,6 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
@@ -129,7 +128,6 @@ public class UserChoiceDialog extends JDialog {
 			table.setRowSorter(sorter);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setFillsViewportHeight(true);
-			// table.setAutoCreateRowSorter(true);
 
 			JScrollPane tableSP = new JScrollPane(table);
 
@@ -149,7 +147,7 @@ public class UserChoiceDialog extends JDialog {
 				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("UserChoiceDialog2.2"))); //$NON-NLS-1$
 				JButton okButton = new JButton(Messages.getString("UserChoiceDialog2.3"), okIcon); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("UserChoiceDialog2.4")); //$NON-NLS-1$
-				okButton.addActionListener((ActionEvent arg0) -> {
+				okButton.addActionListener(arg0 -> {
 					// Choice of the user from the user which was selected in the table
 					int row = table.getSelectedRow();
 					if (row >= 0) {
@@ -165,7 +163,7 @@ public class UserChoiceDialog extends JDialog {
 				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("UserChoiceDialog2.5"))); //$NON-NLS-1$
 				JButton cancelButton = new JButton(Messages.getString("UserChoiceDialog2.6"), cancelIcon); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("UserChoiceDialog2.7")); //$NON-NLS-1$
-				cancelButton.addActionListener((arg0) -> setVisible(false));
+				cancelButton.addActionListener(arg0 -> setVisible(false));
 
 				buttonPane.add(cancelButton);
 			}
@@ -181,11 +179,10 @@ public class UserChoiceDialog extends JDialog {
 		// If current expression doesn't parse, don't update.
 		try {
 			rf = RowFilter.regexFilter(Messages.getString("UserChoiceDialog2.8") + textField.getText()); //$NON-NLS-1$
-		} catch (PatternSyntaxException e) {
-			return;
-		} catch (NullPointerException e) {
+		} catch (PatternSyntaxException | NullPointerException e) {
 			return;
 		}
+
 		sorter.setRowFilter(rf);
 	}
 }

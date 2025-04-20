@@ -78,7 +78,6 @@ public class PasswordDialog extends JDialog {
 		setModal(true);
 		setSize(450, 123);
 		setLocationRelativeTo(null);
-		// setBounds(100, 100, 450, 123);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -100,8 +99,6 @@ public class PasswordDialog extends JDialog {
 		}
 		{
 			loginField = new JTextField();
-			// loginField.setText("default");
-			// loginField.setEnabled(false);
 			GridBagConstraints gbc_loginField = new GridBagConstraints();
 			gbc_loginField.anchor = GridBagConstraints.NORTH;
 			gbc_loginField.fill = GridBagConstraints.HORIZONTAL;
@@ -255,7 +252,6 @@ public class PasswordDialog extends JDialog {
 				line = s.nextLine();
 			}
 
-			s.close();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.23"), //$NON-NLS-1$
 					Messages.getString("PasswordDialog.24"), //$NON-NLS-1$

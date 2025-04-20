@@ -136,7 +136,7 @@ public class NewCategoryDialog extends JDialog {
 				JButton okButton = new JButton(Messages.getString("NewCategoryDialog.5"), okIcon); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("NewCategoryDialog.6")); //$NON-NLS-1$
 
-				okButton.addActionListener((arg0) -> {
+				okButton.addActionListener(arg0 -> {
 					try {
 						if (nameField.getText().isEmpty()) {
 							throw new IllegalArgumentException(Messages.getString("NewCategoryDialog.7")); //$NON-NLS-1$
@@ -159,7 +159,7 @@ public class NewCategoryDialog extends JDialog {
 				JButton cancelButton = new JButton(Messages.getString("NewCategoryDialog.11"), cancelIcon); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("NewCategoryDialog.12")); //$NON-NLS-1$
 
-				cancelButton.addActionListener((arg0) -> setVisible(false));
+				cancelButton.addActionListener(arg0 -> setVisible(false));
 
 				buttonPane.add(cancelButton);
 			}

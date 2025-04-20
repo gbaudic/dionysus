@@ -20,6 +20,7 @@ package net.sourceforge.dionysus.gui.panels;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.ImageIcon;
@@ -49,7 +50,7 @@ public class TransactionsPanel extends JPanel {
 	private static final long serialVersionUID = 280813945615261532L;
 	private TableRowSorter<TransactionTableModel> transactionSorter;
 	private TransactionTableModel ttModel;
-	private JTextField transactionRechercheField;
+	private JTextField transactionSearchField;
 	private JTable transactionTable;
 
 	private TransactionDB journal;
@@ -76,13 +77,13 @@ public class TransactionsPanel extends JPanel {
 		gbc_lblNewLabel_2.gridy = 0;
 		add(lblNewLabel_2, gbc_lblNewLabel_2);
 
-		transactionRechercheField = new JTextField();
+		transactionSearchField = new JTextField();
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_1.gridx = 1;
 		gbc_textField_1.gridy = 0;
-		transactionRechercheField.getDocument().addDocumentListener(new DocumentListener() {
+		transactionSearchField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				newTransactionFilter();
@@ -98,8 +99,8 @@ public class TransactionsPanel extends JPanel {
 				newTransactionFilter();
 			}
 		});
-		add(transactionRechercheField, gbc_textField_1);
-		transactionRechercheField.setColumns(10);
+		add(transactionSearchField, gbc_textField_1);
+		transactionSearchField.setColumns(10);
 
 		ImageIcon cancel = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
 		// TODO: this is done at least 4 times in the code: factor!
@@ -109,45 +110,16 @@ public class TransactionsPanel extends JPanel {
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_6.gridx = 2;
 		gbc_btnNewButton_6.gridy = 0;
-		btnNewButton_6.addActionListener(arg0 -> {
-			int row = transactionTable.getSelectedRow();
-			int realRow = -1;
-			if (row >= 0) {
-				realRow = transactionTable.convertRowIndexToModel(transactionTable.getSelectedRow());
-				currentTransaction = journal.getArray()[realRow];
-
-				if (currentTransaction != null) {
-					int choice = JOptionPane.showConfirmDialog(null, "Are you sure to delete this transaction?", "",
-							JOptionPane.YES_NO_OPTION);
-					if (choice == JOptionPane.YES_OPTION) {
-						journal.add(new Transaction(currentTransaction));
-						// TODO : complete cancellation of effects (restore balances, stocks...) if
-						// asked
-
-						choice = JOptionPane.showConfirmDialog(null, "Do you also want to revert its consequences?",
-								"", JOptionPane.YES_NO_OPTION);
-						if (choice == JOptionPane.YES_OPTION) {
-							currentTransaction.revert();
-						}
-
-						refreshTable();
-					}
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "No transaction selected!", "Error",
-						JOptionPane.WARNING_MESSAGE);
-			}
-		});
+		btnNewButton_6.addActionListener(this::onTransactionRevert);
 		add(btnNewButton_6, gbc_btnNewButton_6);
 
 		transactionTable = new JTable();
-		TransactionTableModel ttModel = new TransactionTableModel(journal.getArrayForTables());
+		ttModel = new TransactionTableModel(journal.getArrayForTables());
 		transactionTable.setModel(ttModel);
 		transactionSorter = new TableRowSorter<TransactionTableModel>(ttModel);
 		transactionTable.setRowSorter(transactionSorter);
 		transactionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		transactionTable.setFillsViewportHeight(true);
-		// transactionTable.setAutoCreateRowSorter(true);
 
 		JScrollPane t2SP = new JScrollPane(transactionTable);
 
@@ -164,15 +136,50 @@ public class TransactionsPanel extends JPanel {
 		RowFilter<TransactionTableModel, Object> rf = null;
 		// If current expression doesn't parse, don't update.
 		try {
-			rf = RowFilter.regexFilter("(?i)(?u)" + transactionRechercheField.getText());
-		} catch (PatternSyntaxException e) {
-			return;
-		} catch (NullPointerException e) {
+			rf = RowFilter.regexFilter("(?i)(?u)" + transactionSearchField.getText());
+		} catch (PatternSyntaxException | NullPointerException e) {
 			return;
 		}
 		transactionSorter.setRowFilter(rf);
 	}
 
+	/**
+	 * Handle reverting of a {@link Transaction}
+	 *
+	 * @param arg0 event (unused)
+	 */
+	private void onTransactionRevert(ActionEvent arg0) {
+		int row = transactionTable.getSelectedRow();
+		int realRow = -1;
+		if (row >= 0) {
+			realRow = transactionTable.convertRowIndexToModel(transactionTable.getSelectedRow());
+			currentTransaction = journal.getArray()[realRow];
+
+			if (currentTransaction != null) {
+				int choice = JOptionPane.showConfirmDialog(null, "Are you sure to delete this transaction?", "",
+						JOptionPane.YES_NO_OPTION);
+				if (choice == JOptionPane.YES_OPTION) {
+					journal.add(new Transaction(currentTransaction));
+					// TODO : complete cancellation of effects (restore balances, stocks...) if
+					// asked
+
+					choice = JOptionPane.showConfirmDialog(null, "Do you also want to revert its consequences?", "",
+							JOptionPane.YES_NO_OPTION);
+					if (choice == JOptionPane.YES_OPTION) {
+						currentTransaction.revert();
+					}
+
+					refreshTable();
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "No transaction selected!", "Error", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	/**
+	 * Trigger update of the table through update of the underlying data model
+	 */
 	public void refreshTable() {
 		ttModel.refreshData(journal.getArrayForTables());
 		ttModel.fireTableDataChanged();

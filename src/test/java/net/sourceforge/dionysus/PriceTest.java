@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package net.sourceforge.dionysus;
 
@@ -27,13 +27,13 @@ public class PriceTest {
 	@Test
 	public void testGetPrice() {
 		Price fisher = new Price(1000);
-		Assert.assertEquals(fisher.getPrice(), 10.00, 0.001);
+		Assert.assertEquals(10.00, fisher.getPrice(), 0.001);
 	}
-	
+
 	@Test
 	public void testGetPriceWithDouble() {
 		Price fisher = new Price(12.45);
-		Assert.assertEquals(fisher.getPrice(), 12.45, 0.001);
+		Assert.assertEquals(12.45, fisher.getPrice(), 0.001);
 	}
 
 }

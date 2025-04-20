@@ -38,11 +38,8 @@ public class ArticleTest {
 	private Price p1 = new Price(234);
 	private Price p2 = new Price(345);
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 
 		article = new Article("test", new Price[] { p0, p1, p2 }, 123456789L);
 	}

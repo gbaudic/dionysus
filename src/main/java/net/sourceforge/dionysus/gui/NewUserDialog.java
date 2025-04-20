@@ -193,7 +193,7 @@ public class NewUserDialog extends JDialog {
 				JButton okButton = new JButton(Messages.getString("NewUserDialog2.9"), okIcon); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("NewUserDialog2.10")); //$NON-NLS-1$
 
-				okButton.addActionListener((arg0) -> {
+				okButton.addActionListener(arg0 -> {
 					if (!nomField.getText().isEmpty() && !prenomField.getText().isEmpty()) {
 						// TODO : Check
 						Integer i = (int) promoChooser.getValue();
@@ -226,7 +226,7 @@ public class NewUserDialog extends JDialog {
 				JButton cancelButton = new JButton(Messages.getString("NewUserDialog2.16"), cancelIcon); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("NewUserDialog2.17")); //$NON-NLS-1$
 
-				cancelButton.addActionListener((arg0) -> {
+				cancelButton.addActionListener(arg0 -> {
 					user = null;
 					setVisible(false);
 				});
@@ -252,7 +252,6 @@ public class NewUserDialog extends JDialog {
 	 * @return the user being edited/created
 	 */
 	public User getUser() {
-		// this.setVisible(true);
 		return this.user;
 	}
 

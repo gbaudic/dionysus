@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package net.sourceforge.dionysus;
 
@@ -25,14 +25,12 @@ import org.junit.Test;
  *
  */
 public class UserTest {
-	
+
+	/** Object being tested */
 	private User testUser;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		testUser = new User("Test", "User", 62, 301);
 	}
 

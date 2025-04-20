@@ -12,9 +12,8 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 package net.sourceforge.dionysus.gui.models;
 
@@ -23,28 +22,31 @@ import javax.swing.table.DefaultTableModel;
 public class ArticleTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = -2641198391560050967L;
-	private static String [] colNames = new String[] {
-		"Name", "Code", "Active", "Price 0", "Price 1", "Price 2", "Current stock", "Alert from"
-	};
-	
-	public ArticleTableModel(Object[][] data){
+	private static String[] colNames = new String[] { "Name", "Code", "Active", "Price 0", "Price 1", "Price 2",
+			"Current stock", "Alert from" };
+
+	Class[] columnTypes = new Class[] { String.class, Long.class, Boolean.class, String.class, String.class,
+			String.class, String.class, String.class };
+
+	boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false };
+
+	public ArticleTableModel(Object[][] data) {
 		super(data, colNames);
 	}
-	
-	Class[] columnTypes = new Class[] {
-			String.class, Long.class, Boolean.class, String.class, String.class, String.class, String.class, String.class
-	};
+
+	/** {@inheritDoc} */
+	@Override
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
-	boolean[] columnEditables = new boolean[] {
-			false, false, false, false, false, false, false, false
-	};
+
+	/** {@inheritDoc} */
+	@Override
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
 	}
 
-	public void refreshData(Object[][] newData){
+	public void refreshData(Object[][] newData) {
 		setDataVector(newData, colNames);
 	}
 }

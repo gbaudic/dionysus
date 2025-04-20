@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 package net.sourceforge.dionysus.gui.models;
@@ -25,21 +25,24 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TicketItemTableModel extends DefaultTableModel {
 	private static final long serialVersionUID = -2023864553780594289L;
-	private static String [] colNames = new String[] {"Name", "Quantity", "Price"};
-	
-	public TicketItemTableModel(Object[][] data){
+	private static String[] colNames = new String[] { "Name", "Quantity", "Price" };
+
+	Class[] columnTypes = new Class[] { String.class, String.class, String.class };
+
+	boolean[] columnEditables = new boolean[] { false, true, false };
+
+	public TicketItemTableModel(Object[][] data) {
 		super(data, colNames);
 	}
-	
-	Class[] columnTypes = new Class[] {
-			String.class, String.class, String.class
-	};
+
+	/** {@inheritDoc} */
+	@Override
 	public Class getColumnClass(int columnIndex) {
 		return columnTypes[columnIndex];
 	}
-	boolean[] columnEditables = new boolean[] {
-			false, true, false
-	};
+
+	/** {@inheritDoc} */
+	@Override
 	public boolean isCellEditable(int row, int column) {
 		return columnEditables[column];
 	}
