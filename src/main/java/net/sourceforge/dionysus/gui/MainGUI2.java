@@ -23,6 +23,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -31,7 +32,6 @@ import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -79,10 +79,10 @@ public class MainGUI2 extends JFrame {
 		EventQueue.invokeLater(() -> {
 			try {
 				// First window is the login window, not the main one
-				PasswordDialog pdiag = new PasswordDialog();
+				final PasswordDialog pdiag = new PasswordDialog();
 				pdiag.setVisible(true);
 
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				e.printStackTrace();
 			}
 		});
@@ -141,7 +141,6 @@ public class MainGUI2 extends JFrame {
 		setResizable(false);
 		setTitle(Constants.SOFTWARE_NAME + " v" + Constants.SOFTWARE_VERSION + " " + Constants.SOFTWARE_VERSION_NICK);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// setBounds(100, 100, 1024, 768);
 		setSize(1024, 740); // TODO: adjust to screen resolution
 		setLocationRelativeTo(null); // center on screen
 		fileChooser = new JFileChooser();
@@ -149,67 +148,38 @@ public class MainGUI2 extends JFrame {
 		// *********************************************
 		// ****************** MENU *********************
 		// *********************************************
-		JMenuBar menuBar = new JMenuBar();
+		final JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		JMenu mnFile = new JMenu("File");
+		final JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
 
-		JMenuItem mntmSettings = new JMenuItem("Settings (TBD)");
+		final JMenuItem mntmSettings = new JMenuItem("Settings (TBD)");
 		mnFile.add(mntmSettings);
 
-		JMenuItem mntmImportUsersLegacy = new JMenuItem("Import users from legacy (TBD)");
+		final JMenuItem mntmImportUsersLegacy = new JMenuItem("Import users from legacy (TBD)");
 		mnFile.add(mntmImportUsersLegacy);
 
-		JMenuItem mntmChangeVendor = new JMenuItem("Change vendor");
+		final JMenuItem mntmChangeVendor = new JMenuItem("Change vendor");
 		mnFile.add(mntmChangeVendor);
-		mntmChangeVendor.addActionListener(arg0 -> {
-			if (currentTicket != null) {
-				int choice = JOptionPane.showConfirmDialog(null,
-						"There is a ticket currently being processed.\nAre you sure you want to quit?", "Confirmation",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				// If a ticket is started, we need to confirm the will to quit
-				if (choice != JOptionPane.YES_OPTION) {
-					return;
-				}
-			}
-			setVisible(false);
+		mntmChangeVendor.addActionListener(this::onChangeVendor);
 
-			// Go back to password
-			PasswordDialog pdiag = new PasswordDialog();
-			pdiag.setVisible(true);
-		});
-
-		JSeparator separator = new JSeparator();
+		final JSeparator separator = new JSeparator();
 		mnFile.add(separator);
 
-		JMenuItem mntmQuit = new JMenuItem("Quit", new ImageIcon(getClass().getResource("/application-exit.png")));
+		final JMenuItem mntmQuit = new JMenuItem("Quit", Constants.exit);
 		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK));
-		mntmQuit.addActionListener(arg0 -> {
-			if (currentTicket != null) {
-				int choice = JOptionPane.showConfirmDialog(null,
-						"There is a ticket currently being processed.\nAre you sure you want to quit?", "Confirmation",
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				// If a ticket is started, we need to confirm the will to quit
-				if (choice != JOptionPane.YES_OPTION) {
-					return;
-				}
-			}
-
-			System.exit(0); // Everything is fine, so we stop here
-		});
+		mntmQuit.addActionListener(this::onQuit);
 		mnFile.add(mntmQuit);
 
-		JMenu mnExport = new JMenu("Export");
+		final JMenu mnExport = new JMenu("Export");
 		menuBar.add(mnExport);
 
-		ImageIcon convertIcon = new ImageIcon(getClass().getResource("/gtk-convert.png"));
-
-		JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
+		final JMenuItem mntmExportUsersLegacy = new JMenuItem("Users to legacy (TBD)");
 		mntmExportUsersLegacy.addActionListener(e -> {
-			int result = fileChooser.showSaveDialog(null);
+			final int result = fileChooser.showSaveDialog(null);
 			if (result == JFileChooser.APPROVE_OPTION) {
-				File output = fileChooser.getSelectedFile();
+				final File output = fileChooser.getSelectedFile();
 				if (output != null) {
 					// Export
 				}
@@ -217,27 +187,23 @@ public class MainGUI2 extends JFrame {
 		});
 		mnExport.add(mntmExportUsersLegacy);
 
-		JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV", convertIcon);
+		final JMenuItem mntmExportUsersCSV = new JMenuItem("Users to CSV", Constants.convert);
 		mntmExportUsersCSV.addActionListener(e -> exportCSV(users));
 		mnExport.add(mntmExportUsersCSV);
 
-		JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV", convertIcon);
+		final JMenuItem mntmExportArticlesCSV = new JMenuItem("Articles to CSV", Constants.convert);
 		mntmExportArticlesCSV.addActionListener(e -> exportCSV(catalogue));
 		mnExport.add(mntmExportArticlesCSV);
 
-		JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV", convertIcon);
+		final JMenuItem mntmExportTransCSV = new JMenuItem("Transactions to CSV", Constants.convert);
 		mntmExportTransCSV.addActionListener(e -> exportCSV(journal));
 		mnExport.add(mntmExportTransCSV);
 
-		JMenu mnHelp = new JMenu("Help");
+		final JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 
-		JMenuItem mntmAbout = new JMenuItem("About", new ImageIcon(getClass().getResource("/dialog-information.png")));
-		mntmAbout.addActionListener(e -> {
-			AboutDialog dlg = new AboutDialog();
-			dlg.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			dlg.setVisible(true);
-		});
+		final JMenuItem mntmAbout = new JMenuItem("About", Constants.about);
+		mntmAbout.addActionListener(this::onAbout);
 		mnHelp.add(mntmAbout);
 
 		// ********************************************************************************************
@@ -246,15 +212,15 @@ public class MainGUI2 extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
+		final GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[] { 0, 0 };
 		gbl_contentPane.rowHeights = new int[] { 0, 0, 0 };
 		gbl_contentPane.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
 		gbl_contentPane.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		contentPane.setLayout(gbl_contentPane);
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		final GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
 		gbc_tabbedPane.insets = new Insets(0, 0, 5, 0);
 		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
 		gbc_tabbedPane.gridx = 0;
@@ -262,34 +228,34 @@ public class MainGUI2 extends JFrame {
 		gbc_tabbedPane.weighty = 0.85;
 		contentPane.add(tabbedPane, gbc_tabbedPane);
 
-		JPanel vueP = new JPanel();
+		final JPanel vueP = new JPanel();
 		tabbedPane.addTab("Cash desk", null, vueP, "Main view");
-		GridBagLayout gbl_vueP = new GridBagLayout();
+		final GridBagLayout gbl_vueP = new GridBagLayout();
 		gbl_vueP.columnWidths = new int[] { 0, 0, 0 };
 		gbl_vueP.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
 		gbl_vueP.columnWeights = new double[] { 0.6, 0.2, Double.MIN_VALUE };
 		gbl_vueP.rowWeights = new double[] { 0.2, 0.2, 0.2, 1.0, 0.2, Double.MIN_VALUE };
 		vueP.setLayout(gbl_vueP);
 
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		panel.setBorder(
 				new TitledBorder(null, "Current user and vendor", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel = new GridBagConstraints();
+		final GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(0, 0, 5, 5);
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
 		gbc_panel.gridheight = 2;
 		vueP.add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
+		final GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] { 0, 0, 0 };
 		gbl_panel.rowHeights = new int[] { 0, 0, 0 };
 		gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
 		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0 };
 		panel.setLayout(gbl_panel);
 
-		JLabel lblN = new JLabel("Name: ");
-		GridBagConstraints gbc_lblN = new GridBagConstraints();
+		final JLabel lblN = new JLabel("Name: ");
+		final GridBagConstraints gbc_lblN = new GridBagConstraints();
 		gbc_lblN.anchor = GridBagConstraints.LINE_END;
 		gbc_lblN.insets = new Insets(0, 0, 5, 5);
 		gbc_lblN.gridx = 0;
@@ -298,23 +264,23 @@ public class MainGUI2 extends JFrame {
 
 		lblName = new JLabel("no user selected");
 		lblName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		GridBagConstraints gbc_nomLabel = new GridBagConstraints();
+		final GridBagConstraints gbc_nomLabel = new GridBagConstraints();
 		gbc_nomLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_nomLabel.gridx = 1;
 		gbc_nomLabel.gridy = 0;
 		panel.add(lblName, gbc_nomLabel);
 
-		JButton chooser = new JButton("Select");
+		final JButton chooser = new JButton("Select");
 		chooser.setToolTipText("Select user");
-		GridBagConstraints gbc_chooser = new GridBagConstraints();
+		final GridBagConstraints gbc_chooser = new GridBagConstraints();
 		gbc_chooser.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chooser.insets = new Insets(0, 0, 5, 5);
 		gbc_chooser.gridx = 2;
 		gbc_chooser.gridy = 0;
 		chooser.addActionListener(arg0 -> {
-			UserChoiceDialog choices = new UserChoiceDialog(users);
+			final UserChoiceDialog choices = new UserChoiceDialog(users);
 			choices.setVisible(true);
-			User nextCUser = choices.getUser();
+			final User nextCUser = choices.getUser();
 			currentUserAtDesk = nextCUser;
 
 			if (currentUserAtDesk != null) {
@@ -333,9 +299,9 @@ public class MainGUI2 extends JFrame {
 		});
 		panel.add(chooser, gbc_chooser);
 
-		JButton btnX = new JButton("Default");
+		final JButton btnX = new JButton("Default");
 		btnX.setToolTipText("Accountless users");
-		GridBagConstraints gbc_btnX = new GridBagConstraints();
+		final GridBagConstraints gbc_btnX = new GridBagConstraints();
 		gbc_btnX.insets = new Insets(0, 0, 5, 5);
 		gbc_btnX.gridx = 2;
 		gbc_btnX.gridy = 1;
@@ -357,8 +323,8 @@ public class MainGUI2 extends JFrame {
 		});
 		panel.add(btnX, gbc_btnX);
 
-		JLabel lblSolde = new JLabel("Balance:");
-		GridBagConstraints gbc_lblSolde = new GridBagConstraints();
+		final JLabel lblSolde = new JLabel("Balance:");
+		final GridBagConstraints gbc_lblSolde = new GridBagConstraints();
 		gbc_lblSolde.anchor = GridBagConstraints.LINE_END;
 		gbc_lblSolde.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSolde.gridx = 0;
@@ -367,14 +333,14 @@ public class MainGUI2 extends JFrame {
 
 		lblBalance = new JLabel("--");
 		lblBalance.setFont(new Font("Tahoma", Font.BOLD, 14));
-		GridBagConstraints gbc_soldeLabel = new GridBagConstraints();
+		final GridBagConstraints gbc_soldeLabel = new GridBagConstraints();
 		gbc_soldeLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_soldeLabel.gridx = 1;
 		gbc_soldeLabel.gridy = 1;
 		panel.add(lblBalance, gbc_soldeLabel);
 
-		JLabel lblVendor = new JLabel("Vendor:");
-		GridBagConstraints gbc_lblVendor = new GridBagConstraints();
+		final JLabel lblVendor = new JLabel("Vendor:");
+		final GridBagConstraints gbc_lblVendor = new GridBagConstraints();
 		gbc_lblVendor.insets = new Insets(0, 0, 0, 5);
 		gbc_lblVendor.gridx = 0;
 		gbc_lblVendor.gridy = 2;
@@ -383,14 +349,14 @@ public class MainGUI2 extends JFrame {
 		lblVendorName = new JLabel();
 		lblVendor.setLabelFor(lblVendorName);
 		lblVendorName.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblVendorName = new GridBagConstraints();
+		final GridBagConstraints gbc_lblVendorName = new GridBagConstraints();
 		gbc_lblVendorName.insets = new Insets(0, 0, 0, 5);
 		gbc_lblVendorName.gridx = 1;
 		gbc_lblVendorName.gridy = 2;
 		panel.add(lblVendorName, gbc_lblVendorName);
 
-		JPanel panel_2 = new JPanel();
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		final JPanel panel_2 = new JPanel();
+		final GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
 		gbc_panel_2.gridx = 1;
@@ -437,8 +403,8 @@ public class MainGUI2 extends JFrame {
 		panel_2.add(saisieField);
 		saisieField.setColumns(13);
 
-		JPanel panel_articles = new JPanel();
-		GridBagConstraints gbc_panel_articles = new GridBagConstraints();
+		final JPanel panel_articles = new JPanel();
+		final GridBagConstraints gbc_panel_articles = new GridBagConstraints();
 		gbc_panel_articles.gridheight = 4;
 		gbc_panel_articles.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_articles.fill = GridBagConstraints.BOTH;
@@ -447,11 +413,11 @@ public class MainGUI2 extends JFrame {
 		vueP.add(panel_articles, gbc_panel_articles);
 		panel_articles.setLayout(new GridLayout(5, 6, 0, 0));
 
-		Article[] cat = catalogue.getArray();
+		final Article[] cat = catalogue.getArray();
 		if (cat != null) {
 			for (final Article c : cat) {
 				if (c != null && c.isActive()) {
-					JButton btn = new JButton(c.getName());
+					final JButton btn = new JButton(c.getName());
 					btn.setToolTipText(c.getToolTipText());
 					btn.addActionListener(arg0 -> {
 						if (currentState == TicketState.TICKET_IDLE) {
@@ -482,8 +448,8 @@ public class MainGUI2 extends JFrame {
 
 		ticketTextArea = new JTextArea();
 		ticketTextArea.setEditable(false);
-		JScrollPane sp_ticketTextArea = new JScrollPane(ticketTextArea);
-		GridBagConstraints gbc_ticketTextArea = new GridBagConstraints();
+		final JScrollPane sp_ticketTextArea = new JScrollPane(ticketTextArea);
+		final GridBagConstraints gbc_ticketTextArea = new GridBagConstraints();
 		gbc_ticketTextArea.insets = new Insets(0, 0, 5, 5);
 		gbc_ticketTextArea.fill = GridBagConstraints.BOTH;
 		gbc_ticketTextArea.gridx = 2;
@@ -491,8 +457,8 @@ public class MainGUI2 extends JFrame {
 		gbc_ticketTextArea.gridheight = 4;
 		vueP.add(sp_ticketTextArea, gbc_ticketTextArea);
 
-		JPanel panel_pavenum = new JPanel();
-		GridBagConstraints gbc_panel_pavenum = new GridBagConstraints();
+		final JPanel panel_pavenum = new JPanel();
+		final GridBagConstraints gbc_panel_pavenum = new GridBagConstraints();
 		gbc_panel_pavenum.gridheight = 3;
 		gbc_panel_pavenum.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_pavenum.fill = GridBagConstraints.BOTH;
@@ -503,26 +469,26 @@ public class MainGUI2 extends JFrame {
 
 		// Numbers from 1 to 9 then 0
 		for (int i = 1; i < 11; i++) {
-			String nbAsText = String.valueOf(i % 10);
-			JButton btn = new JButton(nbAsText);
+			final String nbAsText = String.valueOf(i % 10);
+			final JButton btn = new JButton(nbAsText);
 			btn.setMnemonic(nbAsText.charAt(0));
 			btn.addActionListener(arg0 -> saisieField.setText(saisieField.getText() + nbAsText));
 			panel_pavenum.add(btn);
 		}
 
-		JButton btnMetre = new JButton("Dozen");
+		final JButton btnMetre = new JButton("Dozen");
 		btnMetre.setToolTipText("12 units");
 		btnMetre.addActionListener(arg0 -> saisieField.setText(String.valueOf(12)));
 		panel_pavenum.add(btnMetre);
 
-		JButton btnClear = new JButton("Clear");
+		final JButton btnClear = new JButton("Clear");
 		btnClear.setToolTipText("Clear any input (not the ticket!)");
 		btnClear.addActionListener(arg0 -> saisieField.setText(null));
 		panel_pavenum.add(btnClear);
 
-		JPanel panel_3 = new JPanel();
+		final JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "Total", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
+		final GridBagConstraints gbc_panel_3 = new GridBagConstraints();
 		gbc_panel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
 		gbc_panel_3.gridx = 2;
@@ -531,9 +497,9 @@ public class MainGUI2 extends JFrame {
 		vueP.add(panel_3, gbc_panel_3);
 		panel_3.setLayout(new GridLayout(2, 2, 0, 0));
 
-		JLabel lblTotalTicketText = new JLabel("Ticket total: ");
+		final JLabel lblTotalTicketText = new JLabel("Ticket total: ");
 		lblTotalTicketText.setFont(new Font("Tahoma", Font.BOLD, 14));
-		GridBagConstraints gbc_lblTotalTicketText = new GridBagConstraints();
+		final GridBagConstraints gbc_lblTotalTicketText = new GridBagConstraints();
 		gbc_lblTotalTicketText.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTotalTicketText.fill = GridBagConstraints.BOTH;
 		gbc_lblTotalTicketText.gridx = 0;
@@ -542,15 +508,15 @@ public class MainGUI2 extends JFrame {
 
 		lblTotalTicket = new JLabel();
 		lblTotalTicket.setFont(new Font("Tahoma", Font.BOLD, 14));
-		GridBagConstraints gbc_lblTotalTicket = new GridBagConstraints();
+		final GridBagConstraints gbc_lblTotalTicket = new GridBagConstraints();
 		gbc_lblTotalTicket.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTotalTicket.fill = GridBagConstraints.BOTH;
 		gbc_lblTotalTicket.gridx = 1;
 		gbc_lblTotalTicket.gridy = 0;
 		panel_3.add(lblTotalTicket, gbc_lblTotalTicket);
 
-		JLabel lblSoldeApresText = new JLabel("Balance after ticket:");
-		GridBagConstraints gbc_lblSoldeApresText = new GridBagConstraints();
+		final JLabel lblSoldeApresText = new JLabel("Balance after ticket:");
+		final GridBagConstraints gbc_lblSoldeApresText = new GridBagConstraints();
 		gbc_lblSoldeApresText.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSoldeApresText.fill = GridBagConstraints.BOTH;
 		gbc_lblSoldeApresText.gridx = 0;
@@ -558,17 +524,17 @@ public class MainGUI2 extends JFrame {
 		panel_3.add(lblSoldeApresText, gbc_lblSoldeApresText);
 
 		lblBalanceAfter = new JLabel();
-		GridBagConstraints gbc_lblSoldeApres = new GridBagConstraints();
+		final GridBagConstraints gbc_lblSoldeApres = new GridBagConstraints();
 		gbc_lblSoldeApres.insets = new Insets(0, 0, 5, 5);
 		gbc_lblSoldeApres.fill = GridBagConstraints.BOTH;
 		gbc_lblSoldeApres.gridx = 1;
 		gbc_lblSoldeApres.gridy = 1;
 		panel_3.add(lblBalanceAfter, gbc_lblSoldeApres);
 
-		JPanel panel_PaymentMethods = new JPanel();
+		final JPanel panel_PaymentMethods = new JPanel();
 		panel_PaymentMethods.setBorder(
 				new TitledBorder(null, "Payment method", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_PaymentMethods = new GridBagConstraints();
+		final GridBagConstraints gbc_panel_PaymentMethods = new GridBagConstraints();
 		gbc_panel_PaymentMethods.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_PaymentMethods.fill = GridBagConstraints.BOTH;
 		gbc_panel_PaymentMethods.gridx = 2;
@@ -578,14 +544,14 @@ public class MainGUI2 extends JFrame {
 		panel_PaymentMethods.setLayout(new GridLayout(2, 3, 0, 0));
 
 		for (final PaymentMethod p : PaymentMethod.values()) {
-			JButton btn = new JButton(p.getName());
+			final JButton btn = new JButton(p.getName());
 			btn.addActionListener(arg0 -> {
 				if (currentTicket != null && currentState == TicketState.TICKET_IDLE) {
 					currentTicket.pay(p);
 
 					if (p == PaymentMethod.CASH) {
-						double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ", "Change",
-								JOptionPane.QUESTION_MESSAGE));
+						final double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ",
+								"Change", JOptionPane.QUESTION_MESSAGE));
 						JOptionPane.showMessageDialog(null, "You owe "
 								+ NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount()) + ".", "",
 								JOptionPane.INFORMATION_MESSAGE);
@@ -632,8 +598,8 @@ public class MainGUI2 extends JFrame {
 		alertTextArea.setColumns(8);
 		alertTextArea.setRows(10);
 		alertTextArea.setEditable(false);
-		JScrollPane alertScrollPane = new JScrollPane(alertTextArea);
-		GridBagConstraints gbc_alertTextArea = new GridBagConstraints();
+		final JScrollPane alertScrollPane = new JScrollPane(alertTextArea);
+		final GridBagConstraints gbc_alertTextArea = new GridBagConstraints();
 		gbc_alertTextArea.fill = GridBagConstraints.BOTH;
 		gbc_alertTextArea.gridx = 0;
 		gbc_alertTextArea.gridy = 1;
@@ -643,10 +609,15 @@ public class MainGUI2 extends JFrame {
 		updateStockAlerts();
 	}
 
+	/**
+	 * Export data to CSV file
+	 *
+	 * @param db database to export
+	 */
 	private void exportCSV(Database db) {
-		int result = fileChooser.showSaveDialog(null);
+		final int result = fileChooser.showSaveDialog(null);
 		if (result == JFileChooser.APPROVE_OPTION) {
-			File output = fileChooser.getSelectedFile();
+			final File output = fileChooser.getSelectedFile();
 			if (output != null && db != null) {
 				db.export(output);
 			}
@@ -727,7 +698,7 @@ public class MainGUI2 extends JFrame {
 				// locale-independent way
 				switch (currentState) {
 				case TICKET_IDLE: // article being chosen
-					long saisie = Long.parseLong(saisieField.getText());
+					final long saisie = Long.parseLong(saisieField.getText());
 					currentArticleAtDesk = catalogue.getArticleByCode(saisie);
 					if (currentArticleAtDesk != null) {
 						currentItemAtDesk = new TicketItem(currentArticleAtDesk);
@@ -752,7 +723,7 @@ public class MainGUI2 extends JFrame {
 					}
 					break;
 				case QUANTITY: // quantity being chosen
-					double saisie2 = Double.parseDouble(saisieField.getText());
+					final double saisie2 = Double.parseDouble(saisieField.getText());
 					if (saisie2 == 0) {
 						JOptionPane.showMessageDialog(null, "Invalid quantity!", "Error", JOptionPane.WARNING_MESSAGE);
 					} else {
@@ -767,7 +738,7 @@ public class MainGUI2 extends JFrame {
 					}
 					break;
 				case PRICE: // price being chosen
-					long saisie3 = Long.parseLong(saisieField.getText());
+					final long saisie3 = Long.parseLong(saisieField.getText());
 					if (saisie3 < 0 || saisie3 >= currentArticleAtDesk.getNumberOfPrices()) {
 						JOptionPane.showMessageDialog(null, "Invalid fee for this article!", "Error",
 								JOptionPane.WARNING_MESSAGE);
@@ -799,7 +770,7 @@ public class MainGUI2 extends JFrame {
 						}
 					} else {
 						if (currentTicket.getPaymentMethod() == PaymentMethod.CASH) {
-							double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ",
+							final double paye = Double.parseDouble(JOptionPane.showInputDialog(null, "Change given: ",
 									"Change", JOptionPane.QUESTION_MESSAGE));
 							JOptionPane.showMessageDialog(null,
 									"You owe " + NumberFormat.getCurrencyInstance()
@@ -812,11 +783,57 @@ public class MainGUI2 extends JFrame {
 					}
 				}
 			}
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(null, "Invalid input! Cannot parse a number.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			nfe.printStackTrace();
 		}
+	}
+
+	/**
+	 *
+	 */
+	private void onAbout(ActionEvent e) {
+		final AboutDialog dlg = new AboutDialog();
+		dlg.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		dlg.setVisible(true);
+	}
+
+	/**
+	 *
+	 */
+	private void onChangeVendor(ActionEvent e) {
+		if (currentTicket != null) {
+			final int choice = JOptionPane.showConfirmDialog(null,
+					"There is a ticket currently being processed.\nAre you sure you want to quit?", "Confirmation",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			// If a ticket is started, we need to confirm the will to quit
+			if (choice != JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+		setVisible(false);
+
+		// Go back to password
+		final PasswordDialog pdiag = new PasswordDialog();
+		pdiag.setVisible(true);
+	}
+
+	/**
+	 *
+	 */
+	private void onQuit(ActionEvent e) {
+		if (currentTicket != null) {
+			final int choice = JOptionPane.showConfirmDialog(null,
+					"There is a ticket currently being processed.\nAre you sure you want to quit?", "Confirmation",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			// If a ticket is started, we need to confirm the will to quit
+			if (choice != JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+
+		System.exit(0); // Everything is fine, so we stop here
 	}
 
 	/**
@@ -827,7 +844,7 @@ public class MainGUI2 extends JFrame {
 	private void printTicketToScreen(Ticket t) {
 		if (t != null) {
 			ticketTextArea.setText(null);
-			for (TicketItem ti : t.getItems()) {
+			for (final TicketItem ti : t.getItems()) {
 				if (ti != null) {
 					// Add to GUI component the lines for each article
 					ticketTextArea.setText(ticketTextArea.getText() + ti.toString() + "\n");
@@ -859,12 +876,12 @@ public class MainGUI2 extends JFrame {
 	 */
 	public void updateStockAlerts() {
 		alertTextArea.setText(null); // Clean UI component
-		StringBuilder bob = new StringBuilder();
+		final StringBuilder bob = new StringBuilder();
 
 		if (Objects.nonNull(catalogue)) {
-			for (Article a : catalogue.getArray()) {
+			for (final Article a : catalogue.getArray()) {
 				if (a != null && a.hasStockMgmtEnabled() && a.hasStockAlertEnabled()) {
-					int stock = a.getStock();
+					final int stock = a.getStock();
 					if (stock <= a.getLimitStock()) {
 						bob.append(
 								String.format("\nThere are only %d %s left! Consider refilling", stock, a.getName()));

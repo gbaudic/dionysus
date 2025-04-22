@@ -24,7 +24,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.regex.PatternSyntaxException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -68,7 +67,7 @@ public class UserChoiceDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_contentPanel = new GridBagLayout();
+		final GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0 };
 		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0 };
 		gbl_contentPanel.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
@@ -76,7 +75,7 @@ public class UserChoiceDialog extends JDialog {
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			lblNewLabel = new JLabel(Messages.getString("UserChoiceDialog2.1")); //$NON-NLS-1$
-			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+			final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 			gbc_lblNewLabel.gridx = 0;
@@ -86,7 +85,7 @@ public class UserChoiceDialog extends JDialog {
 		{
 			textField = new JTextField();
 			lblNewLabel.setLabelFor(textField);
-			GridBagConstraints gbc_textField = new GridBagConstraints();
+			final GridBagConstraints gbc_textField = new GridBagConstraints();
 			gbc_textField.insets = new Insets(0, 0, 5, 0);
 			gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_textField.gridx = 1;
@@ -121,17 +120,17 @@ public class UserChoiceDialog extends JDialog {
 
 			table = new JTable();
 
-			UserTableModel tModel = new UserTableModel(foodForTable);
+			final UserTableModel tModel = new UserTableModel(foodForTable);
 
 			table.setModel(tModel);
-			sorter = new TableRowSorter<UserTableModel>(tModel);
+			sorter = new TableRowSorter<>(tModel);
 			table.setRowSorter(sorter);
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			table.setFillsViewportHeight(true);
 
-			JScrollPane tableSP = new JScrollPane(table);
+			final JScrollPane tableSP = new JScrollPane(table);
 
-			GridBagConstraints gbc_table = new GridBagConstraints();
+			final GridBagConstraints gbc_table = new GridBagConstraints();
 			gbc_table.gridwidth = 2;
 			gbc_table.insets = new Insets(0, 0, 0, 5);
 			gbc_table.fill = GridBagConstraints.BOTH;
@@ -140,18 +139,17 @@ public class UserChoiceDialog extends JDialog {
 			contentPanel.add(tableSP, gbc_table);
 		}
 		{
-			JPanel buttonPane = new JPanel();
+			final JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("UserChoiceDialog2.2"))); //$NON-NLS-1$
-				JButton okButton = new JButton(Messages.getString("UserChoiceDialog2.3"), okIcon); //$NON-NLS-1$
+				final JButton okButton = new JButton(Messages.getString("UserChoiceDialog2.3"), Constants.ok); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("UserChoiceDialog2.4")); //$NON-NLS-1$
 				okButton.addActionListener(arg0 -> {
 					// Choice of the user from the user which was selected in the table
-					int row = table.getSelectedRow();
+					final int row = table.getSelectedRow();
 					if (row >= 0) {
-						int realRow = table.convertRowIndexToModel(table.getSelectedRow());
+						final int realRow = table.convertRowIndexToModel(table.getSelectedRow());
 						chosenUser = theDB.getArray()[realRow];
 					}
 					setVisible(false);
@@ -160,8 +158,7 @@ public class UserChoiceDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("UserChoiceDialog2.5"))); //$NON-NLS-1$
-				JButton cancelButton = new JButton(Messages.getString("UserChoiceDialog2.6"), cancelIcon); //$NON-NLS-1$
+				final JButton cancelButton = new JButton(Messages.getString("UserChoiceDialog2.6"), Constants.cancel); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("UserChoiceDialog2.7")); //$NON-NLS-1$
 				cancelButton.addActionListener(arg0 -> setVisible(false));
 

@@ -16,6 +16,8 @@
 */
 package net.sourceforge.dionysus.gui;
 
+import javax.swing.ImageIcon;
+
 /**
  * Some constants for use across the software
  */
@@ -28,11 +30,20 @@ public final class Constants {
 	/** Version nickname */
 	public static final String SOFTWARE_VERSION_NICK = "\"Riesling\"";
 
+	// IMAGES
+	public static final ImageIcon plus = new ImageIcon(Constants.class.getResource("/list-add.png"));
+	public static final ImageIcon minus = new ImageIcon(Constants.class.getResource("/list-remove.png"));
+	public static final ImageIcon edit = new ImageIcon(Constants.class.getResource("/gtk-edit.png"));
+	public static final ImageIcon ok = new ImageIcon(Constants.class.getResource("/gtk-ok.png"));
+	public static final ImageIcon cancel = new ImageIcon(Constants.class.getResource("/gtk-cancel.png"));
+	public static final ImageIcon exit = new ImageIcon(Constants.class.getResource("/application-exit.png"));
+	public static final ImageIcon convert = new ImageIcon(Constants.class.getResource("/gtk-convert.png"));
+	public static final ImageIcon about = new ImageIcon(Constants.class.getResource("/dialog-information.png"));
+
 	/**
 	 * Private constructor
 	 */
 	private Constants() {
-		super();
 	}
 
 }

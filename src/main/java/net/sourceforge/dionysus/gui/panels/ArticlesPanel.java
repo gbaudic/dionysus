@@ -20,9 +20,9 @@ package net.sourceforge.dionysus.gui.panels;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -38,6 +38,7 @@ import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.dionysus.Article;
 import net.sourceforge.dionysus.db.ArticleDB;
+import net.sourceforge.dionysus.gui.Constants;
 import net.sourceforge.dionysus.gui.NewArticleDialog;
 import net.sourceforge.dionysus.gui.models.ArticleTableModel;
 
@@ -47,45 +48,45 @@ import net.sourceforge.dionysus.gui.models.ArticleTableModel;
 public class ArticlesPanel extends JPanel {
 
 	private static final long serialVersionUID = 748075565665356634L;
-	private TableRowSorter<ArticleTableModel> articleSorter;
-	private ArticleTableModel atModel;
-	private JTextField articleRechercheField;
-	private JTable articleTable;
+	private final TableRowSorter<ArticleTableModel> articleSorter;
+	private final ArticleTableModel atModel;
+	private final JTextField articleSearchField;
+	private final JTable articleTable;
 
 	private Article currentArticle;
 
-	private ArticleDB catalogue;
+	private final ArticleDB catalogue;
 
 	/**
+	 * Constructor
 	 *
+	 * @param articleDB catalogue to use
 	 */
 	public ArticlesPanel(ArticleDB articleDB) {
-		super();
-
 		catalogue = articleDB;
 
-		GridBagLayout gbl_articlesP = new GridBagLayout();
+		final GridBagLayout gbl_articlesP = new GridBagLayout();
 		gbl_articlesP.columnWidths = new int[] { 0, 0, 0, 0, 0, 0 };
 		gbl_articlesP.rowHeights = new int[] { 0, 0, 0 };
 		gbl_articlesP.columnWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_articlesP.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		setLayout(gbl_articlesP);
 
-		JLabel lblNewLabel_1 = new JLabel("Search:");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		final JLabel lblNewLabel_1 = new JLabel("Search:");
+		final GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.gridx = 0;
 		gbc_lblNewLabel_1.gridy = 0;
 		add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-		articleRechercheField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
+		articleSearchField = new JTextField();
+		final GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 0;
-		articleRechercheField.getDocument().addDocumentListener(new DocumentListener() {
+		articleSearchField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				newArticleFilter();
@@ -101,103 +102,45 @@ public class ArticlesPanel extends JPanel {
 				newArticleFilter();
 			}
 		});
-		add(articleRechercheField, gbc_textField);
-		articleRechercheField.setColumns(10);
+		add(articleSearchField, gbc_textField);
+		articleSearchField.setColumns(10);
 
-		ImageIcon plus = new ImageIcon(getClass().getResource("/list-add.png"));
-		ImageIcon minus = new ImageIcon(getClass().getResource("/list-remove.png"));
-		ImageIcon edit = new ImageIcon(getClass().getResource("/gtk-edit.png"));
-
-		JButton btnAddArticle = new JButton("Add", plus);
-		GridBagConstraints gbc_btnAddArticle = new GridBagConstraints();
+		final JButton btnAddArticle = new JButton("Add", Constants.plus);
+		final GridBagConstraints gbc_btnAddArticle = new GridBagConstraints();
 		gbc_btnAddArticle.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAddArticle.gridx = 2;
 		gbc_btnAddArticle.gridy = 0;
-		btnAddArticle.addActionListener(arg0 -> {
-			NewArticleDialog nad = new NewArticleDialog();
-			nad.setVisible(true);
-			Article a = nad.getArticle();
-			if (a != null) {
-				Article b = catalogue.getArticleByCode(a.getCode());
-				if (b == null) {
-					catalogue.add(a);
-					refreshTable();
-				} else {
-					JOptionPane.showMessageDialog(null, "An article with this code already exists.", "Error",
-							JOptionPane.WARNING_MESSAGE);
-					nad.setVisible(true); // let the user edit to fix the error
-				}
-			}
-		});
+		btnAddArticle.addActionListener(this::onAdd);
 		add(btnAddArticle, gbc_btnAddArticle);
 
-		JButton btnEditArticle = new JButton("Edit", edit);
-		GridBagConstraints gbc_btnEditArticle = new GridBagConstraints();
+		final JButton btnEditArticle = new JButton("Edit", Constants.edit);
+		final GridBagConstraints gbc_btnEditArticle = new GridBagConstraints();
 		gbc_btnEditArticle.anchor = GridBagConstraints.NORTHEAST;
 		gbc_btnEditArticle.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEditArticle.gridx = 3;
 		gbc_btnEditArticle.gridy = 0;
-		btnEditArticle.addActionListener(arg0 -> {
-			int row = articleTable.getSelectedRow();
-			int realRow = -1;
-			if (row >= 0) {
-				realRow = articleTable.convertRowIndexToModel(articleTable.getSelectedRow());
-				currentArticle = catalogue.getArray()[realRow];
-
-				if (currentArticle != null) {
-					NewArticleDialog nad = new NewArticleDialog();
-					nad.setArticle(currentArticle);
-					nad.setVisible(true);
-					currentArticle = nad.getArticle();
-					// Keep original index to modify without adding
-					catalogue.modify(currentArticle, realRow);
-					refreshTable();
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
-			}
-			// updateStockAlerts(); //TODO: reactivate me!
-		});
+		btnEditArticle.addActionListener(this::onEdit);
 		add(btnEditArticle, gbc_btnEditArticle);
 
-		JButton btnDeleteArticle = new JButton("Delete", minus);
-		GridBagConstraints gbc_btnDeleteArticle = new GridBagConstraints();
+		final JButton btnDeleteArticle = new JButton("Delete", Constants.minus);
+		final GridBagConstraints gbc_btnDeleteArticle = new GridBagConstraints();
 		gbc_btnDeleteArticle.insets = new Insets(0, 0, 5, 0);
 		gbc_btnDeleteArticle.gridx = 4;
 		gbc_btnDeleteArticle.gridy = 0;
-		btnDeleteArticle.addActionListener(arg0 -> {
-			int row = articleTable.getSelectedRow();
-			int realRow = -1;
-			if (row >= 0) {
-				realRow = articleTable.convertRowIndexToModel(articleTable.getSelectedRow());
-				currentArticle = catalogue.getArray()[realRow];
-
-				if (currentArticle != null) {
-					int choice = JOptionPane.showConfirmDialog(null, "Are you sure to delete this article?", "",
-							JOptionPane.YES_NO_OPTION);
-					if (choice == JOptionPane.YES_OPTION) {
-						catalogue.remove(currentArticle);
-						refreshTable();
-					}
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
-			}
-		});
+		btnDeleteArticle.addActionListener(this::onDelete);
 		add(btnDeleteArticle, gbc_btnDeleteArticle);
 
 		articleTable = new JTable();
 		atModel = new ArticleTableModel(catalogue.getArrayForTables());
 		articleTable.setModel(atModel);
-		articleSorter = new TableRowSorter<ArticleTableModel>(atModel);
+		articleSorter = new TableRowSorter<>(atModel);
 		articleTable.setRowSorter(articleSorter);
 		articleTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		articleTable.setFillsViewportHeight(true);
-		// articleTable.setAutoCreateRowSorter(true);
 
-		JScrollPane t1SP = new JScrollPane(articleTable);
+		final JScrollPane t1SP = new JScrollPane(articleTable);
 
-		GridBagConstraints gbc_articleTable = new GridBagConstraints();
+		final GridBagConstraints gbc_articleTable = new GridBagConstraints();
 		gbc_articleTable.gridwidth = 8;
 		gbc_articleTable.fill = GridBagConstraints.BOTH;
 		gbc_articleTable.gridx = 0;
@@ -212,15 +155,84 @@ public class ArticlesPanel extends JPanel {
 		RowFilter<ArticleTableModel, Object> rf = null;
 		// If current expression doesn't parse, don't update.
 		try {
-			rf = RowFilter.regexFilter("(?i)(?u)" + articleRechercheField.getText());
-		} catch (PatternSyntaxException e) {
-			return;
-		} catch (NullPointerException e) {
+			rf = RowFilter.regexFilter("(?i)(?u)" + articleSearchField.getText());
+		} catch (PatternSyntaxException | NullPointerException e) {
 			return;
 		}
 		articleSorter.setRowFilter(rf);
 	}
 
+	/**
+	 *
+	 */
+	private void onAdd(ActionEvent e) {
+		final NewArticleDialog nad = new NewArticleDialog();
+		nad.setVisible(true);
+		final Article a = nad.getArticle();
+		if (a != null) {
+			final Article b = catalogue.getArticleByCode(a.getCode());
+			if (b == null) {
+				catalogue.add(a);
+				refreshTable();
+			} else {
+				JOptionPane.showMessageDialog(null, "An article with this code already exists.", "Error",
+						JOptionPane.WARNING_MESSAGE);
+				nad.setVisible(true); // let the user edit to fix the error
+			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void onDelete(ActionEvent e) {
+		final int row = articleTable.getSelectedRow();
+		int realRow = -1;
+		if (row >= 0) {
+			realRow = articleTable.convertRowIndexToModel(articleTable.getSelectedRow());
+			currentArticle = catalogue.getArray()[realRow];
+
+			if (currentArticle != null) {
+				final int choice = JOptionPane.showConfirmDialog(null, "Are you sure to delete this article?", "",
+						JOptionPane.YES_NO_OPTION);
+				if (choice == JOptionPane.YES_OPTION) {
+					catalogue.remove(currentArticle);
+					refreshTable();
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void onEdit(ActionEvent e) {
+		final int row = articleTable.getSelectedRow();
+		int realRow = -1;
+		if (row >= 0) {
+			realRow = articleTable.convertRowIndexToModel(articleTable.getSelectedRow());
+			currentArticle = catalogue.getArray()[realRow];
+
+			if (currentArticle != null) {
+				final NewArticleDialog nad = new NewArticleDialog();
+				nad.setArticle(currentArticle);
+				nad.setVisible(true);
+				currentArticle = nad.getArticle();
+				// Keep original index to modify without adding
+				catalogue.modify(currentArticle, realRow);
+				refreshTable();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "No article selected!", "Error", JOptionPane.WARNING_MESSAGE);
+		}
+		// updateStockAlerts(); //TODO: reactivate me!
+	}
+
+	/**
+	 * Trigger update of the table through update of the underlying data model
+	 */
 	public void refreshTable() {
 		atModel.refreshData(catalogue.getArrayForTables());
 		atModel.fireTableDataChanged();

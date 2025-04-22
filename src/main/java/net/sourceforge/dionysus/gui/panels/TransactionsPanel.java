@@ -23,7 +23,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -39,6 +38,7 @@ import javax.swing.table.TableRowSorter;
 
 import net.sourceforge.dionysus.Transaction;
 import net.sourceforge.dionysus.db.TransactionDB;
+import net.sourceforge.dionysus.gui.Constants;
 import net.sourceforge.dionysus.gui.models.TransactionTableModel;
 
 /**
@@ -48,29 +48,27 @@ import net.sourceforge.dionysus.gui.models.TransactionTableModel;
 public class TransactionsPanel extends JPanel {
 
 	private static final long serialVersionUID = 280813945615261532L;
-	private TableRowSorter<TransactionTableModel> transactionSorter;
-	private TransactionTableModel ttModel;
-	private JTextField transactionSearchField;
-	private JTable transactionTable;
+	private final TableRowSorter<TransactionTableModel> transactionSorter;
+	private final TransactionTableModel ttModel;
+	private final JTextField transactionSearchField;
+	private final JTable transactionTable;
 
-	private TransactionDB journal;
+	private final TransactionDB journal;
 
 	private Transaction currentTransaction;
 
 	public TransactionsPanel(TransactionDB transactions) {
-		super();
-
 		this.journal = transactions;
 
-		GridBagLayout gbl_transactionsP = new GridBagLayout();
+		final GridBagLayout gbl_transactionsP = new GridBagLayout();
 		gbl_transactionsP.columnWidths = new int[] { 0, 0, 0, 0 };
 		gbl_transactionsP.rowHeights = new int[] { 0, 0, 0 };
 		gbl_transactionsP.columnWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_transactionsP.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 		setLayout(gbl_transactionsP);
 
-		JLabel lblNewLabel_2 = new JLabel("Search: ");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		final JLabel lblNewLabel_2 = new JLabel("Search: ");
+		final GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_2.gridx = 0;
@@ -78,7 +76,7 @@ public class TransactionsPanel extends JPanel {
 		add(lblNewLabel_2, gbc_lblNewLabel_2);
 
 		transactionSearchField = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		final GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_1.gridx = 1;
@@ -102,28 +100,25 @@ public class TransactionsPanel extends JPanel {
 		add(transactionSearchField, gbc_textField_1);
 		transactionSearchField.setColumns(10);
 
-		ImageIcon cancel = new ImageIcon(getClass().getResource("/gtk-cancel.png"));
-		// TODO: this is done at least 4 times in the code: factor!
-
-		JButton btnNewButton_6 = new JButton("Cancel", cancel);
-		GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
+		final JButton btnNewButton_6 = new JButton("Cancel", Constants.cancel);
+		final GridBagConstraints gbc_btnNewButton_6 = new GridBagConstraints();
 		gbc_btnNewButton_6.insets = new Insets(0, 0, 5, 0);
 		gbc_btnNewButton_6.gridx = 2;
 		gbc_btnNewButton_6.gridy = 0;
-		btnNewButton_6.addActionListener(this::onTransactionRevert);
+		btnNewButton_6.addActionListener(this::onRevert);
 		add(btnNewButton_6, gbc_btnNewButton_6);
 
 		transactionTable = new JTable();
 		ttModel = new TransactionTableModel(journal.getArrayForTables());
 		transactionTable.setModel(ttModel);
-		transactionSorter = new TableRowSorter<TransactionTableModel>(ttModel);
+		transactionSorter = new TableRowSorter<>(ttModel);
 		transactionTable.setRowSorter(transactionSorter);
 		transactionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		transactionTable.setFillsViewportHeight(true);
 
-		JScrollPane t2SP = new JScrollPane(transactionTable);
+		final JScrollPane t2SP = new JScrollPane(transactionTable);
 
-		GridBagConstraints gbc_transactionTable = new GridBagConstraints();
+		final GridBagConstraints gbc_transactionTable = new GridBagConstraints();
 		gbc_transactionTable.gridwidth = 6;
 		gbc_transactionTable.fill = GridBagConstraints.BOTH;
 		gbc_transactionTable.gridx = 0;
@@ -148,8 +143,8 @@ public class TransactionsPanel extends JPanel {
 	 *
 	 * @param arg0 event (unused)
 	 */
-	private void onTransactionRevert(ActionEvent arg0) {
-		int row = transactionTable.getSelectedRow();
+	private void onRevert(ActionEvent arg0) {
+		final int row = transactionTable.getSelectedRow();
 		int realRow = -1;
 		if (row >= 0) {
 			realRow = transactionTable.convertRowIndexToModel(transactionTable.getSelectedRow());

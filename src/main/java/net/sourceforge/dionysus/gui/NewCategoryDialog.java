@@ -22,8 +22,8 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -50,7 +50,7 @@ public class NewCategoryDialog extends JDialog {
 	private JTextField imageField;
 
 	/** UI holder */
-	private JPanel contentPanel;
+	private final JPanel contentPanel;
 
 	/** Picker for image */
 	private final JFileChooser fc;
@@ -67,15 +67,15 @@ public class NewCategoryDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_contentPanel = new GridBagLayout();
+		final GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[] { 0, 142, 0, 0 };
 		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblNewLabel = new JLabel(Messages.getString("NewCategoryDialog.1")); //$NON-NLS-1$
-			GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+			final JLabel lblNewLabel = new JLabel(Messages.getString("NewCategoryDialog.1")); //$NON-NLS-1$
+			final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 			gbc_lblNewLabel.anchor = GridBagConstraints.LINE_END;
@@ -85,7 +85,7 @@ public class NewCategoryDialog extends JDialog {
 		}
 		{
 			nameField = new JTextField();
-			GridBagConstraints gbc_nameField = new GridBagConstraints();
+			final GridBagConstraints gbc_nameField = new GridBagConstraints();
 			gbc_nameField.insets = new Insets(0, 0, 5, 0);
 			gbc_nameField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_nameField.gridx = 2;
@@ -94,8 +94,8 @@ public class NewCategoryDialog extends JDialog {
 			nameField.setColumns(10);
 		}
 		{
-			JLabel lblNewLabel_1 = new JLabel(Messages.getString("NewCategoryDialog.2")); //$NON-NLS-1$
-			GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+			final JLabel lblNewLabel_1 = new JLabel(Messages.getString("NewCategoryDialog.2")); //$NON-NLS-1$
+			final GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
 			gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
 			gbc_lblNewLabel_1.anchor = GridBagConstraints.LINE_END;
 			gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
@@ -105,7 +105,7 @@ public class NewCategoryDialog extends JDialog {
 		}
 		{
 			imageField = new JTextField();
-			GridBagConstraints gbc_imageField = new GridBagConstraints();
+			final GridBagConstraints gbc_imageField = new GridBagConstraints();
 			gbc_imageField.insets = new Insets(0, 0, 5, 0);
 			gbc_imageField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_imageField.gridx = 2;
@@ -114,13 +114,13 @@ public class NewCategoryDialog extends JDialog {
 			imageField.setColumns(10);
 		}
 		{
-			JButton btnImage = new JButton(Messages.getString("NewCategoryDialog.3")); //$NON-NLS-1$
-			GridBagConstraints gbc_btnImage = new GridBagConstraints();
+			final JButton btnImage = new JButton(Messages.getString("NewCategoryDialog.3")); //$NON-NLS-1$
+			final GridBagConstraints gbc_btnImage = new GridBagConstraints();
 			gbc_btnImage.insets = new Insets(0, 0, 5, 0);
 			gbc_btnImage.gridx = 3;
 			gbc_btnImage.gridy = 1;
 			btnImage.addActionListener(e -> {
-				int returnVal = fc.showOpenDialog(contentPanel);
+				final int returnVal = fc.showOpenDialog(contentPanel);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					// TODO: check image and initialize the corresponding field
 				}
@@ -128,41 +128,43 @@ public class NewCategoryDialog extends JDialog {
 			contentPanel.add(btnImage, gbc_btnImage);
 		}
 		{
-			JPanel buttonPane = new JPanel();
+			final JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("NewCategoryDialog.4"))); //$NON-NLS-1$
-				JButton okButton = new JButton(Messages.getString("NewCategoryDialog.5"), okIcon); //$NON-NLS-1$
+				final JButton okButton = new JButton(Messages.getString("NewCategoryDialog.5"), Constants.ok); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("NewCategoryDialog.6")); //$NON-NLS-1$
 
-				okButton.addActionListener(arg0 -> {
-					try {
-						if (nameField.getText().isEmpty()) {
-							throw new IllegalArgumentException(Messages.getString("NewCategoryDialog.7")); //$NON-NLS-1$
-						}
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
-						JOptionPane.showMessageDialog(null, Messages.getString("NewCategoryDialog.8") + e.getMessage(), //$NON-NLS-1$
-								Messages.getString("NewCategoryDialog.9"), //$NON-NLS-1$
-								JOptionPane.WARNING_MESSAGE);
-					}
-				});
+				okButton.addActionListener(this::onOK);
 
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(
-						getClass().getResource(Messages.getString("NewCategoryDialog.10"))); //$NON-NLS-1$
-				JButton cancelButton = new JButton(Messages.getString("NewCategoryDialog.11"), cancelIcon); //$NON-NLS-1$
+				final JButton cancelButton = new JButton(Messages.getString("NewCategoryDialog.11"), Constants.cancel); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("NewCategoryDialog.12")); //$NON-NLS-1$
 
 				cancelButton.addActionListener(arg0 -> setVisible(false));
 
 				buttonPane.add(cancelButton);
 			}
+		}
+	}
+
+	/**
+	 *
+	 */
+	private void onOK(ActionEvent evt) {
+		try {
+			if (nameField.getText().isEmpty()) {
+				throw new IllegalArgumentException(Messages.getString("NewCategoryDialog.7")); //$NON-NLS-1$
+			}
+		} catch (final NumberFormatException e) {
+			e.printStackTrace();
+		} catch (final IllegalArgumentException e) {
+			JOptionPane.showMessageDialog(null, Messages.getString("NewCategoryDialog.8") + e.getMessage(), //$NON-NLS-1$
+					Messages.getString("NewCategoryDialog.9"), //$NON-NLS-1$
+					JOptionPane.WARNING_MESSAGE);
 		}
 	}
 

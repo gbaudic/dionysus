@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -81,16 +80,16 @@ public class PasswordDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_contentPanel = new GridBagLayout();
+		final GridBagLayout gbl_contentPanel = new GridBagLayout();
 		gbl_contentPanel.columnWidths = new int[] { 46, 377, 0 };
 		gbl_contentPanel.rowHeights = new int[] { 20, 20, 0 };
 		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
-			JLabel lblLogin = new JLabel(Messages.getString("PasswordDialog.3")); //$NON-NLS-1$
+			final JLabel lblLogin = new JLabel(Messages.getString("PasswordDialog.3")); //$NON-NLS-1$
 			lblLogin.setHorizontalAlignment(SwingConstants.RIGHT);
-			GridBagConstraints gbc_lblLogin = new GridBagConstraints();
+			final GridBagConstraints gbc_lblLogin = new GridBagConstraints();
 			gbc_lblLogin.anchor = GridBagConstraints.EAST;
 			gbc_lblLogin.insets = new Insets(0, 0, 5, 5);
 			gbc_lblLogin.gridx = 0;
@@ -99,7 +98,7 @@ public class PasswordDialog extends JDialog {
 		}
 		{
 			loginField = new JTextField();
-			GridBagConstraints gbc_loginField = new GridBagConstraints();
+			final GridBagConstraints gbc_loginField = new GridBagConstraints();
 			gbc_loginField.anchor = GridBagConstraints.NORTH;
 			gbc_loginField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_loginField.insets = new Insets(0, 0, 5, 0);
@@ -109,9 +108,9 @@ public class PasswordDialog extends JDialog {
 			loginField.setColumns(10);
 		}
 		{
-			JLabel lblEnterLeWord = new JLabel(Messages.getString("PasswordDialog.4")); //$NON-NLS-1$
+			final JLabel lblEnterLeWord = new JLabel(Messages.getString("PasswordDialog.4")); //$NON-NLS-1$
 			lblEnterLeWord.setHorizontalAlignment(SwingConstants.RIGHT);
-			GridBagConstraints gbc_lblEnterLeWord = new GridBagConstraints();
+			final GridBagConstraints gbc_lblEnterLeWord = new GridBagConstraints();
 			gbc_lblEnterLeWord.anchor = GridBagConstraints.EAST;
 			gbc_lblEnterLeWord.insets = new Insets(0, 0, 0, 5);
 			gbc_lblEnterLeWord.gridx = 0;
@@ -120,7 +119,7 @@ public class PasswordDialog extends JDialog {
 		}
 		{
 			passwordField = new JPasswordField();
-			GridBagConstraints gbc_passwordField = new GridBagConstraints();
+			final GridBagConstraints gbc_passwordField = new GridBagConstraints();
 			gbc_passwordField.anchor = GridBagConstraints.NORTH;
 			gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_passwordField.gridx = 1;
@@ -128,12 +127,11 @@ public class PasswordDialog extends JDialog {
 			contentPanel.add(passwordField, gbc_passwordField);
 		}
 		{
-			JPanel buttonPane = new JPanel();
+			final JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				ImageIcon okIcon = new ImageIcon(getClass().getResource(Messages.getString("PasswordDialog.5"))); //$NON-NLS-1$
-				JButton okButton = new JButton(Messages.getString("PasswordDialog.6"), okIcon); //$NON-NLS-1$
+				final JButton okButton = new JButton(Messages.getString("PasswordDialog.6"), Constants.ok); //$NON-NLS-1$
 				okButton.setActionCommand(Messages.getString("PasswordDialog.7")); //$NON-NLS-1$
 				okButton.addActionListener(arg0 -> {
 
@@ -143,7 +141,7 @@ public class PasswordDialog extends JDialog {
 							result = true;
 							passwordField.setText(null);
 							setVisible(false);
-							MainGUI2 frame = new MainGUI2();
+							final MainGUI2 frame = new MainGUI2();
 							frame.setCurrentVendor(chosenVendor);
 							frame.setVisible(true);
 						} else {
@@ -161,8 +159,7 @@ public class PasswordDialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				ImageIcon cancelIcon = new ImageIcon(getClass().getResource(Messages.getString("PasswordDialog.12"))); //$NON-NLS-1$
-				JButton cancelButton = new JButton(Messages.getString("PasswordDialog.13"), cancelIcon); //$NON-NLS-1$
+				final JButton cancelButton = new JButton(Messages.getString("PasswordDialog.13"), Constants.cancel); //$NON-NLS-1$
 				cancelButton.setActionCommand(Messages.getString("PasswordDialog.14")); //$NON-NLS-1$
 				cancelButton.addActionListener(arg0 -> {
 					setVisible(false);
@@ -182,7 +179,7 @@ public class PasswordDialog extends JDialog {
 	 * @return true if login exists, false otherwise
 	 */
 	private boolean checkIdentification() {
-		String targetLogin = loginField.getText();
+		final String targetLogin = loginField.getText();
 
 		chosenVendor = database.get(targetLogin);
 
@@ -230,7 +227,7 @@ public class PasswordDialog extends JDialog {
 	 * Load the contents of the logins.txt file
 	 */
 	private void loadDatabase() {
-		database = new HashMap<String, Vendor>();
+		database = new HashMap<>();
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(loginFile)); Scanner s = new Scanner(reader)) {
 
@@ -238,7 +235,7 @@ public class PasswordDialog extends JDialog {
 
 			while (line != null) {
 				if (!line.startsWith(Messages.getString("PasswordDialog.19"))) { //$NON-NLS-1$
-					String[] pieces = line.split(Messages.getString("PasswordDialog.20")); //$NON-NLS-1$
+					final String[] pieces = line.split(Messages.getString("PasswordDialog.20")); //$NON-NLS-1$
 					if (pieces.length == 3) {
 						// Format is login:display_name:password
 						database.put(pieces[0], new Vendor(pieces[0], pieces[1], pieces[2]));
@@ -252,12 +249,12 @@ public class PasswordDialog extends JDialog {
 				line = s.nextLine();
 			}
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			JOptionPane.showMessageDialog(null, Messages.getString("PasswordDialog.23"), //$NON-NLS-1$
 					Messages.getString("PasswordDialog.24"), //$NON-NLS-1$
 					JOptionPane.ERROR_MESSAGE);
 			System.exit(-1); // We need to exit here, because there is no way the user can login.
-		} catch (NoSuchElementException e) {
+		} catch (final NoSuchElementException e) {
 			// do nothing, we simply have reached the end of the file
 		}
 	}
