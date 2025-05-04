@@ -44,17 +44,17 @@ public class NewArticleDialog extends JDialog {
 
 	private static final long serialVersionUID = 3336738625857841805L;
 	private final JPanel contentPanel;
-	private JTextField nomField;
-	private JTextField codeField;
-	private JTextField stockField;
-	private JTextField alertField;
-	private JTextField price0Field;
-	private JTextField price1Field;
-	private JTextField price2Field;
-	private JCheckBox chckbxActive;
-	private JCheckBox chckbxStockEnabled;
-	private JCheckBox chckbxAlertEnabled;
-	private JCheckBox chckbxCountable;
+	private final JTextField nameField;
+	private final JTextField codeField;
+	private final JTextField stockField;
+	private final JTextField alertField;
+	private final JTextField price0Field;
+	private final JTextField price1Field;
+	private final JTextField price2Field;
+	private final JCheckBox chckbxActive;
+	private final JCheckBox chckbxStockEnabled;
+	private final JCheckBox chckbxAlertEnabled;
+	private final JCheckBox chckbxCountable;
 
 	private Article article;
 
@@ -64,7 +64,6 @@ public class NewArticleDialog extends JDialog {
 	public NewArticleDialog() {
 		contentPanel = new JPanel();
 		setTitle(Messages.getString("NewArticleDialog.0")); //$NON-NLS-1$
-		// setBounds(100, 100, 369, 290);
 		setModal(true);
 		setSize(369, 290);
 		setLocationRelativeTo(null);
@@ -77,211 +76,191 @@ public class NewArticleDialog extends JDialog {
 		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
-		{
-			final JLabel lblNewLabel = new JLabel(Messages.getString("NewArticleDialog.1")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-			gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel.anchor = GridBagConstraints.LINE_END;
-			gbc_lblNewLabel.gridx = 1;
-			gbc_lblNewLabel.gridy = 0;
-			contentPanel.add(lblNewLabel, gbc_lblNewLabel);
-		}
-		{
-			nomField = new JTextField();
-			final GridBagConstraints gbc_nomField = new GridBagConstraints();
-			gbc_nomField.insets = new Insets(0, 0, 5, 0);
-			gbc_nomField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_nomField.gridx = 2;
-			gbc_nomField.gridy = 0;
-			contentPanel.add(nomField, gbc_nomField);
-			nomField.setColumns(10);
-		}
-		{
-			final JLabel lblNewLabel_1 = new JLabel(Messages.getString("NewArticleDialog.2")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-			gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel_1.anchor = GridBagConstraints.LINE_END;
-			gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel_1.gridx = 1;
-			gbc_lblNewLabel_1.gridy = 1;
-			contentPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		}
-		{
-			codeField = new JTextField();
-			codeField.setToolTipText(Messages.getString("NewArticleDialog.3")); //$NON-NLS-1$
-			final GridBagConstraints gbc_codeField = new GridBagConstraints();
-			gbc_codeField.insets = new Insets(0, 0, 5, 0);
-			gbc_codeField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_codeField.gridx = 2;
-			gbc_codeField.gridy = 1;
-			contentPanel.add(codeField, gbc_codeField);
-			codeField.setColumns(13); // Barcodes have a length of 13
-		}
-		{
-			chckbxStockEnabled = new JCheckBox(Messages.getString("NewArticleDialog.4")); //$NON-NLS-1$
-			final GridBagConstraints gbc_chckbxStockEnabled = new GridBagConstraints();
-			gbc_chckbxStockEnabled.insets = new Insets(0, 0, 5, 5);
-			gbc_chckbxStockEnabled.gridx = 0;
-			gbc_chckbxStockEnabled.gridy = 2;
-			contentPanel.add(chckbxStockEnabled, gbc_chckbxStockEnabled);
-		}
-		{
-			final JLabel lblStock = new JLabel(Messages.getString("NewArticleDialog.5")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblStock = new GridBagConstraints();
-			gbc_lblStock.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblStock.anchor = GridBagConstraints.EAST;
-			gbc_lblStock.insets = new Insets(0, 0, 5, 5);
-			gbc_lblStock.gridx = 1;
-			gbc_lblStock.gridy = 2;
-			contentPanel.add(lblStock, gbc_lblStock);
-		}
-		{
-			stockField = new JTextField();
-			stockField.setToolTipText(Messages.getString("NewArticleDialog.6")); //$NON-NLS-1$
-			final GridBagConstraints gbc_stockField = new GridBagConstraints();
-			gbc_stockField.insets = new Insets(0, 0, 5, 0);
-			gbc_stockField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_stockField.gridx = 2;
-			gbc_stockField.gridy = 2;
-			contentPanel.add(stockField, gbc_stockField);
-			stockField.setColumns(10);
-		}
-		{
-			chckbxAlertEnabled = new JCheckBox(Messages.getString("NewArticleDialog.7")); //$NON-NLS-1$
-			final GridBagConstraints gbc_chckbxAlertEnabled = new GridBagConstraints();
-			gbc_chckbxAlertEnabled.insets = new Insets(0, 0, 5, 5);
-			gbc_chckbxAlertEnabled.gridx = 0;
-			gbc_chckbxAlertEnabled.gridy = 3;
-			contentPanel.add(chckbxAlertEnabled, gbc_chckbxAlertEnabled);
-		}
-		{
-			final JLabel lblNewLabel_2 = new JLabel(Messages.getString("NewArticleDialog.8")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-			gbc_lblNewLabel_2.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel_2.anchor = GridBagConstraints.LINE_END;
-			gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel_2.gridx = 1;
-			gbc_lblNewLabel_2.gridy = 3;
-			contentPanel.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		}
-		{
-			alertField = new JTextField();
-			final GridBagConstraints gbc_alertField = new GridBagConstraints();
-			gbc_alertField.insets = new Insets(0, 0, 5, 0);
-			gbc_alertField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_alertField.gridx = 2;
-			gbc_alertField.gridy = 3;
-			contentPanel.add(alertField, gbc_alertField);
-			alertField.setColumns(10);
-		}
-		{
-			final JLabel lblNewLabel_3 = new JLabel(Messages.getString("NewArticleDialog.9")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-			gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel_3.anchor = GridBagConstraints.LINE_END;
-			gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel_3.gridx = 1;
-			gbc_lblNewLabel_3.gridy = 4;
-			contentPanel.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		}
-		{
-			price0Field = new JTextField();
-			final GridBagConstraints gbc_price0Field = new GridBagConstraints();
-			gbc_price0Field.insets = new Insets(0, 0, 5, 0);
-			gbc_price0Field.fill = GridBagConstraints.HORIZONTAL;
-			gbc_price0Field.gridx = 2;
-			gbc_price0Field.gridy = 4;
-			contentPanel.add(price0Field, gbc_price0Field);
-			price0Field.setColumns(10);
-		}
-		{
-			final JLabel lblNewLabel_4 = new JLabel(Messages.getString("NewArticleDialog.10")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-			gbc_lblNewLabel_4.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
-			gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel_4.gridx = 1;
-			gbc_lblNewLabel_4.gridy = 5;
-			contentPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
-		}
-		{
-			price1Field = new JTextField();
-			final GridBagConstraints gbc_price1Field = new GridBagConstraints();
-			gbc_price1Field.insets = new Insets(0, 0, 5, 0);
-			gbc_price1Field.fill = GridBagConstraints.HORIZONTAL;
-			gbc_price1Field.gridx = 2;
-			gbc_price1Field.gridy = 5;
-			contentPanel.add(price1Field, gbc_price1Field);
-			price1Field.setColumns(10);
-		}
-		{
-			final JLabel lblNewLabel_5 = new JLabel(Messages.getString("NewArticleDialog.11")); //$NON-NLS-1$
-			final GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
-			gbc_lblNewLabel_5.fill = GridBagConstraints.HORIZONTAL;
-			gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
-			gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
-			gbc_lblNewLabel_5.gridx = 1;
-			gbc_lblNewLabel_5.gridy = 6;
-			contentPanel.add(lblNewLabel_5, gbc_lblNewLabel_5);
-		}
-		{
-			price2Field = new JTextField();
-			final GridBagConstraints gbc_price2Field = new GridBagConstraints();
-			gbc_price2Field.insets = new Insets(0, 0, 5, 0);
-			gbc_price2Field.fill = GridBagConstraints.HORIZONTAL;
-			gbc_price2Field.gridx = 2;
-			gbc_price2Field.gridy = 6;
-			contentPanel.add(price2Field, gbc_price2Field);
-			price2Field.setColumns(10);
-		}
-		{
-			chckbxActive = new JCheckBox(Messages.getString("NewArticleDialog.12")); //$NON-NLS-1$
-			chckbxActive.setToolTipText(Messages.getString("NewArticleDialog.13")); //$NON-NLS-1$
-			final GridBagConstraints gbc_chckbxActive = new GridBagConstraints();
-			gbc_chckbxActive.insets = new Insets(0, 0, 0, 5);
-			gbc_chckbxActive.anchor = GridBagConstraints.WEST;
-			gbc_chckbxActive.gridx = 1;
-			gbc_chckbxActive.gridy = 7;
-			contentPanel.add(chckbxActive, gbc_chckbxActive);
-		}
-		{
-			chckbxCountable = new JCheckBox(Messages.getString("NewArticleDialog.14")); //$NON-NLS-1$
-			chckbxCountable.setToolTipText(Messages.getString("NewArticleDialog.15")); //$NON-NLS-1$
-			chckbxCountable.setSelected(true);
-			// chckbxCountable.setEnabled(false); //for 0.3 release
-			final GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
-			gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
-			gbc_chckbxCountable.anchor = GridBagConstraints.WEST;
-			gbc_chckbxCountable.gridx = 1;
-			gbc_chckbxCountable.gridy = 8;
-			contentPanel.add(chckbxCountable, gbc_chckbxCountable);
-		}
-		{
-			final JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				final JButton okButton = new JButton(Messages.getString("NewArticleDialog.17"), Constants.ok); //$NON-NLS-1$
-				okButton.setActionCommand(Messages.getString("NewArticleDialog.18")); //$NON-NLS-1$
 
-				okButton.addActionListener(this::okClicked);
+		final JLabel lblNewLabel = new JLabel(Messages.getString("NewArticleDialog.1")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.anchor = GridBagConstraints.LINE_END;
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 0;
+		contentPanel.add(lblNewLabel, gbc_lblNewLabel);
 
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				final JButton cancelButton = new JButton(Messages.getString("NewArticleDialog.20"), Constants.cancel); //$NON-NLS-1$
-				cancelButton.setActionCommand(Messages.getString("NewArticleDialog.21")); //$NON-NLS-1$
+		nameField = new JTextField();
+		final GridBagConstraints gbc_nomField = new GridBagConstraints();
+		gbc_nomField.insets = new Insets(0, 0, 5, 0);
+		gbc_nomField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_nomField.gridx = 2;
+		gbc_nomField.gridy = 0;
+		contentPanel.add(nameField, gbc_nomField);
+		nameField.setColumns(10);
 
-				cancelButton.addActionListener((ActionEvent arg0) -> {
-					article = null;
-					setVisible(false);
-				});
+		final JLabel lblNewLabel_1 = new JLabel(Messages.getString("NewArticleDialog.2")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.LINE_END;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 1;
+		gbc_lblNewLabel_1.gridy = 1;
+		contentPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
-				buttonPane.add(cancelButton);
-			}
-		}
+		codeField = new JTextField();
+		codeField.setToolTipText(Messages.getString("NewArticleDialog.3")); //$NON-NLS-1$
+		final GridBagConstraints gbc_codeField = new GridBagConstraints();
+		gbc_codeField.insets = new Insets(0, 0, 5, 0);
+		gbc_codeField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_codeField.gridx = 2;
+		gbc_codeField.gridy = 1;
+		contentPanel.add(codeField, gbc_codeField);
+		codeField.setColumns(13); // Barcodes have a length of 13
+
+		chckbxStockEnabled = new JCheckBox(Messages.getString("NewArticleDialog.4")); //$NON-NLS-1$
+		final GridBagConstraints gbc_chckbxStockEnabled = new GridBagConstraints();
+		gbc_chckbxStockEnabled.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxStockEnabled.gridx = 0;
+		gbc_chckbxStockEnabled.gridy = 2;
+		contentPanel.add(chckbxStockEnabled, gbc_chckbxStockEnabled);
+
+		final JLabel lblStock = new JLabel(Messages.getString("NewArticleDialog.5")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblStock = new GridBagConstraints();
+		gbc_lblStock.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblStock.anchor = GridBagConstraints.EAST;
+		gbc_lblStock.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStock.gridx = 1;
+		gbc_lblStock.gridy = 2;
+		contentPanel.add(lblStock, gbc_lblStock);
+
+		stockField = new JTextField();
+		stockField.setToolTipText(Messages.getString("NewArticleDialog.6")); //$NON-NLS-1$
+		final GridBagConstraints gbc_stockField = new GridBagConstraints();
+		gbc_stockField.insets = new Insets(0, 0, 5, 0);
+		gbc_stockField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_stockField.gridx = 2;
+		gbc_stockField.gridy = 2;
+		contentPanel.add(stockField, gbc_stockField);
+		stockField.setColumns(10);
+
+		chckbxAlertEnabled = new JCheckBox(Messages.getString("NewArticleDialog.7")); //$NON-NLS-1$
+		final GridBagConstraints gbc_chckbxAlertEnabled = new GridBagConstraints();
+		gbc_chckbxAlertEnabled.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxAlertEnabled.gridx = 0;
+		gbc_chckbxAlertEnabled.gridy = 3;
+		contentPanel.add(chckbxAlertEnabled, gbc_chckbxAlertEnabled);
+
+		final JLabel lblNewLabel_2 = new JLabel(Messages.getString("NewArticleDialog.8")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.LINE_END;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 1;
+		gbc_lblNewLabel_2.gridy = 3;
+		contentPanel.add(lblNewLabel_2, gbc_lblNewLabel_2);
+
+		alertField = new JTextField();
+		final GridBagConstraints gbc_alertField = new GridBagConstraints();
+		gbc_alertField.insets = new Insets(0, 0, 5, 0);
+		gbc_alertField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_alertField.gridx = 2;
+		gbc_alertField.gridy = 3;
+		contentPanel.add(alertField, gbc_alertField);
+		alertField.setColumns(10);
+
+		final JLabel lblNewLabel_3 = new JLabel(Messages.getString("NewArticleDialog.9")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_3.anchor = GridBagConstraints.LINE_END;
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.gridx = 1;
+		gbc_lblNewLabel_3.gridy = 4;
+		contentPanel.add(lblNewLabel_3, gbc_lblNewLabel_3);
+
+		price0Field = new JTextField();
+		final GridBagConstraints gbc_price0Field = new GridBagConstraints();
+		gbc_price0Field.insets = new Insets(0, 0, 5, 0);
+		gbc_price0Field.fill = GridBagConstraints.HORIZONTAL;
+		gbc_price0Field.gridx = 2;
+		gbc_price0Field.gridy = 4;
+		contentPanel.add(price0Field, gbc_price0Field);
+		price0Field.setColumns(10);
+
+		final JLabel lblNewLabel_4 = new JLabel(Messages.getString("NewArticleDialog.10")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+		gbc_lblNewLabel_4.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_4.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_4.gridx = 1;
+		gbc_lblNewLabel_4.gridy = 5;
+		contentPanel.add(lblNewLabel_4, gbc_lblNewLabel_4);
+
+		price1Field = new JTextField();
+		final GridBagConstraints gbc_price1Field = new GridBagConstraints();
+		gbc_price1Field.insets = new Insets(0, 0, 5, 0);
+		gbc_price1Field.fill = GridBagConstraints.HORIZONTAL;
+		gbc_price1Field.gridx = 2;
+		gbc_price1Field.gridy = 5;
+		contentPanel.add(price1Field, gbc_price1Field);
+		price1Field.setColumns(10);
+
+		final JLabel lblNewLabel_5 = new JLabel(Messages.getString("NewArticleDialog.11")); //$NON-NLS-1$
+		final GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
+		gbc_lblNewLabel_5.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_5.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_5.gridx = 1;
+		gbc_lblNewLabel_5.gridy = 6;
+		contentPanel.add(lblNewLabel_5, gbc_lblNewLabel_5);
+
+		price2Field = new JTextField();
+		final GridBagConstraints gbc_price2Field = new GridBagConstraints();
+		gbc_price2Field.insets = new Insets(0, 0, 5, 0);
+		gbc_price2Field.fill = GridBagConstraints.HORIZONTAL;
+		gbc_price2Field.gridx = 2;
+		gbc_price2Field.gridy = 6;
+		contentPanel.add(price2Field, gbc_price2Field);
+		price2Field.setColumns(10);
+
+		chckbxActive = new JCheckBox(Messages.getString("NewArticleDialog.12")); //$NON-NLS-1$
+		chckbxActive.setToolTipText(Messages.getString("NewArticleDialog.13")); //$NON-NLS-1$
+		final GridBagConstraints gbc_chckbxActive = new GridBagConstraints();
+		gbc_chckbxActive.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxActive.anchor = GridBagConstraints.WEST;
+		gbc_chckbxActive.gridx = 1;
+		gbc_chckbxActive.gridy = 7;
+		contentPanel.add(chckbxActive, gbc_chckbxActive);
+
+		chckbxCountable = new JCheckBox(Messages.getString("NewArticleDialog.14")); //$NON-NLS-1$
+		chckbxCountable.setToolTipText(Messages.getString("NewArticleDialog.15")); //$NON-NLS-1$
+		chckbxCountable.setSelected(true);
+		// chckbxCountable.setEnabled(false); //for 0.3 release
+		final GridBagConstraints gbc_chckbxCountable = new GridBagConstraints();
+		gbc_chckbxCountable.insets = new Insets(0, 0, 0, 5);
+		gbc_chckbxCountable.anchor = GridBagConstraints.WEST;
+		gbc_chckbxCountable.gridx = 1;
+		gbc_chckbxCountable.gridy = 8;
+		contentPanel.add(chckbxCountable, gbc_chckbxCountable);
+
+		final JPanel buttonPane = new JPanel();
+		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		getContentPane().add(buttonPane, BorderLayout.SOUTH);
+
+		final JButton okButton = new JButton(Messages.getString("NewArticleDialog.17"), Constants.ok); //$NON-NLS-1$
+		okButton.setActionCommand(Messages.getString("NewArticleDialog.18")); //$NON-NLS-1$
+
+		okButton.addActionListener(this::okClicked);
+
+		buttonPane.add(okButton);
+		getRootPane().setDefaultButton(okButton);
+
+		final JButton cancelButton = new JButton(Messages.getString("NewArticleDialog.20"), Constants.cancel); //$NON-NLS-1$
+		cancelButton.setActionCommand(Messages.getString("NewArticleDialog.21")); //$NON-NLS-1$
+
+		cancelButton.addActionListener(arg0 -> {
+			article = null;
+			setVisible(false);
+		});
+
+		buttonPane.add(cancelButton);
+
 	}
 
 	/**
@@ -319,7 +298,7 @@ public class NewArticleDialog extends JDialog {
 
 	private void okClicked(ActionEvent arg0) {
 		try {
-			if (nomField.getText().isEmpty()) {
+			if (nameField.getText().isEmpty()) {
 				throw new IllegalArgumentException(Messages.getString("NewArticleDialog.22")); //$NON-NLS-1$
 			}
 			if (codeField.getText().isEmpty()) {
@@ -361,7 +340,7 @@ public class NewArticleDialog extends JDialog {
 
 			// Checking for code duplicates will be done afterwards
 
-			article = new Article(nomField.getText(), prices, 0, Long.parseLong(codeField.getText()),
+			article = new Article(nameField.getText(), prices, 0, Long.parseLong(codeField.getText()),
 					chckbxCountable.isSelected());
 
 			article.setActive(chckbxActive.isSelected());
@@ -405,7 +384,7 @@ public class NewArticleDialog extends JDialog {
 		if (a != null) {
 			final double qtyFactor = a.isCountable() ? 1. : 1000.;
 
-			nomField.setText(a.getName());
+			nameField.setText(a.getName());
 			codeField.setText(String.valueOf(a.getCode()));
 			stockField.setText(String.valueOf(a.getStock() / qtyFactor));
 			alertField.setText(String.valueOf(a.getLimitStock() / qtyFactor));

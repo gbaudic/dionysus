@@ -77,7 +77,7 @@ public class AboutDialog extends JDialog {
 		final JLabel lblSoftwareName = new JLabel(Constants.SOFTWARE_NAME + Messages.getString("AboutDialog.2") //$NON-NLS-1$
 				+ Constants.SOFTWARE_VERSION + Messages.getString("AboutDialog.3") + Constants.SOFTWARE_VERSION_NICK); //$NON-NLS-1$
 		lblSoftwareName.setHorizontalAlignment(SwingConstants.LEFT);
-		lblSoftwareName.setFont(new Font(Messages.getString("AboutDialog.4"), Font.BOLD, 20)); //$NON-NLS-1$
+		lblSoftwareName.setFont(new Font("Tahoma", Font.BOLD, 20)); //$NON-NLS-1$
 		final GridBagConstraints gbc_lblSoftwareName = new GridBagConstraints();
 		gbc_lblSoftwareName.anchor = GridBagConstraints.WEST;
 		gbc_lblSoftwareName.insets = new Insets(0, 0, 5, 0);
