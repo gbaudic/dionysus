@@ -42,7 +42,7 @@ sonar {
 
 tasks.cyclonedxDirectBom {
     projectType = Component.Type.APPLICATION
-    includeConfigs = listOf("runtimeClasspath")
+    includeConfigs = ["runtimeClasspath"]
     licenseChoice = LicenseChoice().apply {
         addLicense(License().apply {
             name = "GPL-3.0-or-later"
