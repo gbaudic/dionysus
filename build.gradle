@@ -1,4 +1,4 @@
-import org.cyclonedx.model.Component
+import org.cyclonedx.model.*
 
 plugins {
   id "java"
