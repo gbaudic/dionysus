@@ -44,6 +44,8 @@ tasks.cyclonedxDirectBom {
     projectType = Component.Type.APPLICATION
     includeConfigs = ["runtimeClasspath"]
     licenseChoice = new LicenseChoice(licenses: [new License(name: "GPL-3.0-or-later", url: "https://spdx.org/licenses/GPL-3.0-or-later.html")])
+    componentVersion = '0.3.0'
+    xmlOutput.unsetConvention()
 }
 
 jar {
