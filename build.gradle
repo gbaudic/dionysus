@@ -1,4 +1,4 @@
-import org.cyclonedx.model.ProjectType
+import org.cyclonedx.model.Component
 
 plugins {
   id "java"
@@ -41,7 +41,7 @@ sonar {
 }
 
 tasks.cyclonedxDirectBom {
-    projectType = ProjectType.APPLICATION
+    projectType = Component.Type.APPLICATION
     includeConfigs = listOf("runtimeClasspath")
     licenseChoice = LicenseChoice().apply {
         addLicense(License().apply {
