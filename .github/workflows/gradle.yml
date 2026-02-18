@@ -46,12 +46,23 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: ./gradlew build sonar --info
     
-    - name: Upload artifacts
+    - name: Upload BOM
       uses: actions/upload-artifact@v4
       with:
-        path: |
-          build/reports/cyclonedx-direct/bom.json
-          build/distributions/*
+        name: BOM
+        path: build/reports/cyclonedx-direct/bom.json
+    
+    - name: Upload ZIP
+      uses: actions/upload-artifact@v4
+      with:
+        name: dionysus.zip
+        path: build/distributions/dionysus.zip
+
+    - name: Upload TAR
+      uses: actions/upload-artifact@v4
+      with:
+        name: dionysus.tar
+        path: build/distributions/dionysus.tar
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
