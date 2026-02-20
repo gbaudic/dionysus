@@ -13,8 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+*/
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
@@ -23,7 +22,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -32,7 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
 import net.sourceforge.dionysus.Article;
 import net.sourceforge.dionysus.Price;
 
@@ -71,10 +68,10 @@ public class NewArticleDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] { 0, 142, 0, 0 };
-		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.columnWidths = new int[]{0, 142, 0, 0};
+		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 
 		final JLabel lblNewLabel = new JLabel(Messages.getString("NewArticleDialog.1")); //$NON-NLS-1$
@@ -266,7 +263,8 @@ public class NewArticleDialog extends JDialog {
 	/**
 	 * Constructor with argument for further editing
 	 *
-	 * @param a article to use
+	 * @param a
+	 *            article to use
 	 */
 	public NewArticleDialog(Article a) {
 		this();
@@ -276,9 +274,12 @@ public class NewArticleDialog extends JDialog {
 	/**
 	 * Simple check for validity of price
 	 *
-	 * @param price string to test
-	 * @throws IllegalArgumentException if the value is negative
-	 * @throws NumberFormatException    if the string is not a valid number
+	 * @param price
+	 *            string to test
+	 * @throws IllegalArgumentException
+	 *             if the value is negative
+	 * @throws NumberFormatException
+	 *             if the string is not a valid number
 	 */
 	private void checkPrice(final String price) {
 		final double value = Double.valueOf(price);
@@ -376,7 +377,8 @@ public class NewArticleDialog extends JDialog {
 	/**
 	 * Fills in UI components with data from the DB record
 	 *
-	 * @param a existing Article to use when filling the dialog
+	 * @param a
+	 *            existing Article to use when filling the dialog
 	 */
 	public void setArticle(Article a) {
 		article = a;
@@ -415,7 +417,7 @@ public class NewArticleDialog extends JDialog {
 	 * Check that prices have meaningful values and are correctly filled
 	 */
 	private void validatePrices() {
-		final JTextField fields[] = { price0Field, price1Field, price2Field };
+		final JTextField fields[] = {price0Field, price1Field, price2Field};
 
 		// Check order of filled prices
 		int result = 0;

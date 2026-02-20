@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
@@ -30,7 +29,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -40,7 +38,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 import net.sourceforge.dionysus.Vendor;
 
 /**
@@ -82,10 +79,10 @@ public class PasswordDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] { 46, 377, 0 };
-		gbl_contentPanel.rowHeights = new int[] { 20, 20, 0 };
-		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.columnWidths = new int[]{46, 377, 0};
+		gbl_contentPanel.rowHeights = new int[]{20, 20, 0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 
 		final JLabel lblLogin = new JLabel(Messages.getString("PasswordDialog.3")); //$NON-NLS-1$
@@ -167,7 +164,8 @@ public class PasswordDialog extends JDialog {
 	/**
 	 * Checks the provided password
 	 *
-	 * @param input a character array
+	 * @param input
+	 *            a character array
 	 * @return the result of the check
 	 */
 	private boolean checkPassword(char[] input) {

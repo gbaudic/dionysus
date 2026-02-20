@@ -14,23 +14,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui.models;
 
 import java.util.Date;
-
 import javax.swing.table.DefaultTableModel;
 
 public class TransactionTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = 7595571828972009182L;
-	private static String[] colNames = new String[] { "Date", "Article", "Quantity", "Amount", "Source account",
-			"Dest. account", "Paid by", "Vendor" };
+	private static String[] colNames = new String[]{"Date", "Article", "Quantity", "Amount", "Source account",
+			"Dest. account", "Paid by", "Vendor"};
 
-	Class[] columnTypes = new Class[] { Date.class, String.class, Integer.class, String.class, String.class,
-			String.class, String.class, String.class };
+	Class[] columnTypes = new Class[]{Date.class, String.class, Integer.class, String.class, String.class, String.class,
+			String.class, String.class};
 
-	boolean[] columnEditables = new boolean[] { false, false, false, false, false, false, false, false };
+	boolean[] columnEditables = new boolean[]{false, false, false, false, false, false, false, false};
 
 	public TransactionTableModel(Object[][] data) {
 		super(data, colNames);

@@ -13,8 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+*/
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
@@ -24,7 +23,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -38,7 +36,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
-
 import net.sourceforge.dionysus.User;
 import net.sourceforge.dionysus.db.UserDB;
 import net.sourceforge.dionysus.gui.models.UserTableModel;
@@ -70,10 +67,10 @@ public class UserChoiceDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0 };
-		gbl_contentPanel.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_contentPanel.rowHeights = new int[]{0, 0, 0};
+		gbl_contentPanel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 
 		searchExprCaption = new JLabel(Messages.getString("UserChoiceDialog2.1")); //$NON-NLS-1$
@@ -115,7 +112,7 @@ public class UserChoiceDialog extends JDialog {
 			theDB = udb;
 			foodForTable = theDB.getArrayForTables();
 		} else {
-			foodForTable = new Object[][] {};
+			foodForTable = new Object[][]{};
 		}
 
 		resultsTable = new JTable();

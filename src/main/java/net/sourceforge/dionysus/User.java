@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
@@ -60,7 +59,8 @@ public class User implements Serializable, CSVAble {
 	/**
 	 * Adds an amount to the current balance
 	 *
-	 * @param montant amount to credit
+	 * @param montant
+	 *            amount to credit
 	 */
 	public void credite(final double montant) {
 		this.balance += (int) (montant * 100);
@@ -74,7 +74,8 @@ public class User implements Serializable, CSVAble {
 	/**
 	 * Deduces an amount from current balance
 	 *
-	 * @param montant amount to debit
+	 * @param montant
+	 *            amount to debit
 	 */
 	public void debite(final double montant) {
 		this.balance -= (int) (montant * 100);

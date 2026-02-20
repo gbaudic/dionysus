@@ -12,9 +12,8 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus;
 
 import org.junit.Assert;
@@ -26,16 +25,17 @@ import org.junit.Test;
  *
  */
 public class VendorTest {
-	
+
 	private Vendor vendor;
-	
+
 	@Before
 	public void setUp() {
 		vendor = new Vendor("test", "t", "pass");
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.dionysus.Vendor#Vendor(java.lang.String, java.lang.String, java.lang.String)}.
+	 * Test method for
+	 * {@link net.sourceforge.dionysus.Vendor#Vendor(java.lang.String, java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	public void testVendor() {
@@ -45,7 +45,8 @@ public class VendorTest {
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.dionysus.Vendor#setName(java.lang.String)}.
+	 * Test method for
+	 * {@link net.sourceforge.dionysus.Vendor#setName(java.lang.String)}.
 	 */
 	@Test
 	public void testSetName() {
@@ -54,7 +55,8 @@ public class VendorTest {
 	}
 
 	/**
-	 * Test method for {@link net.sourceforge.dionysus.Vendor#setLogin(java.lang.String)}.
+	 * Test method for
+	 * {@link net.sourceforge.dionysus.Vendor#setLogin(java.lang.String)}.
 	 */
 	@Test
 	public void testSetLogin() {

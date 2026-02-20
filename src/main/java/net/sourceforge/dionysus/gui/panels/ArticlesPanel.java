@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui.panels;
 
 import java.awt.GridBagConstraints;
@@ -22,7 +21,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,7 +33,6 @@ import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
-
 import net.sourceforge.dionysus.Article;
 import net.sourceforge.dionysus.db.ArticleDB;
 import net.sourceforge.dionysus.gui.Constants;
@@ -60,16 +57,17 @@ public class ArticlesPanel extends JPanel {
 	/**
 	 * Constructor
 	 *
-	 * @param articleDB catalogue to use
+	 * @param articleDB
+	 *            catalogue to use
 	 */
 	public ArticlesPanel(ArticleDB articleDB) {
 		catalogue = articleDB;
 
 		final GridBagLayout gbl_articlesP = new GridBagLayout();
-		gbl_articlesP.columnWidths = new int[] { 0, 0, 0, 0, 0, 0 };
-		gbl_articlesP.rowHeights = new int[] { 0, 0, 0 };
-		gbl_articlesP.columnWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_articlesP.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_articlesP.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_articlesP.rowHeights = new int[]{0, 0, 0};
+		gbl_articlesP.columnWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_articlesP.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gbl_articlesP);
 
 		final JLabel lblNewLabel_1 = new JLabel("Search:");

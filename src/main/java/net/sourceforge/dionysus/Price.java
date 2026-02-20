@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
@@ -36,7 +35,8 @@ public class Price implements Serializable {
 	/**
 	 * Constructor for amounts set as double
 	 *
-	 * @param price price as a double
+	 * @param price
+	 *            price as a double
 	 */
 	public Price(double price) {
 		this.value = (int) (price * 100);
@@ -45,7 +45,8 @@ public class Price implements Serializable {
 	/**
 	 * Constructor for amounts set as integers (already converted in cents)
 	 *
-	 * @param price integer price
+	 * @param price
+	 *            integer price
 	 */
 	public Price(int price) {
 		this.value = price;

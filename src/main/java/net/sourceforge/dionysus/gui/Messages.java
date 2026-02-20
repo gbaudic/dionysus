@@ -32,7 +32,8 @@ public class Messages {
 	/**
 	 * Getter to use the bundle
 	 *
-	 * @param key message name
+	 * @param key
+	 *            message name
 	 * @return message text
 	 */
 	public static String getString(String key) {

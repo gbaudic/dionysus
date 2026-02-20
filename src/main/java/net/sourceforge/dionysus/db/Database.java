@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.db;
 
 import java.io.BufferedInputStream;
@@ -28,15 +27,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
 import net.sourceforge.dionysus.CSVAble;
 
 /**
  * Generic interface for databases
  *
- * @param <T> The class which will be held in the database (User, Article...)
+ * @param <T>
+ *            The class which will be held in the database (User, Article...)
  */
 public abstract class Database<T> {
 
@@ -54,7 +52,8 @@ public abstract class Database<T> {
 	/**
 	 * Adds an entry to the database
 	 *
-	 * @param t the entry to add
+	 * @param t
+	 *            the entry to add
 	 */
 	public void add(T t) {
 		if (t != null) {
@@ -70,7 +69,8 @@ public abstract class Database<T> {
 	/**
 	 * Initializes DB with the binary data from a given file
 	 *
-	 * @param filename path to the file to be used
+	 * @param filename
+	 *            path to the file to be used
 	 */
 	public void createFromTextFile(String filename) {
 
@@ -105,7 +105,8 @@ public abstract class Database<T> {
 	/**
 	 * Export the database in a human-friendly format (CSV, actually)
 	 *
-	 * @param file the File object to write to
+	 * @param file
+	 *            the File object to write to
 	 */
 	public void export(File file) {
 		if (file != null) {
@@ -160,15 +161,18 @@ public abstract class Database<T> {
 	/**
 	 * Modifies an entry in the database
 	 *
-	 * @param t     modified version of the entry
-	 * @param index place to insert
+	 * @param t
+	 *            modified version of the entry
+	 * @param index
+	 *            place to insert
 	 */
 	public abstract void modify(T t, int index);
 
 	/**
 	 * Deletes an entry in the database
 	 *
-	 * @param t entry to remove
+	 * @param t
+	 *            entry to remove
 	 */
 	public abstract void remove(T t);
 

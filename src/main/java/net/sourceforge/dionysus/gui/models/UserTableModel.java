@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui.models;
 
 import javax.swing.table.DefaultTableModel;
@@ -22,12 +21,12 @@ import javax.swing.table.DefaultTableModel;
 public class UserTableModel extends DefaultTableModel {
 
 	private static final long serialVersionUID = -2841704746545744058L;
-	private static String[] colNames = new String[] { "Last name", "First name", "ID", "Year", "Balance", "Deposit" };
+	private static String[] colNames = new String[]{"Last name", "First name", "ID", "Year", "Balance", "Deposit"};
 
-	Class[] columnTypes = new Class[] { String.class, String.class, String.class, Integer.class, String.class,
-			Boolean.class };
+	Class[] columnTypes = new Class[]{String.class, String.class, String.class, Integer.class, String.class,
+			Boolean.class};
 
-	boolean[] columnEditables = new boolean[] { false, false, false, false, false, false };
+	boolean[] columnEditables = new boolean[]{false, false, false, false, false, false};
 
 	public UserTableModel(Object[][] data) {
 		super(data, colNames);

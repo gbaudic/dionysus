@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.db;
 
 import net.sourceforge.dionysus.Vendor;
@@ -57,8 +56,10 @@ public class VendorDB extends Database<Vendor> {
 	/**
 	 * Checks if a given login and password match a user in the database
 	 *
-	 * @param login    user login
-	 * @param password user password
+	 * @param login
+	 *            user login
+	 * @param password
+	 *            user password
 	 * @return true if the login/password pair matches, false otherwise
 	 */
 	public boolean validateIdentification(String login, String password) {

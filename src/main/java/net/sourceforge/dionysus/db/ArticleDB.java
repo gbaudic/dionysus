@@ -14,15 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.db;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import javax.swing.JOptionPane;
-
 import net.sourceforge.dionysus.Article;
 
 /**
@@ -50,7 +47,8 @@ public class ArticleDB extends Database<Article> {
 	/**
 	 * Allows finding an article with its integer code
 	 *
-	 * @param code the code to find
+	 * @param code
+	 *            the code to find
 	 * @return first article found with this code, null if no article matches
 	 */
 	public Article getArticleByCode(long code) {
@@ -108,8 +106,10 @@ public class ArticleDB extends Database<Article> {
 	/**
 	 * Modifies a given article
 	 *
-	 * @param a     article to edit
-	 * @param index index of article
+	 * @param a
+	 *            article to edit
+	 * @param index
+	 *            index of article
 	 */
 	@Override
 	public void modify(Article a, int index) {
@@ -125,7 +125,8 @@ public class ArticleDB extends Database<Article> {
 	/**
 	 * Removes an article from the list, and cleans up the array to remove any null
 	 *
-	 * @param a article to be removed
+	 * @param a
+	 *            article to be removed
 	 */
 	@Override
 	public void remove(Article a) {

@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.text.NumberFormat;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class ArticleTest {
 	@Before
 	public void setUp() {
 
-		article = new Article("test", new Price[] { p0, p1, p2 }, 123456789L);
+		article = new Article("test", new Price[]{p0, p1, p2}, 123456789L);
 	}
 
 	/**

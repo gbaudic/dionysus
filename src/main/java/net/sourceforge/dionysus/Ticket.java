@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus;
 
 import java.io.File;
@@ -28,7 +27,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
 import net.sourceforge.dionysus.db.TransactionDB;
 
 /**
@@ -53,7 +51,8 @@ public class Ticket {
 	/**
 	 * Constructor
 	 *
-	 * @param u user making the purchase. Can be null.
+	 * @param u
+	 *            user making the purchase. Can be null.
 	 */
 	public Ticket(User u) {
 		items = new ArrayList<>();
@@ -64,7 +63,8 @@ public class Ticket {
 	/**
 	 * Add an article to the ticket
 	 *
-	 * @param newItem item to add
+	 * @param newItem
+	 *            item to add
 	 */
 	public void addArticle(TicketItem newItem) {
 		if (newItem != null && newItem.getQuantity() != 0) {
@@ -147,7 +147,8 @@ public class Ticket {
 	/**
 	 * Setter for the payment method
 	 *
-	 * @param method the payment method used
+	 * @param method
+	 *            the payment method used
 	 */
 	public void pay(PaymentMethod method) {
 		pMethod = method;
@@ -198,7 +199,8 @@ public class Ticket {
 	/**
 	 * Removes an article at a given price in a given quantity
 	 *
-	 * @param a the corresponding TicketItem
+	 * @param a
+	 *            the corresponding TicketItem
 	 */
 	public void removeArticle(TicketItem a) {
 		// Check that article exists
@@ -241,7 +243,8 @@ public class Ticket {
 	/**
 	 * Set the user for which this Ticket is edited
 	 *
-	 * @param newUser user
+	 * @param newUser
+	 *            user
 	 */
 	public void setUser(User newUser) {
 		customer = newUser; // no check on null because it has a meaning

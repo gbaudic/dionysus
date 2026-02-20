@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
@@ -49,7 +48,8 @@ public enum PaymentMethod implements Serializable {
 	/**
 	 * Constructor
 	 *
-	 * @param s name
+	 * @param s
+	 *            name
 	 */
 	PaymentMethod(String s) {
 		name = s;

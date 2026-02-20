@@ -12,16 +12,14 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui.panels;
 
 import javax.swing.JPanel;
 
 /**
- * Panel for the cash desk view
- * For the moment all this code is in MainGUI2...
+ * Panel for the cash desk view For the moment all this code is in MainGUI2...
  */
 public class CashDeskPanel extends JPanel {
 

@@ -1,5 +1,5 @@
 /* 	Dionysus, a student pub management software in Java
-    Copyright (C) 2025  G. Baudic
+    Copyright (C) 2011,2013,2015-2019  G. Baudic
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 package net.sourceforge.dionysus;
 
 import static org.junit.Assert.assertEquals;
@@ -21,7 +21,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.junit.After;
 import org.junit.Test;
 

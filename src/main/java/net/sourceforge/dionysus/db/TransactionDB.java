@@ -14,12 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.db;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-
 import net.sourceforge.dionysus.Transaction;
 
 public class TransactionDB extends Database<Transaction> {

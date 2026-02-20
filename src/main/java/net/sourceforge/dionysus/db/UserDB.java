@@ -13,8 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+*/
 package net.sourceforge.dionysus.db;
 
 import java.io.BufferedReader;
@@ -27,9 +26,7 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import javax.swing.JOptionPane;
-
 import net.sourceforge.dionysus.User;
 
 public class UserDB extends Database<User> {
@@ -46,7 +43,8 @@ public class UserDB extends Database<User> {
 	 * Initializes user database from a text file originating from the "original"
 	 * software
 	 *
-	 * @param filename the path to the database text file
+	 * @param filename
+	 *            the path to the database text file
 	 */
 	public void createFromLegacyTextFile(String filename) {
 		targetF = new File(filename);
@@ -88,7 +86,8 @@ public class UserDB extends Database<User> {
 	 * Saves the user database to a text format compliant with the "original"
 	 * software This should not be used for normal operation
 	 *
-	 * @param filename full path to destination file
+	 * @param filename
+	 *            full path to destination file
 	 */
 	public void exportToLegacyTextFile(String filename) {
 		try (BufferedWriter bw = new BufferedWriter(new PrintWriter(filename))) {

@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui;
 
 import java.awt.BorderLayout;
@@ -23,7 +22,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.Calendar;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -34,7 +32,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-
 import net.sourceforge.dionysus.User;
 
 /**
@@ -68,10 +65,10 @@ public class NewUserDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
-		gbl_contentPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_contentPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
+		gbl_contentPanel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
 
 		final JLabel lblNom = new JLabel(Messages.getString("NewUserDialog2.1")); //$NON-NLS-1$
@@ -222,7 +219,8 @@ public class NewUserDialog extends JDialog {
 	/**
 	 * Constructor for edition
 	 *
-	 * @param u the user to be edited
+	 * @param u
+	 *            the user to be edited
 	 */
 	public NewUserDialog(User u) {
 		this();
@@ -243,7 +241,8 @@ public class NewUserDialog extends JDialog {
 	 *
 	 * This is required when using this dialog for edition instead of creation
 	 *
-	 * @param u the user to edit
+	 * @param u
+	 *            the user to edit
 	 */
 	private void setUser(User u) {
 		this.user = u;

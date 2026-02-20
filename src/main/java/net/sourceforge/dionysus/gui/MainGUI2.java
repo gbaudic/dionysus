@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui;
 
 import java.awt.EventQueue;
@@ -31,7 +30,6 @@ import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
 import java.util.Objects;
-
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -53,7 +51,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import net.sourceforge.dionysus.Article;
 import net.sourceforge.dionysus.PaymentMethod;
 import net.sourceforge.dionysus.Ticket;
@@ -214,10 +211,10 @@ public class MainGUI2 extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		final GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPane.columnWidths = new int[]{0, 0};
+		gbl_contentPane.rowHeights = new int[]{0, 0, 0};
+		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 
 		final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -232,15 +229,15 @@ public class MainGUI2 extends JFrame {
 		final JPanel vueP = new JPanel();
 		tabbedPane.addTab(Messages.getString("MainGUI2.14"), null, vueP, Messages.getString("MainGUI2.15")); //$NON-NLS-1$ //$NON-NLS-2$
 		final GridBagLayout gbl_vueP = new GridBagLayout();
-		gbl_vueP.columnWidths = new int[] { 0, 0, 0 };
-		gbl_vueP.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
-		gbl_vueP.columnWeights = new double[] { 0.6, 0.2, Double.MIN_VALUE };
-		gbl_vueP.rowWeights = new double[] { 0.2, 0.2, 0.2, 1.0, 0.2, Double.MIN_VALUE };
+		gbl_vueP.columnWidths = new int[]{0, 0, 0};
+		gbl_vueP.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_vueP.columnWeights = new double[]{0.6, 0.2, Double.MIN_VALUE};
+		gbl_vueP.rowWeights = new double[]{0.2, 0.2, 0.2, 1.0, 0.2, Double.MIN_VALUE};
 		vueP.setLayout(gbl_vueP);
 
 		final JPanel panel = new JPanel();
-		panel.setBorder(
-				new TitledBorder(null, Messages.getString("MainGUI2.16"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panel.setBorder(new TitledBorder(null, Messages.getString("MainGUI2.16"), TitledBorder.LEADING, //$NON-NLS-1$
+				TitledBorder.TOP, null, null));
 		final GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(0, 0, 5, 5);
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -249,10 +246,10 @@ public class MainGUI2 extends JFrame {
 		gbc_panel.gridheight = 2;
 		vueP.add(panel, gbc_panel);
 		final GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 0, 0, 0 };
-		gbl_panel.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
-		gbl_panel.rowWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_panel.columnWidths = new int[]{0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0};
 		panel.setLayout(gbl_panel);
 
 		final JLabel lblN = new JLabel(Messages.getString("MainGUI2.17")); //$NON-NLS-1$
@@ -435,7 +432,8 @@ public class MainGUI2 extends JFrame {
 		panel_pavenum.add(btnClear);
 
 		final JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, Messages.getString("MainGUI2.36"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panel_3.setBorder(new TitledBorder(null, Messages.getString("MainGUI2.36"), TitledBorder.LEADING, //$NON-NLS-1$
+				TitledBorder.TOP, null, null));
 		final GridBagConstraints gbc_panel_3 = new GridBagConstraints();
 		gbc_panel_3.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_3.fill = GridBagConstraints.BOTH;
@@ -480,8 +478,8 @@ public class MainGUI2 extends JFrame {
 		panel_3.add(lblBalanceAfter, gbc_lblSoldeApres);
 
 		final JPanel panel_PaymentMethods = new JPanel();
-		panel_PaymentMethods.setBorder(
-				new TitledBorder(null, Messages.getString("MainGUI2.41"), TitledBorder.LEADING, TitledBorder.TOP, null, null)); //$NON-NLS-1$
+		panel_PaymentMethods.setBorder(new TitledBorder(null, Messages.getString("MainGUI2.41"), TitledBorder.LEADING, //$NON-NLS-1$
+				TitledBorder.TOP, null, null));
 		final GridBagConstraints gbc_panel_PaymentMethods = new GridBagConstraints();
 		gbc_panel_PaymentMethods.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_PaymentMethods.fill = GridBagConstraints.BOTH;
@@ -539,7 +537,8 @@ public class MainGUI2 extends JFrame {
 	/**
 	 * Export data to CSV file
 	 *
-	 * @param db database to export
+	 * @param db
+	 *            database to export
 	 */
 	private void exportCSV(Database db) {
 		final int result = fileChooser.showSaveDialog(null);
@@ -624,64 +623,67 @@ public class MainGUI2 extends JFrame {
 				// TODO: change this so we can accommodate non-integer numbers in a
 				// locale-independent way
 				switch (currentState) {
-				case TICKET_IDLE: // article being chosen
-					final long input = Long.parseLong(inputField.getText());
-					currentArticleAtDesk = catalogue.getArticleByCode(input);
-					if (currentArticleAtDesk != null) {
-						currentItemAtDesk = new TicketItem(currentArticleAtDesk);
+					case TICKET_IDLE : // article being chosen
+						final long input = Long.parseLong(inputField.getText());
+						currentArticleAtDesk = catalogue.getArticleByCode(input);
+						if (currentArticleAtDesk != null) {
+							currentItemAtDesk = new TicketItem(currentArticleAtDesk);
 
-						if (currentArticleAtDesk.getNumberOfPrices() > 1) {
-							// More than 1 price id
-							taskToDoLabel.setText(Messages.getString("MainGUI2.56")); //$NON-NLS-1$
-							currentState = TicketState.PRICE;
-							lblInProgress.setText("? x " + currentArticleAtDesk.getName()); //$NON-NLS-1$
-						} else if (!currentArticleAtDesk.isCountable()) {
-							// Only 1 price id, quantity to set
-							taskToDoLabel.setText(Messages.getString("MainGUI2.58")); //$NON-NLS-1$
-							currentState = TicketState.QUANTITY;
-							lblInProgress.setText("? x " + currentArticleAtDesk.getName()); //$NON-NLS-1$
+							if (currentArticleAtDesk.getNumberOfPrices() > 1) {
+								// More than 1 price id
+								taskToDoLabel.setText(Messages.getString("MainGUI2.56")); //$NON-NLS-1$
+								currentState = TicketState.PRICE;
+								lblInProgress.setText("? x " + currentArticleAtDesk.getName()); //$NON-NLS-1$
+							} else if (!currentArticleAtDesk.isCountable()) {
+								// Only 1 price id, quantity to set
+								taskToDoLabel.setText(Messages.getString("MainGUI2.58")); //$NON-NLS-1$
+								currentState = TicketState.QUANTITY;
+								lblInProgress.setText("? x " + currentArticleAtDesk.getName()); //$NON-NLS-1$
+							} else {
+								// Only 1 price id, no quantity to set: add item to ticket
+								currentItemAtDesk.computeAmount();
+								finalizeTicketItem();
+							}
 						} else {
-							// Only 1 price id, no quantity to set: add item to ticket
+							JOptionPane.showMessageDialog(null, Messages.getString("MainGUI2.60"), //$NON-NLS-1$
+									Messages.getString("MainGUI2.61"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+						}
+						break;
+					case QUANTITY : // quantity being chosen
+						final double input2 = Double.parseDouble(inputField.getText());
+						if (input2 == 0) {
+							JOptionPane.showMessageDialog(null, Messages.getString("MainGUI2.62"), //$NON-NLS-1$
+									Messages.getString("MainGUI2.63"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$
+						} else {
+							// Negative quantities are allowed so that corrections are possible
+							if (currentArticleAtDesk.isCountable()) {
+								currentItemAtDesk.setQuantity((int) input2);
+							} else {
+								currentItemAtDesk.setQuantity((int) (input2 * 1000));
+							}
 							currentItemAtDesk.computeAmount();
 							finalizeTicketItem();
 						}
-					} else {
-						JOptionPane.showMessageDialog(null, Messages.getString("MainGUI2.60"), Messages.getString("MainGUI2.61"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-					break;
-				case QUANTITY: // quantity being chosen
-					final double input2 = Double.parseDouble(inputField.getText());
-					if (input2 == 0) {
-						JOptionPane.showMessageDialog(null, Messages.getString("MainGUI2.62"), Messages.getString("MainGUI2.63"), JOptionPane.WARNING_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					} else {
-						// Negative quantities are allowed so that corrections are possible
-						if (currentArticleAtDesk.isCountable()) {
-							currentItemAtDesk.setQuantity((int) input2);
+						break;
+					case PRICE : // price being chosen
+						final long input3 = Long.parseLong(inputField.getText());
+						if (input3 < 0 || input3 >= currentArticleAtDesk.getNumberOfPrices()) {
+							JOptionPane.showMessageDialog(null, Messages.getString("MainGUI2.64"), //$NON-NLS-1$
+									Messages.getString("MainGUI2.65"), //$NON-NLS-1$
+									JOptionPane.WARNING_MESSAGE);
 						} else {
-							currentItemAtDesk.setQuantity((int) (input2 * 1000));
+							currentItemAtDesk.setFee((int) input3);
+							if (!currentArticleAtDesk.isCountable()) {
+								taskToDoLabel.setText(Messages.getString("MainGUI2.66")); //$NON-NLS-1$
+								currentState = TicketState.QUANTITY;
+							} else {
+								currentItemAtDesk.computeAmount();
+								finalizeTicketItem();
+							}
 						}
-						currentItemAtDesk.computeAmount();
-						finalizeTicketItem();
-					}
-					break;
-				case PRICE: // price being chosen
-					final long input3 = Long.parseLong(inputField.getText());
-					if (input3 < 0 || input3 >= currentArticleAtDesk.getNumberOfPrices()) {
-						JOptionPane.showMessageDialog(null, Messages.getString("MainGUI2.64"), Messages.getString("MainGUI2.65"), //$NON-NLS-1$ //$NON-NLS-2$
-								JOptionPane.WARNING_MESSAGE);
-					} else {
-						currentItemAtDesk.setFee((int) input3);
-						if (!currentArticleAtDesk.isCountable()) {
-							taskToDoLabel.setText(Messages.getString("MainGUI2.66")); //$NON-NLS-1$
-							currentState = TicketState.QUANTITY;
-						} else {
-							currentItemAtDesk.computeAmount();
-							finalizeTicketItem();
-						}
-					}
-					break;
-				default:
-					break;
+						break;
+					default :
+						break;
 				}
 			} else {
 				// Validations without content in the TextField
@@ -697,11 +699,11 @@ public class MainGUI2 extends JFrame {
 						}
 					} else {
 						if (currentTicket.getPaymentMethod() == PaymentMethod.CASH) {
-							final double paye = Double.parseDouble(JOptionPane.showInputDialog(null, Messages.getString("MainGUI2.68"), //$NON-NLS-1$
-									Messages.getString("MainGUI2.69"), JOptionPane.QUESTION_MESSAGE)); //$NON-NLS-1$
-							JOptionPane.showMessageDialog(null,
-									"You owe " + NumberFormat.getCurrencyInstance() //$NON-NLS-1$
-											.format(paye - currentTicket.getAmount()) + ".", //$NON-NLS-1$
+							final double paye = Double
+									.parseDouble(JOptionPane.showInputDialog(null, Messages.getString("MainGUI2.68"), //$NON-NLS-1$
+											Messages.getString("MainGUI2.69"), JOptionPane.QUESTION_MESSAGE)); //$NON-NLS-1$
+							JOptionPane.showMessageDialog(null, "You owe " + NumberFormat.getCurrencyInstance() //$NON-NLS-1$
+									.format(paye - currentTicket.getAmount()) + ".", //$NON-NLS-1$
 									"", JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
 						}
 						// Save the finished ticket
@@ -731,8 +733,8 @@ public class MainGUI2 extends JFrame {
 	 */
 	private void onChangeVendor(ActionEvent e) {
 		if (currentTicket != null) {
-			final int choice = JOptionPane.showConfirmDialog(null,
-					Messages.getString("MainGUI2.75"), Messages.getString("MainGUI2.76"), //$NON-NLS-1$ //$NON-NLS-2$
+			final int choice = JOptionPane.showConfirmDialog(null, Messages.getString("MainGUI2.75"), //$NON-NLS-1$
+					Messages.getString("MainGUI2.76"), //$NON-NLS-1$
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			// If a ticket is started, we need to confirm the will to quit
 			if (choice != JOptionPane.YES_OPTION) {
@@ -747,25 +749,25 @@ public class MainGUI2 extends JFrame {
 	}
 
 	/**
-	 * @param p payment method
+	 * @param p
+	 *            payment method
 	 */
 	private void onPay(final PaymentMethod p) {
 		if (currentTicket != null && currentState == TicketState.TICKET_IDLE) {
 			currentTicket.pay(p);
 
 			if (p == PaymentMethod.CASH) {
-				final double paye = Double.parseDouble(
-						JOptionPane.showInputDialog(null, Messages.getString("MainGUI2.77"), Messages.getString("MainGUI2.78"), JOptionPane.QUESTION_MESSAGE)); //$NON-NLS-1$ //$NON-NLS-2$
+				final double paye = Double
+						.parseDouble(JOptionPane.showInputDialog(null, Messages.getString("MainGUI2.77"), //$NON-NLS-1$
+								Messages.getString("MainGUI2.78"), JOptionPane.QUESTION_MESSAGE)); //$NON-NLS-1$
 
-				JOptionPane.showMessageDialog(null,
-						String.format(Messages.getString("MainGUI2.79"), //$NON-NLS-1$
-								NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())),
+				JOptionPane.showMessageDialog(null, String.format(Messages.getString("MainGUI2.79"), //$NON-NLS-1$
+						NumberFormat.getCurrencyInstance().format(paye - currentTicket.getAmount())),
 						Messages.getString("MainGUI2.80"), JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$
 			} else {
-				JOptionPane.showMessageDialog(null,
-						String.format(Messages.getString("MainGUI2.81"), //$NON-NLS-1$
-								String.valueOf(currentTicket.getAmount()), p.getName()),
-						Messages.getString("MainGUI2.82"), JOptionPane.PLAIN_MESSAGE); //$NON-NLS-1$
+				JOptionPane.showMessageDialog(null, String.format(Messages.getString("MainGUI2.81"), //$NON-NLS-1$
+						String.valueOf(currentTicket.getAmount()), p.getName()), Messages.getString("MainGUI2.82"), //$NON-NLS-1$
+						JOptionPane.PLAIN_MESSAGE);
 			}
 			// Save the finished ticket
 			finalizeTicket();
@@ -778,8 +780,8 @@ public class MainGUI2 extends JFrame {
 	 */
 	private void onQuit(ActionEvent e) {
 		if (currentTicket != null) {
-			final int choice = JOptionPane.showConfirmDialog(null,
-					Messages.getString("MainGUI2.83"), Messages.getString("MainGUI2.84"), //$NON-NLS-1$ //$NON-NLS-2$
+			final int choice = JOptionPane.showConfirmDialog(null, Messages.getString("MainGUI2.83"), //$NON-NLS-1$
+					Messages.getString("MainGUI2.84"), //$NON-NLS-1$
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			// If a ticket is started, we need to confirm the will to quit
 			if (choice != JOptionPane.YES_OPTION) {
@@ -861,7 +863,8 @@ public class MainGUI2 extends JFrame {
 	/**
 	 * Display ticket information at the appropriate places in GUI
 	 *
-	 * @param t the ticket to display
+	 * @param t
+	 *            the ticket to display
 	 */
 	private void printTicketToScreen(Ticket t) {
 		if (t != null) {
@@ -886,7 +889,8 @@ public class MainGUI2 extends JFrame {
 	}
 
 	/**
-	 * @param currentVendor the currentVendor to set
+	 * @param currentVendor
+	 *            the currentVendor to set
 	 */
 	public void setCurrentVendor(Vendor currentVendor) {
 		this.currentVendor = currentVendor;
@@ -905,8 +909,7 @@ public class MainGUI2 extends JFrame {
 				if (a != null && a.hasStockMgmtEnabled() && a.hasStockAlertEnabled()) {
 					final int stock = a.getStock();
 					if (stock <= a.getLimitStock()) {
-						bob.append(
-								String.format(Messages.getString("MainGUI2.95"), stock, a.getName())); //$NON-NLS-1$
+						bob.append(String.format(Messages.getString("MainGUI2.95"), stock, a.getName())); //$NON-NLS-1$
 						if (stock < 0) {
 							bob.append(Messages.getString("MainGUI2.96")); //$NON-NLS-1$
 						} else {

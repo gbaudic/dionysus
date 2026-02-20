@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui.panels;
 
 import java.awt.GridBagConstraints;
@@ -22,7 +21,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,7 +33,6 @@ import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
-
 import net.sourceforge.dionysus.User;
 import net.sourceforge.dionysus.db.UserDB;
 import net.sourceforge.dionysus.gui.Constants;
@@ -65,10 +62,10 @@ public class UsersPanel extends JPanel {
 		this.users = usersDB;
 
 		final GridBagLayout gbl_comptesP = new GridBagLayout();
-		gbl_comptesP.columnWidths = new int[] { 0, 0, 0, 0, 0, 0 };
-		gbl_comptesP.rowHeights = new int[] { 0, 0, 0 };
-		gbl_comptesP.columnWeights = new double[] { 1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_comptesP.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_comptesP.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_comptesP.rowHeights = new int[]{0, 0, 0};
+		gbl_comptesP.columnWeights = new double[]{1.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_comptesP.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gbl_comptesP);
 
 		final JLabel lblNewLabel = new JLabel("Search:");
@@ -184,7 +181,8 @@ public class UsersPanel extends JPanel {
 	/**
 	 * ActionListener for credit action
 	 *
-	 * @param e event (unused)
+	 * @param e
+	 *            event (unused)
 	 */
 	private void onCredit(ActionEvent e) {
 		final int row = userTable.getSelectedRow();

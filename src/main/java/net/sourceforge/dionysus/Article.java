@@ -13,8 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+*/
 package net.sourceforge.dionysus;
 
 import java.io.Serializable;
@@ -73,10 +72,14 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Constructor
 	 *
-	 * @param name   article name
-	 * @param prices an array of prices
-	 * @param stock  initial number of units
-	 * @param code   the code to be used for recalling the article
+	 * @param name
+	 *            article name
+	 * @param prices
+	 *            an array of prices
+	 * @param stock
+	 *            initial number of units
+	 * @param code
+	 *            the code to be used for recalling the article
 	 */
 	public Article(final String name, final Price[] prices, final int stock, final long code) {
 		this(name, prices, code);
@@ -86,11 +89,16 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Constructor
 	 *
-	 * @param name        article name
-	 * @param prices      an array of prices
-	 * @param stock       initial number of units
-	 * @param code        the code to be used for recalling the article
-	 * @param isCountable flag to tell this article will be uncountable
+	 * @param name
+	 *            article name
+	 * @param prices
+	 *            an array of prices
+	 * @param stock
+	 *            initial number of units
+	 * @param code
+	 *            the code to be used for recalling the article
+	 * @param isCountable
+	 *            flag to tell this article will be uncountable
 	 */
 	public Article(final String name, final Price[] prices, final int stock, final long code,
 			final boolean isCountable) {
@@ -101,9 +109,12 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Simple constructor when no stock management is used
 	 *
-	 * @param name   article name
-	 * @param prices an array of prices
-	 * @param code   the code to be used for recalling this article
+	 * @param name
+	 *            article name
+	 * @param prices
+	 *            an array of prices
+	 * @param code
+	 *            the code to be used for recalling this article
 	 */
 	public Article(final String name, final Price[] prices, final long code) {
 		this.name = name;
@@ -115,7 +126,8 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Add stock to this article, use a negative quantity to remove
 	 *
-	 * @param amount the INTEGER amount to add or remove
+	 * @param amount
+	 *            the INTEGER amount to add or remove
 	 */
 	public void addStock(final int amount) {
 		stock += amount;
@@ -139,7 +151,8 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Getter for the price
 	 *
-	 * @param id price identifier. Must be 0, 1 or 2 in this implementation
+	 * @param id
+	 *            price identifier. Must be 0, 1 or 2 in this implementation
 	 * @return the corresponding price, or 0 if the price does not exist
 	 */
 	public double getArticlePrice(final int id) {
@@ -224,7 +237,8 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Setter for alert threshold
 	 *
-	 * @param limitStock the new positive threshold
+	 * @param limitStock
+	 *            the new positive threshold
 	 */
 	public void setLimitStock(final int limitStock) {
 		if (limitStock >= 0) {
@@ -237,7 +251,8 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Setter for stock
 	 *
-	 * @param newStock new value to use
+	 * @param newStock
+	 *            new value to use
 	 */
 	public void setStock(final int newStock) {
 		stock = newStock;
@@ -246,8 +261,8 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Setter for stock alert
 	 *
-	 * @param hasStockAlertEnabled true to enable alerts if stock is below a given
-	 *                             threshold
+	 * @param hasStockAlertEnabled
+	 *            true to enable alerts if stock is below a given threshold
 	 * @see Article#setLimitStock(int)
 	 */
 	public void setStockAlertEnabled(final boolean hasStockAlertEnabled) {
@@ -257,8 +272,8 @@ public class Article implements Serializable, CSVAble {
 	/**
 	 * Setter for stock management
 	 *
-	 * @param hasStockMgmtEnabled true if stock should be managed through the
-	 *                            application
+	 * @param hasStockMgmtEnabled
+	 *            true if stock should be managed through the application
 	 * @see Article#setStock(int)
 	 */
 	public void setStockMgmt(final boolean hasStockMgmtEnabled) {

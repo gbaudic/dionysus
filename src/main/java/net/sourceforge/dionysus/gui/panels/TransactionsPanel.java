@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus.gui.panels;
 
 import java.awt.GridBagConstraints;
@@ -22,7 +21,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.regex.PatternSyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -35,7 +33,6 @@ import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
-
 import net.sourceforge.dionysus.Transaction;
 import net.sourceforge.dionysus.db.TransactionDB;
 import net.sourceforge.dionysus.gui.Constants;
@@ -61,10 +58,10 @@ public class TransactionsPanel extends JPanel {
 		this.journal = transactions;
 
 		final GridBagLayout gbl_transactionsP = new GridBagLayout();
-		gbl_transactionsP.columnWidths = new int[] { 0, 0, 0, 0 };
-		gbl_transactionsP.rowHeights = new int[] { 0, 0, 0 };
-		gbl_transactionsP.columnWeights = new double[] { 1.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_transactionsP.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_transactionsP.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_transactionsP.rowHeights = new int[]{0, 0, 0};
+		gbl_transactionsP.columnWeights = new double[]{1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_transactionsP.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gbl_transactionsP);
 
 		final JLabel lblNewLabel_2 = new JLabel("Search: ");
@@ -141,7 +138,8 @@ public class TransactionsPanel extends JPanel {
 	/**
 	 * Handle reverting of a {@link Transaction}
 	 *
-	 * @param arg0 event (unused)
+	 * @param arg0
+	 *            event (unused)
 	 */
 	private void onRevert(ActionEvent arg0) {
 		final int row = transactionTable.getSelectedRow();

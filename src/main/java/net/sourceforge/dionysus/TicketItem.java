@@ -14,7 +14,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package net.sourceforge.dionysus;
 
 import java.text.NumberFormat;
@@ -40,7 +39,8 @@ public class TicketItem {
 	 *
 	 * Uses fee #0 and quantity of 1 since this is considered the most frequent case
 	 *
-	 * @param article article being bought
+	 * @param article
+	 *            article being bought
 	 */
 	public TicketItem(Article article) {
 		this(article, 0, 1);
@@ -49,9 +49,12 @@ public class TicketItem {
 	/**
 	 * Constructor
 	 *
-	 * @param article  article being bought
-	 * @param fee      index of fee to use, starting at 0
-	 * @param quantity quantity of the product, in units or grams/milliliters
+	 * @param article
+	 *            article being bought
+	 * @param fee
+	 *            index of fee to use, starting at 0
+	 * @param quantity
+	 *            quantity of the product, in units or grams/milliliters
 	 */
 	public TicketItem(Article article, int fee, int quantity) {
 		this.article = article;
@@ -63,7 +66,8 @@ public class TicketItem {
 	/**
 	 * Increase the number of articles
 	 *
-	 * @param number a positive number to add
+	 * @param number
+	 *            a positive number to add
 	 */
 	public void addArticles(int number) {
 		if (number >= 0) {
@@ -131,7 +135,8 @@ public class TicketItem {
 	/**
 	 * Decrease the number of articles
 	 *
-	 * @param number a positive number to remove
+	 * @param number
+	 *            a positive number to remove
 	 */
 	public void removeArticles(int number) {
 		if (number >= 0 && number <= quantity) {
@@ -146,7 +151,8 @@ public class TicketItem {
 	 * Forces a given amount Useful when selling 'meters' (12 units at the price of
 	 * 10, especially with beer)
 	 *
-	 * @param nam amount to force
+	 * @param nam
+	 *            amount to force
 	 */
 	public void setAmount(double nam) {
 		amount = nam;
@@ -156,8 +162,8 @@ public class TicketItem {
 	/**
 	 * Change the fee used
 	 *
-	 * @param newFee new fee ID to use, illegal values default to standard fee (ID
-	 *               0)
+	 * @param newFee
+	 *            new fee ID to use, illegal values default to standard fee (ID 0)
 	 */
 	public void setFee(int newFee) {
 		if (newFee < 0 || newFee >= article.getNumberOfPrices()) {
@@ -171,7 +177,8 @@ public class TicketItem {
 	/**
 	 * Setter for quantity
 	 *
-	 * @param q the new quantity
+	 * @param q
+	 *            the new quantity
 	 */
 	public void setQuantity(int q) {
 		if (q > 0) {

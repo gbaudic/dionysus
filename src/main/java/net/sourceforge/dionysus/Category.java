@@ -13,8 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+*/
 package net.sourceforge.dionysus;
 
 import java.awt.Color;
@@ -48,8 +47,10 @@ public class Category implements Serializable {
 	/**
 	 * Constructor
 	 *
-	 * @param name      name of the category
-	 * @param imagePath full path to the image to be used
+	 * @param name
+	 *            name of the category
+	 * @param imagePath
+	 *            full path to the image to be used
 	 */
 	public Category(String name, String imagePath) {
 		this(name, imagePath, new HashSet<>());
@@ -58,9 +59,12 @@ public class Category implements Serializable {
 	/**
 	 * Constructor
 	 *
-	 * @param name         name of the category
-	 * @param imagePath    full path to the image to be used
-	 * @param articlesList list of articles to include
+	 * @param name
+	 *            name of the category
+	 * @param imagePath
+	 *            full path to the image to be used
+	 * @param articlesList
+	 *            list of articles to include
 	 */
 	public Category(String name, String imagePath, Set<Article> articlesList) {
 		this(name, imagePath, articlesList, null);
@@ -69,10 +73,14 @@ public class Category implements Serializable {
 	/**
 	 * Constructor
 	 *
-	 * @param name         name of the category
-	 * @param imagePath    full path to the image to be used
-	 * @param articlesList list of articles to include
-	 * @param color        color to use
+	 * @param name
+	 *            name of the category
+	 * @param imagePath
+	 *            full path to the image to be used
+	 * @param articlesList
+	 *            list of articles to include
+	 * @param color
+	 *            color to use
 	 */
 	public Category(String name, String imagePath, Set<Article> articlesList, Color color) {
 		this.name = name;
@@ -84,7 +92,8 @@ public class Category implements Serializable {
 	/**
 	 * Adder method
 	 *
-	 * @param a article to add to this category
+	 * @param a
+	 *            article to add to this category
 	 */
 	public void addArticle(Article a) {
 		if (a != null) {
@@ -132,21 +141,24 @@ public class Category implements Serializable {
 	/**
 	 * Remove an article from the category
 	 *
-	 * @param a article to remove
+	 * @param a
+	 *            article to remove
 	 */
 	public void removeArticle(Article a) {
 		articlesList.remove(a);
 	}
 
 	/**
-	 * @param color the color to set
+	 * @param color
+	 *            the color to set
 	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
 
 	/**
-	 * @param imagePath the imagePath to set
+	 * @param imagePath
+	 *            the imagePath to set
 	 */
 	public void setImagePath(String imagePath) {
 		if (imagePath != null && !imagePath.isEmpty()) {
@@ -155,7 +167,8 @@ public class Category implements Serializable {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
