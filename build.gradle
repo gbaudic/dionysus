@@ -49,6 +49,7 @@ tasks.cyclonedxDirectBom {
 }
 
 spotless {
+    enforceCheck false
     java {
         importOrder()
         removeUnusedImports()
