@@ -47,19 +47,19 @@ jobs:
       run: ./gradlew build sonar --info
     
     - name: Upload BOM
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: BOM
         path: build/reports/cyclonedx-direct/bom.json
     
     - name: Upload ZIP
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: dionysus.zip
         path: build/distributions/dionysus.zip
 
     - name: Upload TAR
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: dionysus.tar
         path: build/distributions/dionysus.tar
